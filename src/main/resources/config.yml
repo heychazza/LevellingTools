@@ -1,0 +1,13 @@
+## LevellingTools - by Chazza ##
+
+format:
+    pickaxe:
+            name: "&e&lLEVELLING PICKAXE &8| &7LVL %level% &8|"
+            lore:
+              - "&8-------------------------------------"
+              - "&7Mining helps level up your pickaxe,"
+              - "&7rarer ores grant more experience."
+              - ""
+              - "&7Level: &6%level%"
+              - "&7Blocks Mined: &6%mined"
+              - "&8-------------------------------------"
