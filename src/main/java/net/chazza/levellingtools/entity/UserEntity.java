@@ -2,19 +2,43 @@ package net.chazza.levellingtools.entity;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;
+import net.chazza.levellingtools.util.MongoDB;
+import org.bukkit.entity.Player;
 
 @Entity(value = "user", noClassnameStored = true)
 public class UserEntity extends BaseEntity {
+
+    public static UserEntity getUser(Player player) {
+        UserEntity userEntity = MongoDB.instance()
+                .getDatabase()
+                .createQuery(UserEntity.class)
+                .filter("uuid", player.getUniqueId().toString())
+                .get();
+
+        if (userEntity == null) {
+            UserEntity newUserEntity = new UserEntity();
+            newUserEntity.setUuid(player.getUniqueId().toString());
+            newUserEntity.setUsername(player.getName());
+            newUserEntity.setLowercaseUsername(player.getName().toLowerCase());
+            newUserEntity.setExperience(0);
+            newUserEntity.setLevel(1);
+
+            MongoDB.instance().getDatabase().save(newUserEntity);
+            return newUserEntity;
+        }
+        return userEntity;
+    }
 
     public UserEntity() {
         super();
     }
 
     @Indexed
-    protected String uuid;
-    protected String username;
-    protected String lowercaseUsername;
-    protected int experience;
+    private String uuid;
+    private String username;
+    private String lowercaseUsername;
+    private int experience;
+    protected int level;
 
     public String getUuid() {
         return uuid;
@@ -32,6 +56,10 @@ public class UserEntity extends BaseEntity {
         return experience;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
@@ -46,6 +74,10 @@ public class UserEntity extends BaseEntity {
 
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     @Override

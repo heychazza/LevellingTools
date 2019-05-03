@@ -1,16 +1,18 @@
 package net.chazza.levellingtools.events;
 
-import de.tr7zw.itemnbtapi.NBTContainer;
 import de.tr7zw.itemnbtapi.NBTItem;
+import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 import net.chazza.levellingtools.LevellingTools;
+import net.chazza.levellingtools.entity.UserEntity;
+import net.chazza.levellingtools.tool.LevellingTool;
+import net.chazza.levellingtools.util.MongoDB;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
 
 public class ToolMineEvent implements Listener {
 
@@ -19,20 +21,40 @@ public class ToolMineEvent implements Listener {
     }
 
     @EventHandler
-    public void onItemPickup(BlockDamageEvent e) {
+    public void onItemPickup(BlockBreakEvent e) {
         Player player = e.getPlayer();
-        ItemStack item = e.getItemInHand();
+        ItemStack item = player.getItemInHand();
 
-        NBTContainer nbtItem = NBTItem.convertItemtoNBT(item);
+        MinecraftVersion.setLogging(false);
+        NBTItem nbtItem = new NBTItem(item);
 
         if(nbtItem.hasKey("omnitool")) {
             // Omnitool
-            UUID toolOwner = UUID.fromString(nbtItem.getString("omnitool"));
+            UserEntity user = UserEntity.getUser(player);
+            LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
+            player.sendMessage(ChatColor.YELLOW + "You used your level " + user.getLevel() + " pickaxe to mine " + e.getBlock().getType().name());
 
-            if(!player.getUniqueId().equals(toolOwner)) {
-                // Update Tool
+            int xpFained = 20;
+
+            int currentLvl = user.getLevel();
+
+            for(LevellingTool tool : LevellingTool.getTools().values()) {
+                if(tool.getLevel() == 1) continue;
+                if(tool.getLevel() <= user.getLevel()) continue;
+                if(user.getExperience()+xpFained < tool.getXpRequired()) continue;
+
+                currentLvl++;
+                tool.executeCommands(player);
             }
-        }
 
+            user.setLevel(currentLvl);
+            user.setExperience(user.getExperience() + xpFained);
+            MongoDB.instance().getDatabase().save(user);
+            player.setItemInHand(LevellingTool.getItemStack(player));
+
+            //UUID toolOwner = UUID.fromString(nbtItem.getString("omnitool"));
+        } else {
+            Bukkit.getLogger().info("No tool.");
+        }
     }
 }

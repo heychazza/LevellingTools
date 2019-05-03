@@ -38,6 +38,7 @@ level:
   1:
     settings:
       type: DIAMOND_PICKAXE
+      xp: 0
       enchantments:
         EFFICIENCY: 1
       experience:
@@ -48,6 +49,7 @@ level:
   2:
     settings:
       type: MEME_PICKAXE
+      xp: 100
       enchantments:
         EFFICIENCY: 1
       experience:
