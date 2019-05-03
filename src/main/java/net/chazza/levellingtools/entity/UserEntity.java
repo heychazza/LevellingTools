@@ -1,4 +1,4 @@
-package net.chazza.levellingtools.entities;
+package net.chazza.levellingtools.entity;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;

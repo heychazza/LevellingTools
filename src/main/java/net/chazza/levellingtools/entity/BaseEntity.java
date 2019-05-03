@@ -1,4 +1,4 @@
-package net.chazza.levellingtools.entities;
+package net.chazza.levellingtools.entity;
 
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.PrePersist;
@@ -7,10 +7,10 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 /**
- * Provide the BaseEntity implementation for all entities:
+ * Provide the BaseEntity implementation for all entity:
  *
  * ID, creation and last change date, version, their getters and setters (including @PrePersist),
- * and some abstract methods we'll require in the specific entities.
+ * and some abstract methods we'll require in the specific entity.
  */
 public abstract class BaseEntity {
 

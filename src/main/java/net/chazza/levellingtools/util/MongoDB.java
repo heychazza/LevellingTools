@@ -7,7 +7,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
-import net.chazza.levellingtools.entities.BaseEntity;
+import net.chazza.levellingtools.entity.BaseEntity;
 
 import java.util.logging.Logger;
 
