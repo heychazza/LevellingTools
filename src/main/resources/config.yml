@@ -1,13 +1,31 @@
-## LevellingTools - by Chazza ##
+# __       ___________    ____  _______  __       __       __  .__   __.   _______    .___________.  ______     ______    __          _______.
+# |  |     |   ____\   \  /   / |   ____||  |     |  |     |  | |  \ |  |  /  _____|   |           | /  __  \   /  __  \  |  |        /       |
+# |  |     |  |__   \   \/   /  |  |__   |  |     |  |     |  | |   \|  | |  |  __     `---|  |----`|  |  |  | |  |  |  | |  |       |   (----`
+# |  |     |   __|   \      /   |   __|  |  |     |  |     |  | |  . `  | |  | |_ |        |  |     |  |  |  | |  |  |  | |  |        \   \
+# |  `----.|  |____   \    /    |  |____ |  `----.|  `----.|  | |  |\   | |  |__| |        |  |     |  `--'  | |  `--'  | |  `----.----)   |
+# |_______||_______|   \__/     |_______||_______||_______||__| |__| \__|  \______|        |__|      \______/   \______/  |_______|_______/
+#
+# By. github.com/chazza
 
 format:
-    pickaxe:
-            name: "&e&lLEVELLING PICKAXE &8| &7LVL %level% &8|"
-            lore:
-              - "&8-------------------------------------"
-              - "&7Mining helps level up your pickaxe,"
-              - "&7rarer ores grant more experience."
-              - ""
-              - "&7Level: &6%level%"
-              - "&7Blocks Mined: &6%mined"
-              - "&8-------------------------------------"
+  pickaxe:
+    name: "&e&lLEVELLING PICKAXE &8| &7LVL %level% &8|"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your pickaxe,"
+      - "&7rarer ores grant more experience."
+      - ""
+      - "&7Level: &6%level%"
+      - "&7Blocks Mined: &6%mined%"
+      - "&8-------------------------------------"
+
+level:
+  1:
+    settings:
+      type: DIAMOND_PICKAXE
+      enchantments:
+        EFFICIENCY: 1
+      experience:
+        COAL_ORE: 10
+    commands:
+      - "tm msg %player% &e&lLEVEL UP!;&7Your tool is now lvl &f%level%"
