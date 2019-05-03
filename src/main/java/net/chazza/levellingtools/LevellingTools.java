@@ -3,6 +3,7 @@ package net.chazza.levellingtools;
 import com.google.common.collect.Maps;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.EnchantmentEnum;
+import net.chazza.levellingtools.util.LevellingUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,6 +15,8 @@ public class LevellingTools extends JavaPlugin {
     public void onEnable() {
         //BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         saveDefaultConfig();
+
+        new LevellingUtil().setBaseMulti(getConfig().getDouble("settings.level-multiplier"));
 
         for(String levelStr : getConfig().getConfigurationSection("level").getKeys(false)) {
             int toolLevel = Integer.valueOf(levelStr);
@@ -42,6 +45,5 @@ public class LevellingTools extends JavaPlugin {
     }
 
     public void onDisable() {
-
     }
 }

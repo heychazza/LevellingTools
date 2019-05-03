@@ -29,6 +29,8 @@ format:
       - "&7Blocks Mined: &6%mined%"
       - "&8-------------------------------------"
 
+settings:
+  level-multiplier: 0.12
 message:
   not-your-omnitool: "&cSorry %player%, that omnitool is not yours."
 

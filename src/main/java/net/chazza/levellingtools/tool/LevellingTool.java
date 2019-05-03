@@ -1,11 +1,8 @@
 package net.chazza.levellingtools.tool;
 
-import net.chazza.levellingtools.util.EnchantmentEnum;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class LevellingTool {
