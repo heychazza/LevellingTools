@@ -1,10 +1,6 @@
 package net.chazza.levellingtools.util;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.ReadPreference;
-import com.mongodb.ServerAddress;
-import com.mongodb.WriteConcern;
+import com.mongodb.*;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import net.chazza.levellingtools.entity.BaseEntity;
@@ -16,9 +12,9 @@ import java.util.logging.Logger;
  */
 public class MongoDB {
 
-    public static final String DB_HOST = "127.0.0.1";
-    public static final int DB_PORT = 27017;
-    public static final String DB_NAME = "levellingtools";
+    private static final String DB_HOST = "127.0.0.1";
+    private static final int DB_PORT = 27017;
+    private static final String DB_NAME = "levellingtools";
 
     private static final Logger LOG = Logger.getLogger(MongoDB.class.getName());
 

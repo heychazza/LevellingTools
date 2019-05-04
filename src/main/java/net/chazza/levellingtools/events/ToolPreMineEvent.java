@@ -3,16 +3,12 @@ package net.chazza.levellingtools.events;
 import de.tr7zw.itemnbtapi.NBTItem;
 import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 import net.chazza.levellingtools.LevellingTools;
-import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.tool.LevellingTool;
-import net.chazza.levellingtools.util.MongoDB;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemStack;
 

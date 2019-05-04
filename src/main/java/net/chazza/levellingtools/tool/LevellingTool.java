@@ -6,7 +6,6 @@ import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.util.OmnitoolUtil;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
