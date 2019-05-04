@@ -31,6 +31,11 @@ format:
 
 settings:
   level-multiplier: 0.12
+  blacklisted:
+    world:
+      - "example"
+    region:
+      - "blah"
 message:
   not-your-omnitool: "&cSorry %player%, that omnitool is not yours."
 

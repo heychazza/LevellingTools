@@ -6,8 +6,9 @@ import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.MongoDB;
+import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,13 +17,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class ToolMineEvent implements Listener {
 
+    LevellingTools levellingTools;
     public ToolMineEvent(LevellingTools levellingTools) {
+        this.levellingTools = levellingTools;
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
     @EventHandler
-    public void onItemPickup(BlockBreakEvent e) {
+    public void onBlockBreak(BlockBreakEvent e) {
         Player player = e.getPlayer();
+        Block block = e.getBlock();
         ItemStack item = player.getItemInHand();
 
         MinecraftVersion.setLogging(false);
@@ -40,9 +44,10 @@ public class ToolMineEvent implements Listener {
             LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
             //player.sendMessage(ChatColor.YELLOW + "You used your level " + user.getLevel() + " pickaxe to mine " + e.getBlock().getType().name());
 
-            int xpFained = playerTool.getXpFromBlock(e.getBlock());
-            player.sendMessage("You gained " + xpFained + " from mining that " + e.getBlock().getType().name());
+            int xpFained = playerTool.getXpFromBlock(block);
+            String blockMined = e.getBlock().getData() > 0 ? block.getType().name() + ";" + block.getData() : block.getType().name();
 
+            StringUtil.sendActionbar(player, StringUtil.translate("&6&l+" + xpFained + " EXP"));
             int currentLvl = user.getLevel();
 
             for(LevellingTool tool : LevellingTool.getTools().values()) {
@@ -56,8 +61,9 @@ public class ToolMineEvent implements Listener {
 
             user.setLevel(currentLvl);
             user.setExperience(user.getExperience() + xpFained);
+            user.setBlocksBroken(user.getBlocksBroken()+1);
             MongoDB.instance().getDatabase().save(user);
-            player.setItemInHand(LevellingTool.getItemStack(player));
+            player.setItemInHand(LevellingTool.getItemStack(player, block));
 
             //UUID toolOwner = UUID.fromString(nbtItem.getString("omnitool"));
         }

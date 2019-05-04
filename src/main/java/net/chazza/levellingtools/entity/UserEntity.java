@@ -21,6 +21,7 @@ public class UserEntity extends BaseEntity {
             newUserEntity.setUsername(player.getName());
             newUserEntity.setLowercaseUsername(player.getName().toLowerCase());
             newUserEntity.setExperience(0);
+            newUserEntity.setBlocksBroken(0);
             newUserEntity.setLevel(1);
 
             MongoDB.instance().getDatabase().save(newUserEntity);
@@ -38,7 +39,8 @@ public class UserEntity extends BaseEntity {
     private String username;
     private String lowercaseUsername;
     private int experience;
-    protected int level;
+    private int blocksBroken;
+    private int level;
 
     public String getUuid() {
         return uuid;
@@ -54,6 +56,10 @@ public class UserEntity extends BaseEntity {
 
     public int getExperience() {
         return experience;
+    }
+
+    public int getBlocksBroken() {
+        return blocksBroken;
     }
 
     public int getLevel() {
@@ -74,6 +80,10 @@ public class UserEntity extends BaseEntity {
 
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    public void setBlocksBroken(int blocksBroken) {
+        this.blocksBroken = blocksBroken;
     }
 
     public void setLevel(int level) {

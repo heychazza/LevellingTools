@@ -3,6 +3,7 @@ package net.chazza.levellingtools.tool;
 import com.google.common.collect.Maps;
 import de.tr7zw.itemnbtapi.NBTItem;
 import net.chazza.levellingtools.entity.UserEntity;
+import net.chazza.levellingtools.util.OmnitoolUtil;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,29 +23,27 @@ public class LevellingTool {
         return toolHashMap;
     }
 
-    public static LevellingTool getPlayer(Player player) {
-        UserEntity user = UserEntity.getUser(player);
-        Optional<LevellingTool> levellingTool = toolHashMap.values().stream().filter(tool -> user.getExperience() >= tool.getXpRequired()).reduce((first, second) -> second);
-
-        return levellingTool.orElse(null);
+    public static LevellingTool getPlayerTool(UserEntity userEntity) {
+        return toolHashMap.values().stream().filter(tool -> userEntity.getExperience() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
     }
 
-    public static ItemStack getItemStack(Player player) {
-        LevellingTool tool = getPlayer(player);
+    public static ItemStack getItemStack(Player player, Block block) {
+        UserEntity user = UserEntity.getUser(player);
+        LevellingTool tool = getPlayerTool(user);
 
-        ItemStack toolItem = new ItemStack(tool.getType());
+        ItemStack toolItem = new ItemStack(OmnitoolUtil.getType(block, tool.getType()));
         ItemMeta toolMeta = toolItem.getItemMeta();
 
-        String name = tool.getName().replace("%level%", tool.getLevel() + "");
+        String name = tool.getName().replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + "");
         toolMeta.setDisplayName(StringUtil.translate(name));
         List<String> lore = new ArrayList<>();
 
-        tool.getLore().forEach(localLore -> lore.add(StringUtil.translate(localLore.replace("%level%", tool.getLevel() + ""))));
+        tool.getLore().forEach(localLore -> lore.add(StringUtil.translate(localLore.replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + ""))));
         toolMeta.setLore(lore);
 
 
         toolItem.setItemMeta(toolMeta);
-        tool.getEnchantments().forEach(toolItem::addEnchantment);
+        tool.getEnchantments().forEach(toolItem::addUnsafeEnchantment);
 
         NBTItem nbtItem = new NBTItem(toolItem);
         nbtItem.setString("omnitool", player.getUniqueId().toString());
@@ -56,12 +55,12 @@ public class LevellingTool {
     private int xpRequired;
     private Map<Enchantment, Integer> enchantments;
     private List<BlockXP> blockXp;
-    private Material type;
+    private String type;
     private String name;
     private List<String> lore;
     private List<String> commands;
 
-    public LevellingTool(int level, int xpRequired, Map<Enchantment, Integer> enchantments, List<BlockXP> blockXp, String name, List<String> lore, Material type, List<String> commands) {
+    public LevellingTool(int level, int xpRequired, Map<Enchantment, Integer> enchantments, List<BlockXP> blockXp, String name, List<String> lore, String type, List<String> commands) {
         this.level = level;
         this.xpRequired = xpRequired;
         this.enchantments = enchantments;
@@ -88,7 +87,7 @@ public class LevellingTool {
         return blockXp;
     }
 
-    public Material getType() {
+    public String getType() {
         return type;
     }
 

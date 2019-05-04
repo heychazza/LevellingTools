@@ -3,6 +3,7 @@ package net.chazza.levellingtools;
 import com.google.common.collect.Maps;
 import net.chazza.levellingtools.events.ToolJoinEvent;
 import net.chazza.levellingtools.events.ToolMineEvent;
+import net.chazza.levellingtools.events.ToolPreMineEvent;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.tool.BlockXP;
 import net.chazza.levellingtools.util.EnchantmentEnum;
@@ -11,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ public class LevellingTools extends JavaPlugin {
         saveDefaultConfig();
 
         new ToolJoinEvent(this);
+        new ToolPreMineEvent(this);
         new ToolMineEvent(this);
 
         getLogger().info("");
@@ -58,7 +61,7 @@ public class LevellingTools extends JavaPlugin {
                 }
                 enchantments.put(EnchantmentEnum.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
             }
-            
+
             List<BlockXP> blockXp = new ArrayList<>();
             for(String blockStr : getConfig().getConfigurationSection("level." + levelStr + ".settings.experience").getKeys(false)) {
                 if(blockStr.contains(";")) {
@@ -88,14 +91,13 @@ public class LevellingTools extends JavaPlugin {
             }
 
             String configType = getConfig().getString("level." + levelStr + ".settings.type").toUpperCase();
-            Material matType = Material.getMaterial(configType);
-            if(matType == null) {
+            if(!Arrays.asList("WOOD", "IRON", "GOLD", "DIAMOND").contains(configType)) {
                 getLogger().warning("Material '" + configType  + "' for level " + toolLevel + " is invalid. Skipping!");
                 continue;
             }
 
             //getLogger().info("[DEBUG] Level: " + toolLevel + " - Type: " + matType.name() + " - Enchantments: " + enchantments.size());
-            LevellingTool.getTools().put(toolLevel, new LevellingTool(toolLevel, xpRequired, enchantments, blockXp, name, lore, matType, commands));
+            LevellingTool.getTools().put(toolLevel, new LevellingTool(toolLevel, xpRequired, enchantments, blockXp, name, lore, configType, commands));
         }
     }
 
