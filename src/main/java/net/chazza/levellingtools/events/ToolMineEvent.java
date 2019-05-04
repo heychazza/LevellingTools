@@ -40,7 +40,8 @@ public class ToolMineEvent implements Listener {
             LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
             //player.sendMessage(ChatColor.YELLOW + "You used your level " + user.getLevel() + " pickaxe to mine " + e.getBlock().getType().name());
 
-            int xpFained = 20;
+            int xpFained = playerTool.getXpFromBlock(e.getBlock());
+            player.sendMessage("You gained " + xpFained + " from mining that " + e.getBlock().getType().name());
 
             int currentLvl = user.getLevel();
 

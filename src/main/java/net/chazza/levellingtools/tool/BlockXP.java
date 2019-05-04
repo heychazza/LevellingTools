@@ -2,15 +2,15 @@ package net.chazza.levellingtools.tool;
 
 import org.bukkit.Material;
 
-public class LevellingXP {
+public class BlockXP {
 
     private Material block;
-    private Integer data;
+    private byte data;
     private Integer experience;
 
-    public LevellingXP(Material block, Integer data, Integer experience) {
+    public BlockXP(Material block, Integer data, Integer experience) {
         this.block = block;
-        this.data = data;
+        this.data = data.byteValue();
         this.experience = experience;
     }
 
@@ -18,7 +18,7 @@ public class LevellingXP {
         return block;
     }
 
-    public Integer getData() {
+    public byte getData() {
         return data;
     }
 

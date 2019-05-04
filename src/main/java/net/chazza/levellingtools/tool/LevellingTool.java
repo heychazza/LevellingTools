@@ -1,19 +1,18 @@
 package net.chazza.levellingtools.tool;
 
 import com.google.common.collect.Maps;
-import de.tr7zw.itemnbtapi.NBTContainer;
 import de.tr7zw.itemnbtapi.NBTItem;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class LevellingTool {
 
@@ -53,25 +52,20 @@ public class LevellingTool {
         return nbtItem.getItem();
     }
 
-    /*
-     * TODO:
-     *  Tool Level
-     *  Enchantments
-     *  Tool Type
-     */
-
     private int level;
     private int xpRequired;
     private Map<Enchantment, Integer> enchantments;
+    private List<BlockXP> blockXp;
     private Material type;
     private String name;
     private List<String> lore;
     private List<String> commands;
 
-    public LevellingTool(int level, int xpRequired, Map<Enchantment, Integer> enchantments, String name, List<String> lore, Material type, List<String> commands) {
+    public LevellingTool(int level, int xpRequired, Map<Enchantment, Integer> enchantments, List<BlockXP> blockXp, String name, List<String> lore, Material type, List<String> commands) {
         this.level = level;
         this.xpRequired = xpRequired;
         this.enchantments = enchantments;
+        this.blockXp = blockXp;
         this.name = name;
         this.lore = lore;
         this.type = type;
@@ -88,6 +82,10 @@ public class LevellingTool {
 
     public Map<Enchantment, Integer> getEnchantments() {
         return enchantments;
+    }
+
+    public List<BlockXP> getBlockXp() {
+        return blockXp;
     }
 
     public Material getType() {
@@ -111,5 +109,10 @@ public class LevellingTool {
                 command.replace("%player%", player.getName())
                         .replace("%level%", getLevel() + "")
         ));
+    }
+
+    public Integer getXpFromBlock(Block block) {
+        Optional<BlockXP> optionalBlockXP = getBlockXp().stream().filter(blockXp -> blockXp.getBlock() == block.getType() && blockXp.getData() == block.getData()).findFirst();
+        return optionalBlockXP.isPresent() ? optionalBlockXP.get().getExperience() : 0;
     }
 }
