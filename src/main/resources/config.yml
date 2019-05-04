@@ -54,5 +54,6 @@ level:
         EFFICIENCY: 1
       experience:
         COAL_ORE: 10
+
     commands:
       - "tm msg %player% &e&lLEVEL UP!;&7Your tool is now lvl &f%level%"

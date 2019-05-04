@@ -28,11 +28,17 @@ public class ToolMineEvent implements Listener {
         MinecraftVersion.setLogging(false);
         NBTItem nbtItem = new NBTItem(item);
 
+        /*
+        TODO:
+        - Add XP System
+        - Create Multiplier System (Perm based, with Redeemable Additions)
+         */
+
         if(nbtItem.hasKey("omnitool")) {
             // Omnitool
             UserEntity user = UserEntity.getUser(player);
             LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
-            player.sendMessage(ChatColor.YELLOW + "You used your level " + user.getLevel() + " pickaxe to mine " + e.getBlock().getType().name());
+            //player.sendMessage(ChatColor.YELLOW + "You used your level " + user.getLevel() + " pickaxe to mine " + e.getBlock().getType().name());
 
             int xpFained = 20;
 
@@ -53,8 +59,6 @@ public class ToolMineEvent implements Listener {
             player.setItemInHand(LevellingTool.getItemStack(player));
 
             //UUID toolOwner = UUID.fromString(nbtItem.getString("omnitool"));
-        } else {
-            Bukkit.getLogger().info("No tool.");
         }
     }
 }

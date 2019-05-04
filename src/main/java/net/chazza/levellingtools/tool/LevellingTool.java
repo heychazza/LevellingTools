@@ -43,7 +43,9 @@ public class LevellingTool {
         tool.getLore().forEach(localLore -> lore.add(StringUtil.translate(localLore.replace("%level%", tool.getLevel() + ""))));
         toolMeta.setLore(lore);
 
+
         toolItem.setItemMeta(toolMeta);
+        tool.getEnchantments().forEach(toolItem::addEnchantment);
 
         NBTItem nbtItem = new NBTItem(toolItem);
         nbtItem.setString("omnitool", player.getUniqueId().toString());
