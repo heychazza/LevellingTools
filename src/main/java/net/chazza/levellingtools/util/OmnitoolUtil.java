@@ -1,22 +1,26 @@
 package net.chazza.levellingtools.util;
 
 import de.tr7zw.itemnbtapi.NBTItem;
+import net.chazza.levellingtools.entity.UserEntity;
+import net.chazza.levellingtools.tool.LevellingTool;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class OmnitoolUtil {
 
-    public static int getOmnitool(Player player) {
+    public static int getOmnitoolSlot(Player player) {
         int i = 0;
         for(ItemStack item : player.getInventory().getContents()) {
             if(item != null && new NBTItem(item).hasKey("omnitool")) return i;
             i++;
         }
-
         return -1;
     }
 

@@ -11,7 +11,37 @@ import java.util.stream.Collectors;
 
 public enum Lang {
 
-    EXP_GAINED("&6&l+{0} EXP")
+    EXP_GAINED("&6&l+{0} EXP"),
+
+    LEVELLING_PICKAXE_NAME("&e&lLEVELLING PICKAXE &8| &7LVL {0} &8| &7{1} BLOCKS"),
+    LEVELLING_PICKAXE_LORE(
+            "&8-------------------------------------",
+            "&7Mining helps level up your pickaxe,",
+            "&7mine rarer ores to grant more experience.",
+            "",
+            "&7Level: &6{0}",
+            "&7Blocks Mined: &6{1}",
+            "&8-------------------------------------"),
+
+    LEVELLING_AXE_NAME("&e&lLEVELLING AXE &8| &7LVL {0} &8| &7{1} BLOCKS"),
+    LEVELLING_AXE_LORE(
+            "&8-------------------------------------",
+            "&7Mining helps level up your axe,",
+            "&7mine logs to grant experience.",
+            "",
+            "&7Level: &6{0}",
+            "&7Blocks Mined: &6{1}",
+            "&8-------------------------------------"),
+
+    LEVELLING_SHOVEL_NAME("&e&lLEVELLING SHOVEL &8| &7LVL {0} &8| &7{1} BLOCKS"),
+    LEVELLING_SHOVEL_LORE(
+            "&8-------------------------------------",
+            "&7Mining helps level up your shovel,",
+            "&7mine blocks to grant experience.",
+            "",
+            "&7Level: &6{0}",
+            "&7Blocks Mined: &6{1}",
+            "&8-------------------------------------"),
 
     ;
 

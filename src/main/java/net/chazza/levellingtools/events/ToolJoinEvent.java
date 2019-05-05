@@ -19,7 +19,7 @@ public class ToolJoinEvent implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
-        int omnitool = OmnitoolUtil.getOmnitool(player);
+        int omnitool = OmnitoolUtil.getOmnitoolSlot(player);
 
         if(omnitool == -1) {
             player.getInventory().addItem(LevellingTool.getItemStack(player, null));

@@ -1,9 +1,8 @@
-package net.chazza.levellingtools.util;
+package net.chazza.levellingtools;
 
 import com.mongodb.*;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
-import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.entity.BaseEntity;
 
 public class MongoDB {

@@ -2,10 +2,13 @@ package net.chazza.levellingtools.tool;
 
 import com.google.common.collect.Maps;
 import de.tr7zw.itemnbtapi.NBTItem;
+import net.chazza.levellingtools.LevellingTools;
+import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.util.OmnitoolUtil;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -30,14 +33,27 @@ public class LevellingTool {
         UserEntity user = UserEntity.getUser(player);
         LevellingTool tool = getPlayerTool(user);
 
-        ItemStack toolItem = new ItemStack(OmnitoolUtil.getType(block, tool.getType()));
+        Material toolType = OmnitoolUtil.getType(block, tool.getType());
+        ItemStack toolItem = new ItemStack(toolType);
         ItemMeta toolMeta = toolItem.getItemMeta();
 
-        String name = tool.getName().replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + "");
-        toolMeta.setDisplayName(StringUtil.translate(name));
-        List<String> lore = new ArrayList<>();
+        String toolName;
 
-        tool.getLore().forEach(localLore -> lore.add(StringUtil.translate(localLore.replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + ""))));
+        if(toolType.name().contains("PICKAXE")) toolName = tool.getPickaxeName();
+        else if(toolType.name().contains("AXE")) toolName = tool.getAxeName();
+        else toolName = tool.getShovelName();
+
+        toolName = toolName.replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + "");
+        toolMeta.setDisplayName(StringUtil.translate(toolName));
+
+        List<String> toolLore;
+
+        if(toolType.name().contains("PICKAXE")) toolLore = tool.getPickaxeLore();
+        else if(toolType.name().contains("AXE")) toolLore = tool.getAxeLore();
+        else toolLore = tool.getShovelLore();
+
+        List<String> lore = new ArrayList<>();
+        toolLore.forEach(localLore -> lore.add(StringUtil.translate(localLore.replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + ""))));
         toolMeta.setLore(lore);
 
 
@@ -55,19 +71,17 @@ public class LevellingTool {
     private Map<Enchantment, Integer> enchantments;
     private List<BlockXP> blockXp;
     private String type;
-    private String name;
-    private List<String> lore;
+    private String pickaxeName;
+    private List<String> pickaxeLore;
+    private String axeName;
+    private List<String> axeLore;
+    private String shovelName;
+    private List<String> shovelLore;
     private List<String> commands;
 
-    public LevellingTool(int level, int xpRequired, Map<Enchantment, Integer> enchantments, List<BlockXP> blockXp, String name, List<String> lore, String type, List<String> commands) {
+    public LevellingTool(int level, int xpRequired) {
         this.level = level;
         this.xpRequired = xpRequired;
-        this.enchantments = enchantments;
-        this.blockXp = blockXp;
-        this.name = name;
-        this.lore = lore;
-        this.type = type;
-        this.commands = commands;
     }
 
     public int getLevel() {
@@ -90,16 +104,80 @@ public class LevellingTool {
         return type;
     }
 
-    public String getName() {
-        return name;
+    public String getPickaxeName() {
+        return pickaxeName;
     }
 
-    public List<String> getLore() {
-        return lore;
+    public String getAxeName() {
+        return axeName;
+    }
+
+    public String getShovelName() {
+        return shovelName;
+    }
+
+    public List<String> getPickaxeLore() {
+        return pickaxeLore;
+    }
+
+    public List<String> getAxeLore() {
+        return axeLore;
+    }
+
+    public List<String> getShovelLore() {
+        return shovelLore;
     }
 
     public List<String> getCommands() {
         return commands;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setXpRequired(int xpRequired) {
+        this.xpRequired = xpRequired;
+    }
+
+    public void setEnchantments(Map<Enchantment, Integer> enchantments) {
+        this.enchantments = enchantments;
+    }
+
+    public void setBlockXp(List<BlockXP> blockXp) {
+        this.blockXp = blockXp;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPickaxeName(String pickaxeName) {
+        this.pickaxeName = pickaxeName;
+    }
+
+    public void setPickaxeLore(List<String> pickaxeLore) {
+        this.pickaxeLore = pickaxeLore;
+    }
+
+    public void setAxeName(String axeName) {
+        this.axeName = axeName;
+    }
+
+    public void setAxeLore(List<String> axeLore) {
+        this.axeLore = axeLore;
+    }
+
+    public void setShovelName(String shovelName) {
+        this.shovelName = shovelName;
+    }
+
+    public void setShovelLore(List<String> shovelLore) {
+        this.shovelLore = shovelLore;
+    }
+
+    public void setCommands(List<String> commands) {
+        this.commands = commands;
     }
 
     public void executeCommands(Player player) {

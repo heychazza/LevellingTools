@@ -2,7 +2,7 @@ package net.chazza.levellingtools.entity;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;
-import net.chazza.levellingtools.util.MongoDB;
+import net.chazza.levellingtools.MongoDB;
 import org.bukkit.entity.Player;
 
 @Entity(value = "user", noClassnameStored = true)

@@ -6,7 +6,7 @@ import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.tool.LevellingTool;
-import net.chazza.levellingtools.util.MongoDB;
+import net.chazza.levellingtools.MongoDB;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
