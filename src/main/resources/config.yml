@@ -30,7 +30,10 @@ format:
       - "&8-------------------------------------"
 
 settings:
-  level-multiplier: 0.12
+  database:
+    name: "levellingtools"
+    host: "127.0.0.1"
+    port: 27017
   blacklisted:
     world:
       - "example"

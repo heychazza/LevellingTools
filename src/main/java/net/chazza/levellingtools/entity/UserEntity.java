@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 public class UserEntity extends BaseEntity {
 
     public static UserEntity getUser(Player player) {
-        UserEntity userEntity = MongoDB.instance()
-                .getDatabase()
+        UserEntity userEntity = MongoDB.getDatabase()
                 .createQuery(UserEntity.class)
                 .filter("uuid", player.getUniqueId().toString())
                 .get();
@@ -24,7 +23,7 @@ public class UserEntity extends BaseEntity {
             newUserEntity.setBlocksBroken(0);
             newUserEntity.setLevel(1);
 
-            MongoDB.instance().getDatabase().save(newUserEntity);
+            MongoDB.getDatabase().save(newUserEntity);
             return newUserEntity;
         }
         return userEntity;

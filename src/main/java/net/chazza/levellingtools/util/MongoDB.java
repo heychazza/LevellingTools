@@ -3,26 +3,14 @@ package net.chazza.levellingtools.util;
 import com.mongodb.*;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
+import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.entity.BaseEntity;
 
-import java.util.logging.Logger;
-
-/**
- * MongoDB providing the database connection for main.
- */
 public class MongoDB {
 
-    private static final String DB_HOST = "127.0.0.1";
-    private static final int DB_PORT = 27017;
-    private static final String DB_NAME = "levellingtools";
+    private static Datastore datastore = null;
 
-    private static final Logger LOG = Logger.getLogger(MongoDB.class.getName());
-
-    private static final MongoDB INSTANCE = new MongoDB();
-
-    private final Datastore datastore;
-
-    private MongoDB() {
+    public MongoDB(LevellingTools levellingTools) {
         MongoClientOptions mongoOptions = MongoClientOptions.builder()
                 .socketTimeout(60000) // Wait 1m for a query to finish, https://jira.mongodb.org/browse/JAVA-1076
                 .connectTimeout(15000) // Try the initial connection for 15s, http://blog.mongolab.com/2013/10/do-you-want-a-timeout/
@@ -30,23 +18,16 @@ public class MongoDB {
                 .readPreference(ReadPreference.primaryPreferred()) // Read from the primary, if not available use a secondary
                 .build();
         MongoClient mongoClient;
-        mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT), mongoOptions);
+        mongoClient = new MongoClient(new ServerAddress(levellingTools.getConfig().getString("settings.database.host"), levellingTools.getConfig().getInt("settings.database.port")), mongoOptions);
 
         mongoClient.setWriteConcern(WriteConcern.SAFE);
         datastore = new Morphia().mapPackage(BaseEntity.class.getPackage().getName())
-                .createDatastore(mongoClient, DB_NAME);
+                .createDatastore(mongoClient, levellingTools.getConfig().getString("settings.database.name"));
         datastore.ensureIndexes();
         datastore.ensureCaps();
-        LOG.info("Connection to database '" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "' initialized");
     }
 
-    public static MongoDB instance() {
-        return INSTANCE;
-    }
-
-    // Creating the mongo connection is expensive - (re)use a singleton for performance reasons.
-    // Both the underlying Java driver and Datastore are thread safe.
-    public Datastore getDatabase() {
+    public static Datastore getDatabase() {
         return datastore;
     }
 }

@@ -39,13 +39,11 @@ public class ToolMineEvent implements Listener {
          */
 
         if(nbtItem.hasKey("omnitool")) {
-            // Omnitool
             UserEntity user = UserEntity.getUser(player);
             LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
             //player.sendMessage(ChatColor.YELLOW + "You used your level " + user.getLevel() + " pickaxe to mine " + e.getBlock().getType().name());
 
             int xpFained = playerTool.getXpFromBlock(block);
-            String blockMined = e.getBlock().getData() > 0 ? block.getType().name() + ";" + block.getData() : block.getType().name();
 
             StringUtil.sendActionbar(player, StringUtil.translate("&6&l+" + xpFained + " EXP"));
             int currentLvl = user.getLevel();
@@ -62,7 +60,7 @@ public class ToolMineEvent implements Listener {
             user.setLevel(currentLvl);
             user.setExperience(user.getExperience() + xpFained);
             user.setBlocksBroken(user.getBlocksBroken()+1);
-            MongoDB.instance().getDatabase().save(user);
+            MongoDB.getDatabase().save(user);
             player.setItemInHand(LevellingTool.getItemStack(player, block));
 
             //UUID toolOwner = UUID.fromString(nbtItem.getString("omnitool"));

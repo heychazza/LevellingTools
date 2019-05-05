@@ -12,13 +12,7 @@ public class StringUtil {
     public static String translate(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
-    /**
-     * Utility message for sending version independent actionbar messages as to be able to
-     * support versions from 1.8 and up without having to disable a simple feature such as this.
-     *
-     * @param player the recipient of the actionbar message.
-     * @param message the message to send. If it is empty ("") the actionbar is cleared.
-     */
+
     public static void sendActionbar(Player player, String message) {
         if (player == null || message == null) return;
         String nmsVersion = Bukkit.getServer().getClass().getPackage().getName();

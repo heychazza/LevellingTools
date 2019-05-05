@@ -7,6 +7,7 @@ import net.chazza.levellingtools.events.ToolPreMineEvent;
 import net.chazza.levellingtools.tool.BlockXP;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.EnchantmentEnum;
+import net.chazza.levellingtools.util.MongoDB;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,8 @@ public class LevellingTools extends JavaPlugin {
     public void onEnable() {
         //BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         saveDefaultConfig();
+
+        new MongoDB(this);
 
         new ToolJoinEvent(this);
         new ToolPreMineEvent(this);
