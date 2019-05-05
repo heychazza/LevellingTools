@@ -1,11 +1,24 @@
 package net.chazza.levellingtools.util;
 
+import de.tr7zw.itemnbtapi.NBTItem;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 
 public class OmnitoolUtil {
+
+    public static int getOmnitool(Player player) {
+        int i = 0;
+        for(ItemStack item : player.getInventory().getContents()) {
+            if(item != null && new NBTItem(item).hasKey("omnitool")) return i;
+            i++;
+        }
+
+        return -1;
+    }
 
     public static Material getType(Block block, String type) {
         Material pickaxeType = Material.valueOf((type + "_PICKAXE").toUpperCase());
