@@ -3,7 +3,6 @@ package net.chazza.levellingtools.events;
 import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.OmnitoolUtil;
-import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

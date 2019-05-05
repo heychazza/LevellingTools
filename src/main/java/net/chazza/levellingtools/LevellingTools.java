@@ -1,6 +1,8 @@
 package net.chazza.levellingtools;
 
 import com.google.common.collect.Maps;
+import net.chazza.levellingtools.config.ConfigWrapper;
+import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.events.ToolJoinEvent;
 import net.chazza.levellingtools.events.ToolMineEvent;
 import net.chazza.levellingtools.events.ToolPreMineEvent;
@@ -20,8 +22,8 @@ import java.util.Map;
 public class LevellingTools extends JavaPlugin {
 
     public void onEnable() {
-        //BukkitCommandManager bukkitCommandManager = new BukkitCommandManager(this);
         saveDefaultConfig();
+        Lang.init(new ConfigWrapper(this, "lang.yml"));
 
         new MongoDB(this);
 
