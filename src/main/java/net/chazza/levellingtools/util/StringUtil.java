@@ -54,7 +54,6 @@ public class StringUtil {
         FileConfiguration config = levellingTools.getConfig();
 
         String configName = config.getString("level." + level + ".settings.format." + type + ".name");
-        boolean override = config.getBoolean("level." + level + ".settings.format." + type + ".override");
         boolean isBlank = configName == null || configName.isEmpty();
 
         if (isBlank) {
@@ -69,7 +68,6 @@ public class StringUtil {
         FileConfiguration config = levellingTools.getConfig();
 
         List<String> configLore = config.getStringList("level." + level + ".settings.format." + type + ".lore");
-        boolean override = config.getBoolean("level." + level + ".settings.format." + type + ".override");
         boolean isBlank = configLore == null || configLore.isEmpty();
 
         if (isBlank) {

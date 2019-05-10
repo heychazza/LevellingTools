@@ -51,15 +51,12 @@ level:
       xp: -1
       format:
         pickaxe:
-          override: false
           name: ""
           lore: []
         axe:
-          override: false
           name: ""
           lore: []
         shovel:
-          override: false
           name: ""
           lore: []
       enchantments:
@@ -79,11 +76,9 @@ level:
           name: "&b&lLEVELLING PICKAXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
           lore: []
         axe:
-          override: false
           name: ""
           lore: []
         shovel:
-          override: false
           name: ""
           lore: []
       enchantments:
@@ -104,11 +99,9 @@ level:
           name: "&c&lLEVELLING PICKAXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
           lore: []
         axe:
-          override: false
           name: ""
           lore: []
         shovel:
-          override: false
           name: ""
           lore: []
       enchantments:
@@ -129,11 +122,9 @@ level:
           name: "&d&lLEVELLING PICKAXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
           lore: []
         axe:
-          override: false
           name: ""
           lore: []
         shovel:
-          override: false
           name: ""
           lore: []
       enchantments:
