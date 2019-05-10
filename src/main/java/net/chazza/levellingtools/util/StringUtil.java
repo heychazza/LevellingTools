@@ -1,11 +1,14 @@
 package net.chazza.levellingtools.util;
 
+import net.chazza.levellingtools.LevellingTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Objects;
 
 public class StringUtil {
@@ -47,4 +50,34 @@ public class StringUtil {
         }
     }
 
+    public static String getToolName(String type, Integer level, LevellingTools levellingTools) {
+        FileConfiguration config = levellingTools.getConfig();
+
+        String configName = config.getString("level." + level + ".settings.format." + type + ".name");
+        boolean override = config.getBoolean("level." + level + ".settings.format." + type + ".override");
+        boolean isBlank = configName == null || configName.isEmpty();
+
+        if (isBlank) {
+            if (level == 1) return config.getString("settings.format." + type + ".name");
+            else return config.getString("level." + (level - 1) + ".settings.format." + type + ".name");
+        }
+
+        return configName;
+    }
+
+    public static List<String> getToolLore(String type, Integer level, LevellingTools levellingTools) {
+        FileConfiguration config = levellingTools.getConfig();
+
+        List<String> configLore = config.getStringList("level." + level + ".settings.format." + type + ".lore");
+        boolean override = config.getBoolean("level." + level + ".settings.format." + type + ".override");
+        boolean isBlank = configLore == null || configLore.isEmpty();
+
+        if (isBlank) {
+            if (level == 1) return config.getStringList("settings.format." + type + ".lore");
+            else return config.getStringList("level." + (level - 1) + ".settings.format." + type + ".lore");
+        }
+
+        return configLore;
+
+    }
 }

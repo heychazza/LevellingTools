@@ -11,6 +11,7 @@ import net.chazza.levellingtools.tool.BlockXP;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.EnchantmentEnum;
 import net.chazza.levellingtools.util.PAPIExpansion;
+import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -61,35 +62,14 @@ public class LevellingTools extends JavaPlugin {
             boolean axeOverride = getConfig().getBoolean("level." + levelStr + ".settings.format.axe.override");
             boolean shovelOverride = getConfig().getBoolean("level." + levelStr + ".settings.format.shovel.override");
 
-            String pickaxeName;
-            List<String> pickaxeLore;
-            if(pickaxeOverride) {
-                pickaxeName = getConfig().getString("level." + levelStr + ".settings.format.pickaxe.name");
-                pickaxeLore = getConfig().getStringList("level." + levelStr + ".settings.format.pickaxe.lore");
-            } else {
-                pickaxeName = getConfig().getString("settings.format.pickaxe.name");
-                pickaxeLore = getConfig().getStringList("settings.format.pickaxe.lore");
-            }
+            String pickaxeName = StringUtil.getToolName("pickaxe", level, this);
+            List<String> pickaxeLore = StringUtil.getToolLore("pickaxe", level, this);
 
-            String axeName;
-            List<String> axeLore;
-            if(pickaxeOverride) {
-                axeName = getConfig().getString("level." + levelStr + ".settings.format.axe.name");
-                axeLore = getConfig().getStringList("level." + levelStr + ".settings.format.axe.lore");
-            } else {
-                axeName = getConfig().getString("settings.format.axe.name");
-                axeLore = getConfig().getStringList("settings.format.axe.lore");
-            }
+            String axeName = StringUtil.getToolName("axe", level, this);
+            List<String> axeLore = StringUtil.getToolLore("axe",level, this);
 
-            String shovelName;
-            List<String> shovelLore;
-            if(pickaxeOverride) {
-                shovelName = getConfig().getString("level." + levelStr + ".settings.format.shovel.name");
-                shovelLore = getConfig().getStringList("level." + levelStr + ".settings.format.shovel.lore");
-            } else {
-                shovelName = getConfig().getString("settings.format.shovel.name");
-                shovelLore = getConfig().getStringList("settings.format.shovel.lore");
-            }
+            String shovelName = StringUtil.getToolName("shovel", level, this);
+            List<String> shovelLore = StringUtil.getToolLore("shovel", level, this);
 
             Map<Enchantment, Integer> enchantments = Maps.newHashMap();
             getConfig().getConfigurationSection("level." + levelStr + ".settings.enchantments").getKeys(false).forEach(enchantmentStr -> {
@@ -155,7 +135,6 @@ public class LevellingTools extends JavaPlugin {
             LevellingTool.getTools().put(level, levellingTool);
 
         });
-
 
     }
 
