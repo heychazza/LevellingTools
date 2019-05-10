@@ -17,7 +17,8 @@ public class MongoDB {
                 .readPreference(ReadPreference.primaryPreferred()) // Read from the primary, if not available use a secondary
                 .build();
         MongoClient mongoClient;
-        mongoClient = new MongoClient(new ServerAddress(levellingTools.getConfig().getString("settings.database.host"), levellingTools.getConfig().getInt("settings.database.port")), mongoOptions);
+        mongoClient = new MongoClient(new ServerAddress(levellingTools.getConfig().getString("settings.database.host"),
+                levellingTools.getConfig().getInt("settings.database.port")), mongoOptions);
 
         mongoClient.setWriteConcern(WriteConcern.SAFE);
         datastore = new Morphia().mapPackage(BaseEntity.class.getPackage().getName())

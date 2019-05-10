@@ -3,22 +3,26 @@ package net.chazza.levellingtools.entity;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;
 import net.chazza.levellingtools.MongoDB;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+
+import java.util.UUID;
 
 @Entity(value = "user", noClassnameStored = true)
 public class UserEntity extends BaseEntity {
 
-    public static UserEntity getUser(Player player) {
+    public static UserEntity getUser(UUID player) {
         UserEntity userEntity = MongoDB.getDatabase()
                 .createQuery(UserEntity.class)
-                .filter("uuid", player.getUniqueId().toString())
+                .filter("uuid", player.toString())
                 .get();
 
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
         if (userEntity == null) {
             UserEntity newUserEntity = new UserEntity();
-            newUserEntity.setUuid(player.getUniqueId().toString());
-            newUserEntity.setUsername(player.getName());
-            newUserEntity.setLowercaseUsername(player.getName().toLowerCase());
+            newUserEntity.setUuid(player.toString());
+            newUserEntity.setUsername(offlinePlayer.getName());
+            newUserEntity.setLowercaseUsername(offlinePlayer.getName().toLowerCase());
             newUserEntity.setExperience(0);
             newUserEntity.setBlocksBroken(0);
             newUserEntity.setLevel(1);

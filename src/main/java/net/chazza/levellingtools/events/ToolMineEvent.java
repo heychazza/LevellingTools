@@ -3,10 +3,10 @@ package net.chazza.levellingtools.events;
 import de.tr7zw.itemnbtapi.NBTItem;
 import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 import net.chazza.levellingtools.LevellingTools;
+import net.chazza.levellingtools.MongoDB;
 import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.tool.LevellingTool;
-import net.chazza.levellingtools.MongoDB;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -39,7 +39,7 @@ public class ToolMineEvent implements Listener {
          */
 
         if(nbtItem.hasKey("omnitool")) {
-            UserEntity user = UserEntity.getUser(player);
+            UserEntity user = UserEntity.getUser(player.getUniqueId());
             LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
 
             int xpGained = playerTool.getXpFromBlock(block);

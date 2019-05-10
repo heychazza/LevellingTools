@@ -9,6 +9,8 @@ import net.chazza.levellingtools.events.ToolPreMineEvent;
 import net.chazza.levellingtools.tool.BlockXP;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.EnchantmentEnum;
+import net.chazza.levellingtools.util.PAPIExpansion;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +51,11 @@ public class LevellingTools extends JavaPlugin {
         getLogger().info("                                           |___/                            ");
         getLogger().info("");
         getLogger().info("");
+
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            getLogger().info("PlaceholderAPI is installed, registering expansion.");
+            new PAPIExpansion(this).register();
+        }
 
         getConfig().getConfigurationSection("level").getKeys(false).forEach(levelStr -> {
             int level = Integer.valueOf(levelStr);

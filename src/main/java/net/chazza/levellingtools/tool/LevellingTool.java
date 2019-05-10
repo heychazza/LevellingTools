@@ -2,8 +2,6 @@ package net.chazza.levellingtools.tool;
 
 import com.google.common.collect.Maps;
 import de.tr7zw.itemnbtapi.NBTItem;
-import net.chazza.levellingtools.LevellingTools;
-import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.util.OmnitoolUtil;
 import net.chazza.levellingtools.util.StringUtil;
@@ -30,7 +28,7 @@ public class LevellingTool {
     }
 
     public static ItemStack getItemStack(Player player, Block block) {
-        UserEntity user = UserEntity.getUser(player);
+        UserEntity user = UserEntity.getUser(player.getUniqueId());
         LevellingTool tool = getPlayerTool(user);
 
         Material toolType = OmnitoolUtil.getType(block, tool.getType());
