@@ -1,7 +1,6 @@
 package net.chazza.levellingtools.events;
 
 import de.tr7zw.itemnbtapi.NBTItem;
-import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.MongoDB;
 import net.chazza.levellingtools.config.Lang;
@@ -29,14 +28,7 @@ public class ToolMineEvent implements Listener {
         Player player = e.getPlayer();
         Block block = e.getBlock();
         ItemStack item = player.getItemInHand();
-
-        MinecraftVersion.setLogging(false);
         NBTItem nbtItem = new NBTItem(item);
-
-        /*
-        TODO:
-        - Create Multiplier System (Perm based, with Redeemable Additions)
-         */
 
         if(nbtItem.hasKey("omnitool")) {
             UserEntity user = UserEntity.getUser(player.getUniqueId());

@@ -1,7 +1,6 @@
 package net.chazza.levellingtools.events;
 
 import de.tr7zw.itemnbtapi.NBTItem;
-import de.tr7zw.itemnbtapi.utils.MinecraftVersion;
 import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.tool.LevellingTool;
 import org.bukkit.Bukkit;
@@ -23,13 +22,10 @@ public class ToolPreMineEvent implements Listener {
         Player player = e.getPlayer();
         Block block = e.getBlock();
         ItemStack item = player.getItemInHand();
-
-        MinecraftVersion.setLogging(false);
         NBTItem nbtItem = new NBTItem(item);
 
 
         if(nbtItem.hasKey("omnitool")) {
-            // Omnitool
             player.setItemInHand(LevellingTool.getItemStack(player, block));
         }
     }

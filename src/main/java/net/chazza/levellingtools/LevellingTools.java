@@ -1,6 +1,7 @@
 package net.chazza.levellingtools;
 
 import com.google.common.collect.Maps;
+import de.tr7zw.itemnbtapi.NBTAPI;
 import net.chazza.levellingtools.config.ConfigWrapper;
 import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.events.ToolJoinEvent;
@@ -21,13 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class LevellingTools extends JavaPlugin {
-
-    /*
-    check if format (override = true),
-
-    if(true) tool.setPickaxe(name, lore);
-    else tool.setPickaxe(config.name, config.lore);
-     */
 
     public void onEnable() {
         saveDefaultConfig();
@@ -52,8 +46,10 @@ public class LevellingTools extends JavaPlugin {
         getLogger().info("");
         getLogger().info("");
 
+        NBTAPI.setLogging(false);
         if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            getLogger().info("PlaceholderAPI is installed, registering expansion.");
+            getLogger().info("[HOOK] Configuring PlaceholderAPI.");
+            getLogger().warning(String.format("Hooking into %s.", "PlaceholderAPI"));
             new PAPIExpansion(this).register();
         }
 
@@ -100,7 +96,7 @@ public class LevellingTools extends JavaPlugin {
                 int enchantLevel = getConfig().getInt("level." + levelStr + ".settings.enchantments." + enchantmentStr);
 
                 if(!EnchantmentEnum.exists(enchantmentStr)) {
-                    getLogger().warning("Enchantment '" + enchantmentStr + "' for level " + levelStr + " is invalid. Skipping!");
+                    getLogger().warning(String.format("Skipping invalid enchantment (%s) for level %s.", enchantmentStr, levelStr));
                     return;
                 }
                 enchantments.put(EnchantmentEnum.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
@@ -114,7 +110,7 @@ public class LevellingTools extends JavaPlugin {
                     String[] blockData = blockStr.split(";", 2);
                     Material matType = Material.getMaterial(blockData[0]);
                     if(matType == null) {
-                        getLogger().warning("Material '" + blockStr  + "' for level " + levelStr + " is invalid. Skipping!");
+                        getLogger().warning(String.format("Skipping invalid material (%s) for level %s.", blockStr, levelStr));
                         return;
                     }
 
@@ -125,7 +121,7 @@ public class LevellingTools extends JavaPlugin {
                     // No Data
                     Material matType = Material.getMaterial(blockStr);
                     if(matType == null) {
-                        getLogger().warning("Material '" + blockStr  + "' for level " + levelStr + " is invalid. Skipping!");
+                        getLogger().warning(String.format("Skipping invalid material (%s) for level %s.", blockStr, levelStr));
                         return;
                     }
 
@@ -138,7 +134,7 @@ public class LevellingTools extends JavaPlugin {
 
             String configType = getConfig().getString("level." + levelStr + ".settings.type").toUpperCase();
             if(!Arrays.asList("WOOD", "IRON", "GOLD", "DIAMOND").contains(configType)) {
-                getLogger().warning("Material '" + configType  + "' for level " + levelStr + " is invalid. Skipping!");
+                getLogger().warning(String.format("Skipping invalid tool type (%s) for level %s.", configType, levelStr));
                 return;
             }
 
@@ -163,7 +159,6 @@ public class LevellingTools extends JavaPlugin {
 
     }
 
-    public void onDisable() {
-    }
+    public void onDisable() {}
 
 }

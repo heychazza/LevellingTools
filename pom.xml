@@ -67,6 +67,7 @@
                             <artifactSet>
                                 <excludes>
                                     <exclude>org.jetbrains:annotations</exclude>
+                                    <exclude>org.bstats:*</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>
@@ -110,7 +111,7 @@
         <dependency>
             <groupId>com.github.Chazza</groupId>
             <artifactId>Item-NBT-API</artifactId>
-            <version>-SNAPSHOT</version>
+            <version>3d06992b2a</version>
         </dependency>
 
     </dependencies>
