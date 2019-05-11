@@ -25,7 +25,7 @@ public class ToolPreMineEvent implements Listener {
         NBTItem nbtItem = new NBTItem(item);
 
 
-        if(nbtItem.hasKey("omnitool")) {
+        if(nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             player.setItemInHand(LevellingTool.getItemStack(player, block));
         }
     }

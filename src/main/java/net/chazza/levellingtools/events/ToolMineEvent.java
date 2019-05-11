@@ -7,6 +7,7 @@ import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.StringUtil;
+import net.chazza.levellingtools.util.WorldGuardHook;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -28,6 +29,12 @@ public class ToolMineEvent implements Listener {
         Player player = e.getPlayer();
         Block block = e.getBlock();
         ItemStack item = player.getItemInHand();
+
+        if(WorldGuardHook.getWorldGuard() != null && !WorldGuardHook.getWorldGuard().canBuild(player, block)) {
+            e.setCancelled(true);
+            return;
+        }
+
         NBTItem nbtItem = new NBTItem(item);
 
         if(nbtItem.hasKey("omnitool")) {
