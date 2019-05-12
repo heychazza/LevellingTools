@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class ConfigWrapper {
+public class Config {
 
     private final JavaPlugin plugin;
     private FileConfiguration config;
@@ -16,13 +16,13 @@ public class ConfigWrapper {
     private final String folderName;
     private final String fileName;
 
-    public ConfigWrapper(final JavaPlugin instance, final String folderName, final String fileName) {
+    public Config(final JavaPlugin instance, final String folderName, final String fileName) {
         this.plugin = instance;
         this.folderName = folderName;
         this.fileName = fileName;
     }
 
-    public ConfigWrapper(final JavaPlugin instance, final String fileName) {
+    public Config(final JavaPlugin instance, final String fileName) {
         this.plugin = instance;
         this.fileName = fileName;
         this.folderName = null;

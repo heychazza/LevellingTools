@@ -2,7 +2,7 @@ package net.chazza.levellingtools.entity;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;
-import net.chazza.levellingtools.MongoDB;
+import net.chazza.levellingtools.config.ConfigCache;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -12,7 +12,7 @@ import java.util.UUID;
 public class UserEntity extends BaseEntity {
 
     public static UserEntity getUser(UUID player) {
-        UserEntity userEntity = MongoDB.getDatabase()
+        UserEntity userEntity = ConfigCache.getDB()
                 .createQuery(UserEntity.class)
                 .filter("uuid", player.toString())
                 .get();
@@ -27,7 +27,7 @@ public class UserEntity extends BaseEntity {
             newUserEntity.setBlocksBroken(0);
             newUserEntity.setLevel(1);
 
-            MongoDB.getDatabase().save(newUserEntity);
+            ConfigCache.getDB().save(newUserEntity);
             return newUserEntity;
         }
         return userEntity;

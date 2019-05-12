@@ -12,6 +12,11 @@ settings:
     name: "levellingtools"
     host: "127.0.0.1"
     port: 27017
+  blacklist:
+    world:
+      - ''
+    region:
+      - ''
   format:
     pickaxe:
       name: "&e&lLEVELLING PICKAXE &8| &7LVL %level% &8| &7%broken% BLOCKS"

@@ -1,9 +1,8 @@
 package net.chazza.levellingtools.tool;
 
-import com.google.common.collect.Maps;
 import de.tr7zw.itemnbtapi.NBTItem;
+import net.chazza.levellingtools.config.ConfigCache;
 import net.chazza.levellingtools.entity.UserEntity;
-import net.chazza.levellingtools.util.OmnitoolUtil;
 import net.chazza.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,21 +16,15 @@ import java.util.*;
 
 public class LevellingTool {
 
-    private static HashMap<Integer, LevellingTool> toolHashMap = Maps.newHashMap();
-
-    public static HashMap<Integer, LevellingTool> getTools() {
-        return toolHashMap;
-    }
-
     public static LevellingTool getPlayerTool(UserEntity userEntity) {
-        return toolHashMap.values().stream().filter(tool -> userEntity.getExperience() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
+        return ConfigCache.getTools().values().stream().filter(tool -> userEntity.getExperience() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
     }
 
     public static ItemStack getItemStack(Player player, Block block) {
         UserEntity user = UserEntity.getUser(player.getUniqueId());
         LevellingTool tool = getPlayerTool(user);
 
-        Material toolType = OmnitoolUtil.getType(block, tool.getType());
+        Material toolType = LevellingTool.getType(block, tool.getType());
         ItemStack toolItem = new ItemStack(toolType);
         ItemMeta toolMeta = toolItem.getItemMeta();
 
@@ -53,7 +46,6 @@ public class LevellingTool {
         List<String> lore = new ArrayList<>();
         toolLore.forEach(localLore -> lore.add(StringUtil.translate(localLore.replace("%level%", tool.getLevel() + "").replace("%broken%", user.getBlocksBroken() + ""))));
         toolMeta.setLore(lore);
-
 
         toolItem.setItemMeta(toolMeta);
         tool.getEnchantments().forEach(toolItem::addUnsafeEnchantment);
@@ -188,5 +180,26 @@ public class LevellingTool {
     public Integer getXpFromBlock(Block block) {
         Optional<BlockXP> optionalBlockXP = getBlockXp().stream().filter(blockXp -> blockXp.getBlock() == block.getType() && blockXp.getData() == block.getData()).findFirst();
         return optionalBlockXP.isPresent() ? optionalBlockXP.get().getExperience() : 0;
+    }
+
+    public static int getOmnitoolSlot(Player player) {
+        int i = 0;
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && new NBTItem(item).hasKey("omnitool")) return i;
+            i++;
+        }
+        return -1;
+    }
+
+    public static Material getType(Block block, String type) {
+        Material pickaxeType = Material.valueOf((type + "_PICKAXE").toUpperCase());
+        Material axeType = Material.valueOf((type + "_AXE").toUpperCase());
+        Material shovelType = Material.valueOf((type + "_SPADE").toUpperCase());
+
+        if (block == null) return pickaxeType;
+
+        if (Arrays.asList(Material.WOOD, Material.LOG, Material.LOG_2).contains(block.getType())) return axeType;
+        if (Arrays.asList(Material.GRASS, Material.DIRT, Material.GRAVEL).contains(block.getType())) return shovelType;
+        return pickaxeType;
     }
 }

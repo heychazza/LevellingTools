@@ -2,7 +2,6 @@ package net.chazza.levellingtools.events;
 
 import net.chazza.levellingtools.LevellingTools;
 import net.chazza.levellingtools.tool.LevellingTool;
-import net.chazza.levellingtools.util.OmnitoolUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +18,7 @@ public class ToolJoinEvent implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
-        int omnitool = OmnitoolUtil.getOmnitoolSlot(player);
+        int omnitool = LevellingTool.getOmnitoolSlot(player);
 
         if(omnitool == -1) {
             player.getInventory().addItem(LevellingTool.getItemStack(player, null));

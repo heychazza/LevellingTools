@@ -47,7 +47,7 @@ public enum Lang {
 
     private String message;
 
-    private static ConfigWrapper configWrapper;
+    private static Config config;
     private static FileConfiguration c;
 
     Lang(final String... def) {
@@ -133,11 +133,11 @@ public enum Lang {
         }
     }
 
-    public static ConfigWrapper getConfigWrapper() {
-        return configWrapper;
+    public static Config getConfig() {
+        return config;
     }
 
-    public static boolean init(ConfigWrapper wrapper) {
+    public static boolean init(Config wrapper) {
 
         wrapper.loadConfig();
 
@@ -145,7 +145,7 @@ public enum Lang {
             return false;
         }
 
-        configWrapper = wrapper;
+        config = wrapper;
         c = wrapper.getConfig();
 
         for (final Lang value : Lang.values()) {
@@ -163,7 +163,7 @@ public enum Lang {
     }
 
     public static void reload() {
-        configWrapper.loadConfig();
-        c = configWrapper.getConfig();
+        config.loadConfig();
+        c = config.getConfig();
     }
 }

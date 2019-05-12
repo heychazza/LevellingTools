@@ -2,12 +2,12 @@ package net.chazza.levellingtools.events;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 import net.chazza.levellingtools.LevellingTools;
-import net.chazza.levellingtools.MongoDB;
+import net.chazza.levellingtools.config.ConfigCache;
 import net.chazza.levellingtools.config.Lang;
 import net.chazza.levellingtools.entity.UserEntity;
+import net.chazza.levellingtools.hook.WorldGuardHook;
 import net.chazza.levellingtools.tool.LevellingTool;
 import net.chazza.levellingtools.util.StringUtil;
-import net.chazza.levellingtools.util.WorldGuardHook;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public class ToolMineEvent implements Listener {
 
         if(nbtItem.hasKey("omnitool")) {
             UserEntity user = UserEntity.getUser(player.getUniqueId());
-            LevellingTool playerTool = LevellingTool.getTools().get(user.getLevel());
+            LevellingTool playerTool = ConfigCache.getTools().get(user.getLevel());
 
             int xpGained = playerTool.getXpFromBlock(block);
 
@@ -47,7 +47,7 @@ public class ToolMineEvent implements Listener {
 
             int currentLvl = user.getLevel();
 
-            for(LevellingTool tool : LevellingTool.getTools().values()) {
+            for (LevellingTool tool : ConfigCache.getTools().values()) {
                 if(tool.getLevel() == 1) continue;
                 if(tool.getLevel() <= user.getLevel()) continue;
                 if(user.getExperience() + xpGained < tool.getXpRequired()) continue;
@@ -59,7 +59,7 @@ public class ToolMineEvent implements Listener {
             user.setLevel(currentLvl);
             user.setExperience(user.getExperience() + xpGained);
             user.setBlocksBroken(user.getBlocksBroken()+1);
-            MongoDB.getDatabase().save(user);
+            ConfigCache.getDB().save(user);
             player.setItemInHand(LevellingTool.getItemStack(player, block));
         }
     }

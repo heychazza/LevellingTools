@@ -1,4 +1,4 @@
-package net.chazza.levellingtools.util;
+package net.chazza.levellingtools.hook;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.chazza.levellingtools.LevellingTools;
@@ -6,7 +6,7 @@ import net.chazza.levellingtools.entity.UserEntity;
 import net.chazza.levellingtools.tool.LevellingTool;
 import org.bukkit.OfflinePlayer;
 
-public class PAPIExpansion extends PlaceholderExpansion {
+public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private LevellingTools plugin;
 
@@ -17,7 +17,7 @@ public class PAPIExpansion extends PlaceholderExpansion {
      *
      * @param plugin The instance of our plugin.
      */
-    public PAPIExpansion(LevellingTools plugin) {
+    public PlaceholderAPIHook(LevellingTools plugin) {
         this.plugin = plugin;
     }
 

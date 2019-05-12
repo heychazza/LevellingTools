@@ -2,4 +2,4 @@ name: ${project.build.finalName}
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}.${project.build.finalName}
 author: "Chazza"
-softdepend: [PlaceholderAPI] # This is used, if your plugin works without PlaceholderAPI.
+softdepend: ["PlaceholderAPI", "WorldGuard"]

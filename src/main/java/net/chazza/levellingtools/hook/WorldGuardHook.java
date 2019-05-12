@@ -1,4 +1,4 @@
-package net.chazza.levellingtools.util;
+package net.chazza.levellingtools.hook;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
