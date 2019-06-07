@@ -1,4 +1,4 @@
-package net.chazza.levellingtools.util;
+package gg.plugins.levellingtools.util;
 
 import org.bukkit.enchantments.Enchantment;
 
@@ -37,10 +37,14 @@ public enum EnchantmentEnum {
     ;
 
     private final String vanillaName;
+
     EnchantmentEnum(String vanillaName) {
         this.vanillaName = vanillaName;
     }
-    public String getVanillaName() { return vanillaName; }
+
+    public String getVanillaName() {
+        return vanillaName;
+    }
 
     public Enchantment getEnchantment() {
         return Enchantment.getByName(vanillaName);

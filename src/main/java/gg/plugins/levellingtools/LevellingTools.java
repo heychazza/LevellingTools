@@ -1,13 +1,13 @@
-package net.chazza.levellingtools;
+package gg.plugins.levellingtools;
 
 import de.tr7zw.itemnbtapi.NBTAPI;
-import net.chazza.levellingtools.config.Config;
-import net.chazza.levellingtools.config.ConfigCache;
-import net.chazza.levellingtools.config.Lang;
-import net.chazza.levellingtools.events.ToolJoinEvent;
-import net.chazza.levellingtools.events.ToolMineEvent;
-import net.chazza.levellingtools.events.ToolPreMineEvent;
-import net.chazza.levellingtools.hook.PlaceholderAPIHook;
+import gg.plugins.levellingtools.config.Config;
+import gg.plugins.levellingtools.config.ConfigCache;
+import gg.plugins.levellingtools.config.Lang;
+import gg.plugins.levellingtools.events.ToolJoinEvent;
+import gg.plugins.levellingtools.events.ToolMineEvent;
+import gg.plugins.levellingtools.events.ToolPreMineEvent;
+import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,7 +49,8 @@ public class LevellingTools extends JavaPlugin {
         ConfigCache.setup();
     }
 
-    public void onDisable() {}
+    public void onDisable() {
+    }
 
     private boolean hook(String plugin) {
         boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);

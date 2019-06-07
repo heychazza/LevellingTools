@@ -1,9 +1,9 @@
-package net.chazza.levellingtools.hook;
+package gg.plugins.levellingtools.hook;
 
+import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.entity.PlayerEntity;
+import gg.plugins.levellingtools.tool.LevellingTool;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.chazza.levellingtools.LevellingTools;
-import net.chazza.levellingtools.entity.UserEntity;
-import net.chazza.levellingtools.tool.LevellingTool;
 import org.bukkit.OfflinePlayer;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
@@ -83,7 +83,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
         // %example_placeholder1%
         if (identifier.equals("level")) {
-            return LevellingTool.getPlayerTool(UserEntity.getUser(player.getUniqueId())).getLevel() + "";
+            return LevellingTool.getPlayerTool(PlayerEntity.getUser(player.getUniqueId())).getLevel() + "";
         }
 
         // We return null if an invalid placeholder (f.e. %example_placeholder3%)

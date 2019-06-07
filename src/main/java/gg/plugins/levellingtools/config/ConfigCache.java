@@ -1,13 +1,13 @@
-package net.chazza.levellingtools.config;
+package gg.plugins.levellingtools.config;
 
 import com.google.common.collect.Maps;
 import dev.morphia.Datastore;
-import net.chazza.levellingtools.LevellingTools;
-import net.chazza.levellingtools.tool.BlockXP;
-import net.chazza.levellingtools.tool.LevellingTool;
-import net.chazza.levellingtools.util.EnchantmentEnum;
-import net.chazza.levellingtools.util.MongoDB;
-import net.chazza.levellingtools.util.StringUtil;
+import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.tool.BlockXP;
+import gg.plugins.levellingtools.tool.LevellingTool;
+import gg.plugins.levellingtools.util.EnchantmentEnum;
+import gg.plugins.levellingtools.util.MongoDB;
+import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
@@ -18,6 +18,11 @@ public class ConfigCache {
     private static LevellingTools plugin;
     private static HashMap<Integer, LevellingTool> tools;
     private static MongoDB mongoDB;
+
+    private static List<String> blacklistedWorlds;
+    private static List<String> blacklistedRegions;
+    private static boolean cancelBlacklistedWorld;
+    private static boolean cancelBlacklistedRegion;
 
     public ConfigCache(LevellingTools plugin) {
         ConfigCache.plugin = plugin;
@@ -105,6 +110,15 @@ public class ConfigCache {
 
             getTools().put(level, levellingTool);
         });
+
+        blacklistedWorlds = new ArrayList<>();
+        blacklistedRegions = new ArrayList<>();
+
+        blacklistedWorlds.addAll(plugin.getConfig().getStringList("settings.blacklist.world.list"));
+        blacklistedRegions.addAll(plugin.getConfig().getStringList("settings.blacklist.region.list"));
+
+        cancelBlacklistedWorld = plugin.getConfig().getBoolean("settings.blacklist.world.cancel");
+        cancelBlacklistedRegion = plugin.getConfig().getBoolean("settings.blacklist.region.cancel");
     }
 
     public static HashMap<Integer, LevellingTool> getTools() {
@@ -113,6 +127,22 @@ public class ConfigCache {
 
     public static Datastore getDB() {
         return mongoDB.getDatabase();
+    }
+
+    public static List<String> getBlacklistedWorlds() {
+        return blacklistedWorlds;
+    }
+
+    public static List<String> getBlacklistedRegions() {
+        return blacklistedRegions;
+    }
+
+    public static boolean cancelBlacklistedWorld() {
+        return cancelBlacklistedWorld;
+    }
+
+    public static boolean cancelBlacklistedRegion() {
+        return cancelBlacklistedRegion;
     }
 
     public static LevellingTools getPlugin() {

@@ -1,39 +1,39 @@
-package net.chazza.levellingtools.entity;
+package gg.plugins.levellingtools.entity;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;
-import net.chazza.levellingtools.config.ConfigCache;
+import gg.plugins.levellingtools.config.ConfigCache;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-@Entity(value = "user", noClassnameStored = true)
-public class UserEntity extends BaseEntity {
+@Entity(value = "player", noClassnameStored = true)
+public class PlayerEntity extends BaseEntity {
 
-    public static UserEntity getUser(UUID player) {
-        UserEntity userEntity = ConfigCache.getDB()
-                .createQuery(UserEntity.class)
+    public static PlayerEntity getUser(UUID player) {
+        PlayerEntity playerEntity = ConfigCache.getDB()
+                .createQuery(PlayerEntity.class)
                 .filter("uuid", player.toString())
                 .get();
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
-        if (userEntity == null) {
-            UserEntity newUserEntity = new UserEntity();
-            newUserEntity.setUuid(player.toString());
-            newUserEntity.setUsername(offlinePlayer.getName());
-            newUserEntity.setLowercaseUsername(offlinePlayer.getName().toLowerCase());
-            newUserEntity.setExperience(0);
-            newUserEntity.setBlocksBroken(0);
-            newUserEntity.setLevel(1);
+        if (playerEntity == null) {
+            PlayerEntity newPlayerEntity = new PlayerEntity();
+            newPlayerEntity.setUuid(player.toString());
+            newPlayerEntity.setUsername(offlinePlayer.getName());
+            newPlayerEntity.setLowercaseUsername(offlinePlayer.getName().toLowerCase());
+            newPlayerEntity.setExperience(0);
+            newPlayerEntity.setBlocksBroken(0);
+            newPlayerEntity.setLevel(1);
 
-            ConfigCache.getDB().save(newUserEntity);
-            return newUserEntity;
+            ConfigCache.getDB().save(newPlayerEntity);
+            return newPlayerEntity;
         }
-        return userEntity;
+        return playerEntity;
     }
 
-    public UserEntity() {
+    public PlayerEntity() {
         super();
     }
 

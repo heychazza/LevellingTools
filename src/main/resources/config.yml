@@ -5,55 +5,79 @@
 # |  `----.|  |____   \    /    |  |____ |  `----.|  `----.|  | |  |\   | |  |__| |        |  |     |  `--'  | |  `--'  | |  `----.----)   |
 # |_______||_______|   \__/     |_______||_______||_______||__| |__| \__|  \______|        |__|      \______/   \______/  |_______|_______/
 #
-# By. github.com/chazza
 
 settings:
+
+  # Enter your mongodb credentials here.
   database:
     name: "levellingtools"
     host: "127.0.0.1"
     port: 27017
+
+  # You may blacklist a world or region, which will stop
+  # players from being able to level up their tool.
   blacklist:
     world:
-      - ''
+      # Enabling the cancel option will stop the block being
+      # placed, or disabling will allow but not add xp.
+      cancel: true
+      list: []
     region:
-      - ''
-  format:
-    pickaxe:
-      name: "&e&lLEVELLING PICKAXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
-      lore:
-        - "&8-------------------------------------"
-        - "&7Mining helps level up your pickaxe,"
-        - "&7rarer ores grant more experience."
-        - ""
-        - "&7Level: &6%level%"
-        - "&7Blocks Mined: &6%broken%"
-        - "&8-------------------------------------"
-    axe:
-      name: "&e&lLEVELLING AXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
-      lore:
-        - "&8-------------------------------------"
-        - "&7Mining helps level up your axe,"
-        - "&7mine wood to grant more experience."
-        - ""
-        - "&7Level: &6%level%"
-        - "&7Blocks Mined: &6%broken%"
-        - "&8-------------------------------------"
-    shovel:
-      name: "&e&lLEVELLING SHOVEL &8| &7LVL %level% &8| &7%broken% BLOCKS"
-      lore:
-        - "&8-------------------------------------"
-        - "&7Mining helps level up your shovel,"
-        - "&7mine blocks to grant more experience."
-        - ""
-        - "&7Level: &6%level%"
-        - "&7Blocks Mined: &6%broken%"
-        - "&8-------------------------------------"
+      cancel: true
+      # If you wish to enable these, add them below.
+      # To disable change it to 'list: []'
+      list:
+        - 'a_bad_region'
 
+# You can specify the default format for the tools,
+# which may be overridden inside of the 'level' section.
+# Placeholders: %level% (current tool level), %broken% (total blocks broken)
+format:
+  pickaxe:
+    name: "&e&lLEVELLING PICKAXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your pickaxe,"
+      - "&7rarer ores grant more experience."
+      - ""
+      - "&7Level: &6%level%"
+      - "&7Blocks Mined: &6%broken%"
+      - "&8-------------------------------------"
+  axe:
+    name: "&e&lLEVELLING AXE &8| &7LVL %level% &8| &7%broken% BLOCKS"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your axe,"
+      - "&7mine wood to grant more experience."
+      - ""
+      - "&7Level: &6%level%"
+      - "&7Blocks Mined: &6%broken%"
+      - "&8-------------------------------------"
+  shovel:
+    name: "&e&lLEVELLING SHOVEL &8| &7LVL %level% &8| &7%broken% BLOCKS"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your shovel,"
+      - "&7mine blocks to grant more experience."
+      - ""
+      - "&7Level: &6%level%"
+      - "&7Blocks Mined: &6%broken%"
+      - "&8-------------------------------------"
+
+# This is the primary section, where you define
+# your tools levels, alongside its enchantments.
 level:
   1:
     settings:
+      # This is the type of tool you wish to use.
+      # Types: WOOD, IRON, GOLD and DIAMOND.
       type: IRON
+      # The experience required to level up.
+      # This only applies to level 2 and above.
       xp: -1
+      # You may override the name and lore by specifying
+      # it below, or setting it to 'name: ""' and 'lore: []'
+      # to use the default (or previous level).
       format:
         pickaxe:
           name: ""
@@ -64,11 +88,18 @@ level:
         shovel:
           name: ""
           lore: []
+      # The enchantments you wish to set onto the tool.
+      # For example, 'EFFICIENCY', 'FORTUNE', 'UNBREAKING' etc.
       enchantments:
+        # Format is '<ENCHANT>:<LEVEL>'
         EFFICIENCY: 1
+      # The xp a player will gain from mining the listed block.
       experience:
+        # Format is '<BLOCK>:<XP>'
         STONE: 25
         COAL_ORE: 10
+    # These are the commands that are executed on level up.
+    # You may ignore the below, and configure it for level 2+.
     commands: []
 
   2:

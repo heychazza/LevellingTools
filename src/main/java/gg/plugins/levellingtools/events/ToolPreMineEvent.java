@@ -1,8 +1,9 @@
-package net.chazza.levellingtools.events;
+package gg.plugins.levellingtools.events;
 
 import de.tr7zw.itemnbtapi.NBTItem;
-import net.chazza.levellingtools.LevellingTools;
-import net.chazza.levellingtools.tool.LevellingTool;
+import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.LTDamageEvent;
+import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -17,16 +18,23 @@ public class ToolPreMineEvent implements Listener {
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent e) {
         Player player = e.getPlayer();
         Block block = e.getBlock();
         ItemStack item = player.getItemInHand();
         NBTItem nbtItem = new NBTItem(item);
 
-
-        if(nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
-            player.setItemInHand(LevellingTool.getItemStack(player, block));
+        if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
+            LTDamageEvent damageEvent = new LTDamageEvent(player, item, block);
+            Bukkit.getServer().getPluginManager().callEvent(damageEvent);
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockDamage(LTDamageEvent e) {
+        Player player = e.getPlayer();
+        Block block = e.getBlock();
+        player.setItemInHand(LevellingTool.getItemStack(player, block));
     }
 }

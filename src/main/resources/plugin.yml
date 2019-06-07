@@ -2,4 +2,5 @@ name: ${project.build.finalName}
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}.${project.build.finalName}
 author: "Chazza"
+website: "https://plugins.gg/"
 softdepend: ["PlaceholderAPI", "WorldGuard"]
