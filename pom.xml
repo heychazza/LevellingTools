@@ -6,11 +6,11 @@
 
     <groupId>gg.plugins</groupId>
     <artifactId>levellingtools</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
 
 
     <build>
-        <finalName>LevellingTools</finalName>
+        <finalName>LevellingTools-v${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory> <!-- (your resources folder location) -->
@@ -72,10 +72,17 @@
                     <minimizeJar>true</minimizeJar>
                     <filters>
                         <filter>
-                            <artifact>commons-logging:commons-logging</artifact>
-                            <includes>
-                                <include>org/apache/commons/logging/**</include>
-                            </includes>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/LICENSE</exclude>
+                                <exclude>LICENSE</exclude> <!--if this is same as above, not required-->
+                                <exclude>/*.png</exclude>
+                                <exclude>/*.html</exclude>
+                                <exclude>/*.jpeg</exclude>
+                            </excludes>
                         </filter>
                     </filters>
                     <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml
@@ -93,6 +100,21 @@
                         <relocation>
                             <pattern>de.tr7zw.itemnbtapi</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.nbtapi
+                            </shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>com.mongodb</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.mongodb
+                            </shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bson</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.bson
+                            </shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>org.slf4j</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.slf4j
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
                     </relocations>
@@ -114,6 +136,17 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <!--            <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-jar-plugin</artifactId>

@@ -20,7 +20,10 @@ exclude
             gg.plugins.levellingtools.api.^ and
 
             gg.plugins.levellingtools.entity.* *(*) and
-            gg.plugins.levellingtools.entity.* *
+            gg.plugins.levellingtools.entity.* * and
+
+            gg.plugins.levellingtools.tool.* *(*) and
+            gg.plugins.levellingtools.tool.* *
             ;
 
 obfuscateFlowExclude none;
