@@ -1,6 +1,6 @@
-name: ${project.build.finalName}
+name: ${plugin}
 version: ${project.version}
-main: ${project.groupId}.${project.artifactId}.${project.build.finalName}
+main: ${package}
 author: "Chazza"
 website: "https://plugins.gg/"
 softdepend: ["PlaceholderAPI", "WorldGuard"]

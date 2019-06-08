@@ -39,12 +39,6 @@ public class LevellingTools extends JavaPlugin {
         if (hook("PlaceholderAPI")) new PlaceholderAPIHook(this).register();
         hook("WorldGuard");
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            getLogger().info("[HOOK] Configuring WorldGuard.");
-            getLogger().warning(String.format("Hooking into %s.", "WorldGuard"));
-            new PlaceholderAPIHook(this).register();
-        }
-
         new ConfigCache(this);
         ConfigCache.setup();
     }

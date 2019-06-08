@@ -34,7 +34,7 @@ obfuscate   changeLogFileOut="%project.build.finalName%-Changelog.txt"
             aggressiveMethodRenaming=true
             keepInnerClassInfo=false
             keepGenericsInfo=false
-            obfuscateFlow=extraAggressive
+            obfuscateFlow=aggressive
             encryptStringLiterals=flowObfuscate
             exceptionObfuscation=heavy
             autoReflectionHandling=none
@@ -53,6 +53,7 @@ obfuscate   changeLogFileOut="%project.build.finalName%-Changelog.txt"
             assumeRuntimeVersion="8"
             legalIdentifiers=true
             hideFieldNames=true
+            allowMethodParameterChanges=true
             hideStaticMethodNames=true;
 
 saveAll     "%project.build.directory%%file.separator%%project.build.finalName%.%project.packaging%";

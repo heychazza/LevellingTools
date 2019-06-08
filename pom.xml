@@ -6,11 +6,15 @@
 
     <groupId>gg.plugins</groupId>
     <artifactId>levellingtools</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.2</version>
 
+    <properties>
+        <plugin>LevellingTools</plugin>
+        <package>${groupId}.${artifactId}.${plugin}</package>
+    </properties>
 
     <build>
-        <finalName>LevellingTools-v${project.version}</finalName>
+        <finalName>${plugin}-v${project.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory> <!-- (your resources folder location) -->
