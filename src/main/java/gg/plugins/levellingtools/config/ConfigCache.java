@@ -24,6 +24,16 @@ public class ConfigCache {
     private static boolean cancelBlacklistedWorld;
     private static boolean cancelBlacklistedRegion;
 
+    private static List<String> globalActions;
+
+    private static String lastPickName;
+    private static String lastAxeName;
+    private static String lastShovelName;
+    private static List<String> lastPickLore;
+    private static List<String> lastAxeLore;
+    private static List<String> lastShovelLore;
+    private static Set<String> lastBlockXp;
+
     public ConfigCache(LevellingTools plugin) {
         ConfigCache.plugin = plugin;
     }
@@ -43,11 +53,29 @@ public class ConfigCache {
             String pickaxeName = StringUtil.getToolName("pickaxe", level, plugin);
             List<String> pickaxeLore = StringUtil.getToolLore("pickaxe", level, plugin);
 
+            if (pickaxeName == null || pickaxeName.isEmpty()) pickaxeName = lastPickName;
+            if (pickaxeLore == null || pickaxeLore.size() == 0) pickaxeLore = lastPickLore;
+
+            lastPickName = pickaxeName;
+            lastPickLore = pickaxeLore;
+
             String axeName = StringUtil.getToolName("axe", level, plugin);
             List<String> axeLore = StringUtil.getToolLore("axe", level, plugin);
 
+            if (axeName == null || axeName.isEmpty()) axeName = lastAxeName;
+            if (axeLore == null || axeLore.size() == 0) axeLore = lastAxeLore;
+
+            lastAxeName = axeName;
+            lastAxeLore = axeLore;
+
             String shovelName = StringUtil.getToolName("shovel", level, plugin);
             List<String> shovelLore = StringUtil.getToolLore("shovel", level, plugin);
+
+            if (shovelName == null || shovelName.isEmpty()) shovelName = lastShovelName;
+            if (shovelLore == null || shovelLore.size() == 0) shovelLore = lastShovelLore;
+
+            lastShovelName = shovelName;
+            lastShovelLore = shovelLore;
 
             Map<Enchantment, Integer> enchantments = Maps.newHashMap();
             plugin.getConfig().getConfigurationSection("level." + levelStr + ".settings.enchantments").getKeys(false).forEach(enchantmentStr -> {
@@ -60,9 +88,15 @@ public class ConfigCache {
                 enchantments.put(EnchantmentEnum.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
             });
 
-
             List<BlockXP> blockXp = new ArrayList<>();
-            plugin.getConfig().getConfigurationSection("level." + levelStr + ".settings.experience").getKeys(false).forEach(blockStr -> {
+            Set<String> configBlockXp = StringUtil.getToolXp(level, plugin).getKeys(false);
+
+            if (configBlockXp == null || configBlockXp.size() == 0) configBlockXp = lastBlockXp;
+            lastBlockXp = configBlockXp;
+
+            plugin.getLogger().info(configBlockXp.toString());
+
+            configBlockXp.forEach(blockStr -> {
                 if (blockStr.contains(";")) {
                     // Has Data
                     String[] blockData = blockStr.split(";", 2);
@@ -90,12 +124,12 @@ public class ConfigCache {
             });
 
             String configType = plugin.getConfig().getString("level." + levelStr + ".settings.type").toUpperCase();
-            if (!Arrays.asList("WOOD", "IRON", "GOLD", "DIAMOND").contains(configType)) {
+            if (!Arrays.asList("WOOD", "STONE", "IRON", "GOLD", "DIAMOND").contains(configType)) {
                 plugin.getLogger().warning(String.format("Skipping invalid tool type (%s) for level %s.", configType, levelStr));
                 return;
             }
 
-            List<String> commands = plugin.getConfig().getStringList("level." + levelStr + ".commands");
+            List<String> actions = plugin.getConfig().getStringList("level." + levelStr + ".actions");
             LevellingTool levellingTool = new LevellingTool(level, xpRequired);
             levellingTool.setEnchantments(enchantments);
             levellingTool.setBlockXp(blockXp);
@@ -106,7 +140,7 @@ public class ConfigCache {
             levellingTool.setShovelName(shovelName);
             levellingTool.setShovelLore(shovelLore);
             levellingTool.setType(configType);
-            levellingTool.setCommands(commands);
+            levellingTool.setActions(actions);
 
             getTools().put(level, levellingTool);
         });
@@ -119,6 +153,8 @@ public class ConfigCache {
 
         cancelBlacklistedWorld = plugin.getConfig().getBoolean("settings.blacklist.world.cancel");
         cancelBlacklistedRegion = plugin.getConfig().getBoolean("settings.blacklist.region.cancel");
+
+        globalActions = plugin.getConfig().getStringList("settings.global.actions");
     }
 
     public static HashMap<Integer, LevellingTool> getTools() {
@@ -143,6 +179,10 @@ public class ConfigCache {
 
     public static boolean cancelBlacklistedRegion() {
         return cancelBlacklistedRegion;
+    }
+
+    public static List<String> getGlobalActions() {
+        return globalActions;
     }
 
     public static LevellingTools getPlugin() {

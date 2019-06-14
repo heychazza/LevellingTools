@@ -1,6 +1,7 @@
 package gg.plugins.levellingtools.events;
 
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.ToolJoinEvent;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,12 +19,12 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        gg.plugins.levellingtools.api.ToolJoinEvent joinEvent = new gg.plugins.levellingtools.api.ToolJoinEvent(player, LevellingTool.getItemStack(player, null), LevellingTool.getOmnitoolSlot(player));
+        ToolJoinEvent joinEvent = new ToolJoinEvent(player, LevellingTool.getItemStack(player, null), LevellingTool.getOmnitoolSlot(player));
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerJoin(gg.plugins.levellingtools.api.ToolJoinEvent e) {
+    public void onPlayerJoin(ToolJoinEvent e) {
         Player player = e.getPlayer();
         ItemStack tool = e.getItem();
         int slot = e.getSlot();

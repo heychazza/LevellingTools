@@ -48,7 +48,7 @@ public class LevellingTools extends JavaPlugin {
 
     private boolean hook(String plugin) {
         boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);
-        if (enabled) getLogger().info(String.format("Hooking into %s.", "WorldGuard"));
+        if (enabled) getLogger().info(String.format("Located and hooked into %s.", plugin));
         return enabled;
     }
 

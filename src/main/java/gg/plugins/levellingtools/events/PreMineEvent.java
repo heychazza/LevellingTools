@@ -5,6 +5,7 @@ import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.ToolDamageEvent;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +25,8 @@ public class PreMineEvent implements Listener {
         Block block = e.getBlock();
         ItemStack item = player.getItemInHand();
         NBTItem nbtItem = new NBTItem(item);
+
+        if (item.getType() == Material.AIR) return;
 
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             ToolDamageEvent damageEvent = new ToolDamageEvent(player, item, block);
