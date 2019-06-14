@@ -9,7 +9,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
-public class LTMineEvent extends Event implements Cancellable {
+public class ToolLevelUpEvent extends Event implements Cancellable {
 
     private Player player;
     private ItemStack item;
@@ -19,7 +19,7 @@ public class LTMineEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
-    public LTMineEvent(Player player, ItemStack item, Block block, PlayerEntity playerData, LevellingTool tool) {
+    public ToolLevelUpEvent(Player player, ItemStack item, Block block, PlayerEntity playerData, LevellingTool tool) {
         this.player = player;
         this.item = item;
         this.block = block;

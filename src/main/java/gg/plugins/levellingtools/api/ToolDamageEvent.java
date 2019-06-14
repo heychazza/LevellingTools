@@ -1,23 +1,24 @@
 package gg.plugins.levellingtools.api;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
-public class LTJoinEvent extends Event implements Cancellable {
+public class ToolDamageEvent extends Event implements Cancellable {
 
     private Player player;
     private ItemStack item;
-    private int slot;
+    private Block block;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
-    public LTJoinEvent(Player player, ItemStack item, int slot) {
+    public ToolDamageEvent(Player player, ItemStack item, Block block) {
         this.player = player;
         this.item = item;
-        this.slot = slot;
+        this.block = block;
         this.isCancelled = false;
     }
 
@@ -48,7 +49,7 @@ public class LTJoinEvent extends Event implements Cancellable {
         return item;
     }
 
-    public int getSlot() {
-        return slot;
+    public Block getBlock() {
+        return block;
     }
 }

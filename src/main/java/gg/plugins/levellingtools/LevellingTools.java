@@ -4,9 +4,9 @@ import de.tr7zw.itemnbtapi.NBTAPI;
 import gg.plugins.levellingtools.config.Config;
 import gg.plugins.levellingtools.config.ConfigCache;
 import gg.plugins.levellingtools.config.Lang;
-import gg.plugins.levellingtools.events.ToolJoinEvent;
-import gg.plugins.levellingtools.events.ToolMineEvent;
-import gg.plugins.levellingtools.events.ToolPreMineEvent;
+import gg.plugins.levellingtools.events.JoinEvent;
+import gg.plugins.levellingtools.events.MineEvent;
+import gg.plugins.levellingtools.events.PreMineEvent;
 import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,9 +17,9 @@ public class LevellingTools extends JavaPlugin {
         saveDefaultConfig();
         Lang.init(new Config(this, "lang.yml"));
 
-        new ToolJoinEvent(this);
-        new ToolPreMineEvent(this);
-        new ToolMineEvent(this);
+        new JoinEvent(this);
+        new PreMineEvent(this);
+        new MineEvent(this);
 
         getLogger().info("");
         getLogger().info("");
