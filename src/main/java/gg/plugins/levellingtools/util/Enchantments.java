@@ -4,7 +4,7 @@ import org.bukkit.enchantments.Enchantment;
 
 import java.util.Arrays;
 
-public enum EnchantmentEnum {
+public enum Enchantments {
     POWER("ARROW_DAMAGE"),
     FLAME("ARROW_FIRE"),
     INFINITY("ARROW_INFINITE"),
@@ -38,7 +38,7 @@ public enum EnchantmentEnum {
 
     private final String vanillaName;
 
-    EnchantmentEnum(String vanillaName) {
+    Enchantments(String vanillaName) {
         this.vanillaName = vanillaName;
     }
 
@@ -51,7 +51,7 @@ public enum EnchantmentEnum {
     }
 
     public static boolean exists(String bukkitName) {
-        return Arrays.stream(EnchantmentEnum.values()).anyMatch(enchant -> enchant.name().equals(bukkitName));
+        return Arrays.stream(Enchantments.values()).anyMatch(enchant -> enchant.name().equals(bukkitName));
     }
 
 }

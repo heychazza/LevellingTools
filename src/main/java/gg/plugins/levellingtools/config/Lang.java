@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
 public enum Lang {
 
     EXP_GAINED("&6&l+{0} EXP"),
+    PREFIX("&8[&6Tools&8]"),
+    MAIN_COMMAND("{0} &7Running &f{1} &7version &6{2} &7by &e{3}&7."),
+    HELP_COMMAND_HEADER("", "{0} &7Listing Commands:", "&7"),
+    HELP_COMMAND_FORMAT(" &e/ltools {1} &8- &7{2}"),
+    HELP_COMMAND_FOOTER("", "{0} &7Total of &f{1} &7commands."),
+    RELOAD_COMMAND("{0} &7Successfully reloaded the configuration file.")
     ;
 
     private String message;

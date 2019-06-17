@@ -1,6 +1,20 @@
 name: ${plugin}
 version: ${project.version}
 main: ${package}
-author: "Chazza"
-website: "https://plugins.gg/"
+author: Chazza
+website: https://plugins.gg/
 softdepend: ["PlaceholderAPI", "WorldGuard"]
+
+commands:
+  levellingtools:
+    description: LevellingTools commands
+    usage: ""
+    aliases: ["ltools", "tools", "tool", "lt"]
+
+permissions:
+  levellingtools.reload:
+    description: Reload Plugin
+    default: true
+  levellingtools.info:
+    description: View Plugin Information
+    default: true

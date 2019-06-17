@@ -33,6 +33,10 @@ settings:
     xp:
       STONE: 1
 
+    omnitool:
+      axe: true
+      shovel: true
+
     actions:
       - 'tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}'
       - 'msg {player} &6[&eTool&6] &7You''ve reached level &f%level% with &e%blocks% &7block(s) broken. Congrats!'

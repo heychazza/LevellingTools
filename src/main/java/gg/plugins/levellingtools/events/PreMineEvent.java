@@ -19,7 +19,7 @@ public class PreMineEvent implements Listener {
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockDamage(BlockDamageEvent e) {
         Player player = e.getPlayer();
         Block block = e.getBlock();

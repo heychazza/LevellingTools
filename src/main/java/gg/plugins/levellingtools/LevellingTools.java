@@ -1,6 +1,8 @@
 package gg.plugins.levellingtools;
 
 import de.tr7zw.itemnbtapi.NBTAPI;
+import gg.plugins.levellingtools.command.util.CommandExecutor;
+import gg.plugins.levellingtools.command.util.CommandManager;
 import gg.plugins.levellingtools.config.Config;
 import gg.plugins.levellingtools.config.ConfigCache;
 import gg.plugins.levellingtools.config.Lang;
@@ -15,7 +17,6 @@ public class LevellingTools extends JavaPlugin {
 
     public void onEnable() {
         saveDefaultConfig();
-        Lang.init(new Config(this, "lang.yml"));
 
         new JoinEvent(this);
         new PreMineEvent(this);
@@ -39,12 +40,37 @@ public class LevellingTools extends JavaPlugin {
         if (hook("PlaceholderAPI")) new PlaceholderAPIHook(this).register();
         hook("WorldGuard");
 
+        handleReload();
+        registerCommands();
+
+    }
+
+    public void onDisable() {
+
+    }
+
+    private CommandManager commandManager;
+
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    private void registerCommands() {
+        commandManager = new CommandManager(this);
+        this.getCommand("levellingtools").setExecutor(new CommandExecutor(this));
+
+        if (getCommand("levellingtools").getPlugin() != this) {
+            getLogger().warning("/levellingtools command is being handled by plugin other than " + getDescription().getName() + ". You must use /levellingtools:levellingtools instead.");
+        }
+    }
+
+    public void handleReload() {
+        reloadConfig();
+        Lang.init(new Config(this, "lang.yml"));
         new ConfigCache(this);
         ConfigCache.setup();
     }
 
-    public void onDisable() {
-    }
 
     private boolean hook(String plugin) {
         boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);

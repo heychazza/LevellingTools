@@ -5,7 +5,7 @@ import dev.morphia.Datastore;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.tool.BlockXP;
 import gg.plugins.levellingtools.tool.LevellingTool;
-import gg.plugins.levellingtools.util.EnchantmentEnum;
+import gg.plugins.levellingtools.util.Enchantments;
 import gg.plugins.levellingtools.util.MongoDB;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Material;
@@ -48,7 +48,7 @@ public class ConfigCache {
 
         plugin.getConfig().getConfigurationSection("level").getKeys(false).forEach(levelStr -> {
             int level = Integer.valueOf(levelStr);
-            int xpRequired = plugin.getConfig().getInt("level." + levelStr + ".settings.xp");
+            int xpRequired = plugin.getConfig().getInt("level." + levelStr + ".settings.xp", -1);
 
             String pickaxeName = StringUtil.getToolName("pickaxe", level, plugin);
             List<String> pickaxeLore = StringUtil.getToolLore("pickaxe", level, plugin);
@@ -79,13 +79,13 @@ public class ConfigCache {
 
             Map<Enchantment, Integer> enchantments = Maps.newHashMap();
             plugin.getConfig().getConfigurationSection("level." + levelStr + ".settings.enchantments").getKeys(false).forEach(enchantmentStr -> {
-                int enchantLevel = plugin.getConfig().getInt("level." + levelStr + ".settings.enchantments." + enchantmentStr);
+                int enchantLevel = plugin.getConfig().getInt("level." + levelStr + ".settings.enchantments." + enchantmentStr, 0);
 
-                if (!EnchantmentEnum.exists(enchantmentStr)) {
+                if (!Enchantments.exists(enchantmentStr)) {
                     plugin.getLogger().warning(String.format("Skipping invalid enchantment (%s) for level %s.", enchantmentStr, levelStr));
                     return;
                 }
-                enchantments.put(EnchantmentEnum.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
+                enchantments.put(Enchantments.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
             });
 
             List<BlockXP> blockXp = new ArrayList<>();
@@ -93,8 +93,6 @@ public class ConfigCache {
 
             if (configBlockXp == null || configBlockXp.size() == 0) configBlockXp = lastBlockXp;
             lastBlockXp = configBlockXp;
-
-            plugin.getLogger().info(configBlockXp.toString());
 
             configBlockXp.forEach(blockStr -> {
                 if (blockStr.contains(";")) {
@@ -106,7 +104,7 @@ public class ConfigCache {
                         return;
                     }
 
-                    Integer xp = plugin.getConfig().getInt("level." + levelStr + ".settings.experience." + blockStr);
+                    Integer xp = plugin.getConfig().getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with data (" + blockData[1] + "), giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new BlockXP(matType, Integer.valueOf(blockData[1]), xp));
                 } else {
@@ -123,7 +121,7 @@ public class ConfigCache {
                 }
             });
 
-            String configType = plugin.getConfig().getString("level." + levelStr + ".settings.type").toUpperCase();
+            String configType = plugin.getConfig().getString("level." + levelStr + ".settings.type", "WOOD").toUpperCase();
             if (!Arrays.asList("WOOD", "STONE", "IRON", "GOLD", "DIAMOND").contains(configType)) {
                 plugin.getLogger().warning(String.format("Skipping invalid tool type (%s) for level %s.", configType, levelStr));
                 return;
