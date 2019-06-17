@@ -1,6 +1,7 @@
 package gg.plugins.levellingtools.hook;
 
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.config.ConfigCache;
 import gg.plugins.levellingtools.entity.PlayerEntity;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -80,10 +81,23 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
      */
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
+        PlayerEntity playerEntity = PlayerEntity.getUser(player.getUniqueId());
+        LevellingTool nextLevel = ConfigCache.getTools().size() > playerEntity.getLevel() ? ConfigCache.getTools().get(playerEntity.getLevel() + 1) : ConfigCache.getTools().get(playerEntity.getLevel());
 
-        // %example_placeholder1%
         if (identifier.equals("level")) {
-            return LevellingTool.getPlayerTool(PlayerEntity.getUser(player.getUniqueId())).getLevel() + "";
+            return String.valueOf(playerEntity.getLevel());
+        }
+
+        if (identifier.equals("blocks")) {
+            return String.valueOf(playerEntity.getBlocksBroken());
+        }
+
+        if (identifier.equals("progress")) {
+            return String.valueOf((playerEntity.getExperience() * 100) / nextLevel.getXpRequired());
+        }
+
+        if (identifier.equals("progress_bar")) {
+            return LevellingTool.getProgressBar(playerEntity);
         }
 
         // We return null if an invalid placeholder (f.e. %example_placeholder3%)

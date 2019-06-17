@@ -129,6 +129,7 @@ public class ConfigCache {
 
             List<String> actions = plugin.getConfig().getStringList("level." + levelStr + ".actions");
             LevellingTool levellingTool = new LevellingTool(level, xpRequired);
+            levellingTool.setRestriction(plugin.getConfig().getBoolean("level." + levelStr + ".settings.restrict", false));
             levellingTool.setEnchantments(enchantments);
             levellingTool.setBlockXp(blockXp);
             levellingTool.setPickaxeName(pickaxeName);

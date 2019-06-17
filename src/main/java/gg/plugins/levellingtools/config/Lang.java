@@ -17,7 +17,20 @@ public enum Lang {
     HELP_COMMAND_HEADER("", "{0} &7Listing Commands:", "&7"),
     HELP_COMMAND_FORMAT(" &e/ltools {1} &8- &7{2}"),
     HELP_COMMAND_FOOTER("", "{0} &7Total of &f{1} &7commands."),
-    RELOAD_COMMAND("{0} &7Successfully reloaded the configuration file.")
+    RELOAD_COMMAND("{0} &7Successfully reloaded the configuration file."),
+    XP_COMMAND_SELF("{0} &7You have a total of {1} xp."),
+    XP_COMMAND_OTHER("{0} &7{1} has a total of {2} xp."),
+
+    PROGRESS_START("&8["),
+    PROGRESS_CHARACTER(":"),
+    PROGRESS_END("&8]"),
+    PROGRESS_INCOMPLETE("&7"),
+    PROGRESS_COMPLETE("&a"),
+
+    COMMAND_NO_PERMISSION("{0} &cYou don't have permissions to do that."),
+    COMMAND_PLAYER_ONLY("{0} &cThe command or args specified can only be used by a player."),
+    COMMAND_INVALID("{0} &cThat command doesn't exist, use &f/lt help&c."),
+    COMMAND_UNKNOWN("{0} &cThat player couldn't be found.")
     ;
 
     private String message;

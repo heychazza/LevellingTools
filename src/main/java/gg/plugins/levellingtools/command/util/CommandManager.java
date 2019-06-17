@@ -3,8 +3,8 @@ package gg.plugins.levellingtools.command.util;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.command.HelpCommand;
 import gg.plugins.levellingtools.command.ReloadCommand;
+import gg.plugins.levellingtools.command.XPCommand;
 import gg.plugins.levellingtools.config.Lang;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -30,7 +30,8 @@ public class CommandManager {
 
         List<Class<?>> commandClasses = Arrays.asList(
                 HelpCommand.class,
-                ReloadCommand.class
+                ReloadCommand.class,
+                XPCommand.class
         );
 
         for (Class clazz : commandClasses) {
@@ -68,12 +69,12 @@ public class CommandManager {
                 Command commandAnnotation = commandMethod.getAnnotation(Command.class);
 
                 if (!sender.hasPermission(commandAnnotation.permission()) && (sender instanceof Player)) {
-                    sender.sendMessage(ChatColor.RED + "You have no permission to execute that command.");
+                    Lang.COMMAND_NO_PERMISSION.send(sender, Lang.PREFIX.asString());
                     return true;
                 }
 
                 if (commandMethod.getParameters()[0].getType() == Player.class && !(sender instanceof Player)) {
-                    sender.sendMessage(ChatColor.RED + "That command can only be executed from in-game.");
+                    Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
                     return true;
                 }
 
@@ -82,7 +83,7 @@ public class CommandManager {
                 e.printStackTrace();
             }
         } else {
-            sender.sendMessage(ChatColor.AQUA + "Command doesn't exist.");
+            Lang.COMMAND_INVALID.send(sender, Lang.PREFIX.asString());
         }
 
         return true;
