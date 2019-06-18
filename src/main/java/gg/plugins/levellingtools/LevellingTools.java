@@ -13,6 +13,9 @@ import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class LevellingTools extends JavaPlugin {
 
     public void onEnable() {
@@ -36,6 +39,8 @@ public class LevellingTools extends JavaPlugin {
         getLogger().info("");
 
         NBTAPI.setLogging(false);
+        Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
 
         if (hook("PlaceholderAPI")) new PlaceholderAPIHook(this).register();
         hook("WorldGuard");

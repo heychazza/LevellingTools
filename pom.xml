@@ -139,6 +139,7 @@
                                 <excludes>
                                     <exclude>org.jetbrains:annotations</exclude>
                                     <exclude>org.bstats:*</exclude>
+                                    <exclude>org.slf4j:*</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

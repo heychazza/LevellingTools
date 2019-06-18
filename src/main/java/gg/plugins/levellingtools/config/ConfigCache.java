@@ -49,6 +49,8 @@ public class ConfigCache {
                 plugin
         );
 
+        if (!plugin.isEnabled()) return;
+
         plugin.getConfig().getConfigurationSection("level").getKeys(false).forEach(levelStr -> {
             int level = Integer.valueOf(levelStr);
             int xpRequired = plugin.getConfig().getInt("level." + levelStr + ".settings.xp", -1);
@@ -164,7 +166,7 @@ public class ConfigCache {
     }
 
     public static Datastore getDB() {
-        return mongoDB.getDatabase();
+        return mongoDB.getDB();
     }
 
     public static List<String> getBlacklistedWorlds() {
