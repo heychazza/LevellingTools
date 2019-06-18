@@ -6,7 +6,7 @@
 
     <groupId>gg.plugins</groupId>
     <artifactId>levellingtools</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
 
     <properties>
         <plugin>LevellingTools</plugin>
@@ -38,36 +38,36 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.zelix.plugins</groupId>
-                <artifactId>zkm-plugin</artifactId>
-                <version>1.0.3</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.zelix.plugins</groupId>
-                        <artifactId>ZKM</artifactId>
-                        <version>12.0.2</version>
-                        <scope>system</scope>
-                        <systemPath>D:/Development/ZKM/ZKM.jar</systemPath>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>obfuscate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!-- Will be used to inject values into the plugin but will not be in project properties -->
-                    <isSkip>false</isSkip>
-                    <scriptFile>script.txt</scriptFile>
-                    <classpathLibs>
-                        <lib>${java.home}/lib/rt.jar</lib>
-                    </classpathLibs>
-                </configuration>
-            </plugin>
+            <!--            <plugin>
+                            <groupId>com.zelix.plugins</groupId>
+                            <artifactId>zkm-plugin</artifactId>
+                            <version>1.0.3</version>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.zelix.plugins</groupId>
+                                    <artifactId>ZKM</artifactId>
+                                    <version>12.0.2</version>
+                                    <scope>system</scope>
+                                    <systemPath>D:/Development/ZKM/ZKM.jar</systemPath>
+                                </dependency>
+                            </dependencies>
+                            <executions>
+                                <execution>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>obfuscate</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                &lt;!&ndash; Will be used to inject values into the plugin but will not be in project properties &ndash;&gt;
+                                <isSkip>false</isSkip>
+                                <scriptFile>script.txt</scriptFile>
+                                <classpathLibs>
+                                    <lib>${java.home}/lib/rt.jar</lib>
+                                </classpathLibs>
+                            </configuration>
+                        </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

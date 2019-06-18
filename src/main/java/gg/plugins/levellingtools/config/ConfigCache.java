@@ -41,9 +41,12 @@ public class ConfigCache {
     public static void setup() {
         ConfigCache.tools = Maps.newHashMap();
         ConfigCache.mongoDB = new MongoDB(
-                plugin.getConfig().getString("settings.database.name"),
-                plugin.getConfig().getString("settings.database.host"),
-                plugin.getConfig().getInt("settings.database.port")
+                plugin.getConfig().getString("settings.database.host", "127.0.0.1"),
+                plugin.getConfig().getInt("settings.database.port", 27017),
+                plugin.getConfig().getString("settings.database.name", "levellingtools"),
+                plugin.getConfig().getString("settings.database.username", ""),
+                plugin.getConfig().getString("settings.database.password", ""),
+                plugin
         );
 
         plugin.getConfig().getConfigurationSection("level").getKeys(false).forEach(levelStr -> {

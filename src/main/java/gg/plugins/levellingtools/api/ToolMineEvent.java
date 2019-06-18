@@ -13,15 +13,17 @@ public class ToolMineEvent extends Event implements Cancellable {
 
     private Player player;
     private ItemStack item;
+    private int xpGained;
     private Block block;
     private PlayerEntity playerData;
     private LevellingTool tool;
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
-    public ToolMineEvent(Player player, ItemStack item, Block block, PlayerEntity playerData, LevellingTool tool) {
+    public ToolMineEvent(Player player, ItemStack item, int xpGained, Block block, PlayerEntity playerData, LevellingTool tool) {
         this.player = player;
         this.item = item;
+        this.xpGained = xpGained;
         this.block = block;
         this.playerData = playerData;
         this.tool = tool;
@@ -55,6 +57,10 @@ public class ToolMineEvent extends Event implements Cancellable {
         return item;
     }
 
+    public int getXpGained() {
+        return xpGained;
+    }
+
     public Block getBlock() {
         return block;
     }
@@ -65,5 +71,9 @@ public class ToolMineEvent extends Event implements Cancellable {
 
     public LevellingTool getTool() {
         return tool;
+    }
+
+    public void setXpGained(int xpGained) {
+        this.xpGained = xpGained;
     }
 }
