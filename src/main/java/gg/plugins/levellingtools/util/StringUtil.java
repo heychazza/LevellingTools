@@ -1,6 +1,9 @@
 package gg.plugins.levellingtools.util;
 
 import org.bukkit.configuration.ConfigurationSection;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import gg.plugins.levellingtools.LevellingTools;
@@ -16,36 +19,33 @@ public class StringUtil
     public static String translate(final String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
-    
-    public static void sendActionbar(final Player player, final String message) {
-        if (player == null || message == null) {
-            return;
-        }
-        String nmsVersion = Bukkit.getServer().getClass().getPackage().getName();
-        nmsVersion = nmsVersion.substring(nmsVersion.lastIndexOf(".") + 1);
+
+    public static void sendActionbar(Player player, String message) {
         try {
-            final Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsVersion + ".entity.CraftPlayer");
-            final Object craftPlayer = craftPlayerClass.cast(player);
-            final Class<?> ppoc = Class.forName("net.minecraft.server." + nmsVersion + ".PacketPlayOutChat");
-            final Class<?> packet = Class.forName("net.minecraft.server." + nmsVersion + ".Packet");
-            final Class<?> chat = Class.forName("net.minecraft.server." + nmsVersion + (nmsVersion.equalsIgnoreCase("v1_8_R1") ? ".ChatSerializer" : ".ChatComponentText"));
-            final Class<?> chatBaseComponent = Class.forName("net.minecraft.server." + nmsVersion + ".IChatBaseComponent");
-            Method method = null;
-            if (nmsVersion.equalsIgnoreCase("v1_8_R1")) {
-                method = chat.getDeclaredMethod("a", String.class);
-            }
-            final Object object = nmsVersion.equalsIgnoreCase("v1_8_R1") ? chatBaseComponent.cast(Objects.requireNonNull(method).invoke(chat, "{'text': '" + message + "'}")) : chat.getConstructor(String.class).newInstance(message);
-            final Object packetPlayOutChat = ppoc.getConstructor(chatBaseComponent, Byte.TYPE).newInstance(object, 2);
-            final Method handle = craftPlayerClass.getDeclaredMethod("getHandle", (Class<?>[])new Class[0]);
-            final Object iCraftPlayer = handle.invoke(craftPlayer);
-            final Field playerConnectionField = iCraftPlayer.getClass().getDeclaredField("playerConnection");
-            final Object playerConnection = playerConnectionField.get(iCraftPlayer);
-            final Method sendPacket = playerConnection.getClass().getDeclaredMethod("sendPacket", packet);
-            sendPacket.invoke(playerConnection, packetPlayOutChat);
+            Constructor<?> constructor = getNMSClass("PacketPlayOutChat").getConstructor(getNMSClass("IChatBaseComponent"), byte.class);
+
+            Object icbc = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + message + "\"}");
+            Object packet = constructor.newInstance(icbc, (byte) 2);
+            Object entityPlayer= player.getClass().getMethod("getHandle").invoke(player);
+            Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
+
+            playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchFieldException | InstantiationException e) {
+            e.printStackTrace();
         }
-        catch (Exception ex) {
-            ex.printStackTrace();
+    }
+
+    private static Class<?> getNMSClass(String name) {
+        try {
+            return Class.forName("net.minecraft.server." + getVersion() + "." + name);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
+    }
+
+    private static String getVersion() {
+        return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     }
     
     public static String getToolName(final String type, final Integer level, final LevellingTools levellingTools) {
