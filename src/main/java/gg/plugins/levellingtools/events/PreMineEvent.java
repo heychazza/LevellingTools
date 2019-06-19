@@ -13,31 +13,31 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PreMineEvent implements Listener {
-
-    public PreMineEvent(LevellingTools levellingTools) {
+public class PreMineEvent implements Listener
+{
+    public PreMineEvent(final LevellingTools levellingTools) {
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
-
+    
     @EventHandler
-    public void onBlockDamage(BlockDamageEvent e) {
-        Player player = e.getPlayer();
-        Block block = e.getBlock();
-        ItemStack item = player.getItemInHand();
-        NBTItem nbtItem = new NBTItem(item);
-
-        if (item.getType() == Material.AIR) return;
-
+    public void onBlockDamage(final BlockDamageEvent e) {
+        final Player player = e.getPlayer();
+        final Block block = e.getBlock();
+        final ItemStack item = player.getItemInHand();
+        final NBTItem nbtItem = new NBTItem(item);
+        if (item.getType() == Material.AIR) {
+            return;
+        }
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
-            ToolDamageEvent damageEvent = new ToolDamageEvent(player, item, block);
+            final ToolDamageEvent damageEvent = new ToolDamageEvent(player, item, block);
             Bukkit.getServer().getPluginManager().callEvent(damageEvent);
         }
     }
-
+    
     @EventHandler(ignoreCancelled = true)
-    public void onBlockDamage(ToolDamageEvent e) {
-        Player player = e.getPlayer();
-        Block block = e.getBlock();
+    public void onBlockDamage(final ToolDamageEvent e) {
+        final Player player = e.getPlayer();
+        final Block block = e.getBlock();
         player.setItemInHand(LevellingTool.getItemStack(player, block));
     }
 }

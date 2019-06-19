@@ -1,107 +1,51 @@
 package gg.plugins.levellingtools.hook;
 
-import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.tool.LevellingTool;
 import gg.plugins.levellingtools.config.ConfigCache;
 import gg.plugins.levellingtools.entity.PlayerEntity;
-import gg.plugins.levellingtools.tool.LevellingTool;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import gg.plugins.levellingtools.LevellingTools;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class PlaceholderAPIHook extends PlaceholderExpansion {
-
+public class PlaceholderAPIHook extends PlaceholderExpansion
+{
     private LevellingTools plugin;
-
-    /**
-     * Since we register the expansion inside our own plugin, we
-     * can simply use this method here to get an instance of our
-     * plugin.
-     *
-     * @param plugin The instance of our plugin.
-     */
-    public PlaceholderAPIHook(LevellingTools plugin) {
+    
+    public PlaceholderAPIHook(final LevellingTools plugin) {
         this.plugin = plugin;
     }
-
-    /**
-     * This method should always return true unless we
-     * have a dependency we need to make sure is on the server
-     * for our placeholders to work!
-     *
-     * @return always true since we do not have any dependencies.
-     */
-    @Override
+    
     public boolean canRegister() {
         return true;
     }
-
-    /**
-     * The name of the person who created this expansion should go here.
-     *
-     * @return The name of the author as a String.
-     */
-    @Override
+    
     public String getAuthor() {
         return "Chazza";
     }
-
-    /**
-     * The placeholder identifier should go here.
-     * <br>This is what tells PlaceholderAPI to call our onRequest
-     * method to obtain a value if a placeholder starts with our
-     * identifier.
-     * <br>This must be unique and can not contain % or _
-     *
-     * @return The identifier in {@code %<identifier>_<value>%} as String.
-     */
-    @Override
+    
     public String getIdentifier() {
         return "levellingtools";
     }
-
-    /**
-     * This is the version of this expansion.
-     * <br>You don't have to use numbers, since it is set as a String.
-     *
-     * @return The version as a String.
-     */
-    @Override
+    
     public String getVersion() {
         return "1.0.0";
     }
-
-    /**
-     * This is the method called when a placeholder with our identifier
-     * is found and needs a value.
-     * <br>We specify the value identifier in this method.
-     * <br>Since version 2.9.1 can you use OfflinePlayers in your requests.
-     *
-     * @param player     A {@link org.bukkit.OfflinePlayer OfflinePlayer}.
-     * @param identifier A String containing the identifier/value.
-     * @return Possibly-null String of the requested identifier.
-     */
-    @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
-        PlayerEntity playerEntity = PlayerEntity.getUser(player.getUniqueId());
-        LevellingTool nextLevel = ConfigCache.getTools().size() > playerEntity.getLevel() ? ConfigCache.getTools().get(playerEntity.getLevel() + 1) : ConfigCache.getTools().get(playerEntity.getLevel());
-
+    
+    public String onRequest(final OfflinePlayer player, final String identifier) {
+        final PlayerEntity playerEntity = PlayerEntity.getUser(player.getUniqueId());
+        final LevellingTool nextLevel = (ConfigCache.getTools().size() > playerEntity.getLevel()) ? ConfigCache.getTools().get(playerEntity.getLevel() + 1) : ConfigCache.getTools().get(playerEntity.getLevel());
         if (identifier.equals("level")) {
             return String.valueOf(playerEntity.getLevel());
         }
-
         if (identifier.equals("blocks")) {
             return String.valueOf(playerEntity.getBlocksBroken());
         }
-
         if (identifier.equals("progress")) {
-            return String.valueOf((playerEntity.getExperience() * 100) / nextLevel.getXpRequired());
+            return String.valueOf(playerEntity.getExperience() * 100 / nextLevel.getXpRequired());
         }
-
         if (identifier.equals("progress_bar")) {
             return LevellingTool.getProgressBar(playerEntity);
         }
-
-        // We return null if an invalid placeholder (f.e. %example_placeholder3%)
-        // was provided
         return null;
     }
 }

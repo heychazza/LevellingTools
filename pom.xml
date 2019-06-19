@@ -117,11 +117,6 @@
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
-                            <pattern>org.slf4j</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.slf4j
-                            </shadedPattern> <!-- Replace this -->
-                        </relocation>
-                        <relocation>
                             <pattern>me.lucko.commodore</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.commodore
                             </shadedPattern> <!-- Replace this -->
@@ -139,7 +134,6 @@
                                 <excludes>
                                     <exclude>org.jetbrains:annotations</exclude>
                                     <exclude>org.bstats:*</exclude>
-                                    <exclude>org.slf4j:*</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

@@ -17,70 +17,65 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LevellingTools extends JavaPlugin {
+    private CommandManager commandManager;
 
     public void onEnable() {
-        saveDefaultConfig();
-
+        this.saveDefaultConfig();
         new JoinEvent(this);
         new PreMineEvent(this);
         new MineEvent(this);
-
-        getLogger().info("");
-        getLogger().info("");
-        getLogger().info("  _                        _  _  _                 _                 _      ");
-        getLogger().info(" | |                      | || |(_)               | |               | |     ");
-        getLogger().info(" | |      ___ __   __ ___ | || | _  _ __    __ _  | |_  ___    ___  | | ___ ");
-        getLogger().info(" | |     / _ \\ \\ / // _ \\| || || || '_ \\  / _` | | __|/ _ \\  / _ \\ | |/ __|");
-        getLogger().info(" | |____|  __/ \\ V /|  __/| || || || | | || (_| | | |_| (_) || (_) || |\\__ \\");
-        getLogger().info(" |______|\\___|  \\_/  \\___||_||_||_||_| |_| \\__, |  \\__|\\___/  \\___/ |_||___/");
-        getLogger().info("                                            __/ |                           ");
-        getLogger().info("                                           |___/                            ");
-        getLogger().info("");
-        getLogger().info("");
-
+        this.getLogger().info("");
+        this.getLogger().info("");
+        this.getLogger().info("  _                        _  _  _                 _                 _      ");
+        this.getLogger().info(" | |                      | || |(_)               | |               | |     ");
+        this.getLogger().info(" | |      ___ __   __ ___ | || | _  _ __    __ _  | |_  ___    ___  | | ___ ");
+        this.getLogger().info(" | |     / _ \\ \\ / // _ \\| || || || '_ \\  / _` | | __|/ _ \\  / _ \\ | |/ __|");
+        this.getLogger().info(" | |____|  __/ \\ V /|  __/| || || || | | || (_| | | |_| (_) || (_) || |\\__ \\");
+        this.getLogger().info(" |______|\\___|  \\_/  \\___||_||_||_||_| |_| \\__, |  \\__|\\___/  \\___/ |_||___/");
+        this.getLogger().info("                                            __/ |                           ");
+        this.getLogger().info("                                           |___/                            ");
+        this.getLogger().info("");
+        this.getLogger().info("");
         NBTAPI.setLogging(false);
+
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
 
-        if (hook("PlaceholderAPI")) new PlaceholderAPIHook(this).register();
-        hook("WorldGuard");
-
-        handleReload();
-        registerCommands();
-
+        if (this.hook("PlaceholderAPI")) {
+            new PlaceholderAPIHook(this).register();
+        }
+        this.hook("WorldGuard");
+        this.handleReload();
+        this.registerCommands();
     }
 
     public void onDisable() {
-
     }
 
-    private CommandManager commandManager;
-
     public CommandManager getCommandManager() {
-        return commandManager;
+        return this.commandManager;
     }
 
     private void registerCommands() {
-        commandManager = new CommandManager(this);
+        this.commandManager = new CommandManager(this);
         this.getCommand("levellingtools").setExecutor(new CommandExecutor(this));
-
-        if (getCommand("levellingtools").getPlugin() != this) {
-            getLogger().warning("/levellingtools command is being handled by plugin other than " + getDescription().getName() + ". You must use /levellingtools:levellingtools instead.");
+        if (this.getCommand("levellingtools").getPlugin() != this) {
+            this.getLogger().warning("/levellingtools command is being handled by plugin other than " + this.getDescription().getName() + ". You must use /levellingtools:levellingtools instead.");
         }
     }
 
     public void handleReload() {
-        reloadConfig();
+        this.reloadConfig();
         Lang.init(new Config(this, "lang.yml"));
         new ConfigCache(this);
         ConfigCache.setup();
     }
 
-
-    private boolean hook(String plugin) {
-        boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);
-        if (enabled) getLogger().info(String.format("Located and hooked into %s.", plugin));
+    private boolean hook(final String plugin) {
+        final boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);
+        if (enabled) {
+            this.getLogger().info(String.format("Located and hooked into %s.", plugin));
+        }
         return enabled;
     }
-
 }

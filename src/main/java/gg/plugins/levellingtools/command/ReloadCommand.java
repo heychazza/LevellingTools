@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 public class ReloadCommand {
     @Command(aliases = {"reload"}, about = "Reload the plugin.", permission = "levellingtools.reload", usage = "reload")
-    public static void execute(CommandSender sender, LevellingTools plugin, String[] args) {
+    public static void execute(final CommandSender sender, final LevellingTools plugin, final String[] args) {
         plugin.handleReload();
         Lang.RELOAD_COMMAND.send(sender, Lang.PREFIX.asString());
     }

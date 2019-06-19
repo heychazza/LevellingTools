@@ -19,14 +19,11 @@ exclude
             public gg.plugins.levellingtools.api.* * and
             gg.plugins.levellingtools.api.^ and
 
-            public gg.plugins.levellingtools.tool.* !private !package * and
-            public gg.plugins.levellingtools.tool.* !private !package *(*) and
-            public gg.plugins.levellingtools.tool.* and
-            public gg.plugins.levellingtools.tool.* * and
-            gg.plugins.levellingtools.tool.^ and
-
             gg.plugins.levellingtools.entity.* *(*) and
-            gg.plugins.levellingtools.entity.* *
+            gg.plugins.levellingtools.entity.* * and
+
+            gg.plugins.levellingtools.tool.* *(*) and
+            gg.plugins.levellingtools.tool.* *
             ;
 
 obfuscateFlowExclude none;

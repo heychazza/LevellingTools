@@ -9,34 +9,8 @@ import org.bukkit.OfflinePlayer;
 import java.util.UUID;
 
 @Entity(value = "player", noClassnameStored = true)
-public class PlayerEntity extends BaseEntity {
-
-    public static PlayerEntity getUser(UUID player) {
-        PlayerEntity playerEntity = ConfigCache.getDB()
-                .createQuery(PlayerEntity.class)
-                .filter("uuid", player.toString())
-                .get();
-
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
-        if (playerEntity == null) {
-            PlayerEntity newPlayerEntity = new PlayerEntity();
-            newPlayerEntity.setUuid(player.toString());
-            newPlayerEntity.setUsername(offlinePlayer.getName());
-            newPlayerEntity.setLowercaseUsername(offlinePlayer.getName().toLowerCase());
-            newPlayerEntity.setExperience(0);
-            newPlayerEntity.setBlocksBroken(0);
-            newPlayerEntity.setLevel(1);
-
-            ConfigCache.getDB().save(newPlayerEntity);
-            return newPlayerEntity;
-        }
-        return playerEntity;
-    }
-
-    public PlayerEntity() {
-        super();
-    }
-
+public class PlayerEntity extends BaseEntity
+{
     @Indexed
     private String uuid;
     private String username;
@@ -44,57 +18,74 @@ public class PlayerEntity extends BaseEntity {
     private int experience;
     private int blocksBroken;
     private int level;
-
+    
+    public static PlayerEntity getUser(final UUID player) {
+        final PlayerEntity playerEntity = ConfigCache.getDB().createQuery(PlayerEntity.class).filter("uuid", player.toString()).get();
+        final OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
+        if (playerEntity == null) {
+            final PlayerEntity newPlayerEntity = new PlayerEntity();
+            newPlayerEntity.setUuid(player.toString());
+            newPlayerEntity.setUsername(offlinePlayer.getName());
+            newPlayerEntity.setLowercaseUsername(offlinePlayer.getName().toLowerCase());
+            newPlayerEntity.setExperience(0);
+            newPlayerEntity.setBlocksBroken(0);
+            newPlayerEntity.setLevel(1);
+            ConfigCache.getDB().save(newPlayerEntity);
+            return newPlayerEntity;
+        }
+        return playerEntity;
+    }
+    
     public String getUuid() {
-        return uuid;
+        return this.uuid;
     }
-
+    
     public String getUsername() {
-        return username;
+        return this.username;
     }
-
+    
     public String getLowercaseUsername() {
-        return lowercaseUsername;
+        return this.lowercaseUsername;
     }
-
+    
     public int getExperience() {
-        return experience;
+        return this.experience;
     }
-
+    
     public int getBlocksBroken() {
-        return blocksBroken;
+        return this.blocksBroken;
     }
-
+    
     public int getLevel() {
-        return level;
+        return this.level;
     }
-
-    public void setUuid(String uuid) {
+    
+    public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
-
-    public void setUsername(String username) {
+    
+    public void setUsername(final String username) {
         this.username = username;
     }
-
-    public void setLowercaseUsername(String lowercaseUsername) {
+    
+    public void setLowercaseUsername(final String lowercaseUsername) {
         this.lowercaseUsername = lowercaseUsername;
     }
-
-    public void setExperience(int experience) {
+    
+    public void setExperience(final int experience) {
         this.experience = experience;
     }
-
-    public void setBlocksBroken(int blocksBroken) {
+    
+    public void setBlocksBroken(final int blocksBroken) {
         this.blocksBroken = blocksBroken;
     }
-
-    public void setLevel(int level) {
+    
+    public void setLevel(final int level) {
         this.level = level;
     }
-
+    
     @Override
     public String toString() {
-        return getClass().getName() + " [id=" + id + ", uuid=" + getUuid() + ", lowercaseUsername=" + getLowercaseUsername() + ", experience=" + getExperience() + "]";
+        return this.getClass().getName() + " [id=" + this.id + ", uuid=" + this.getUuid() + ", lowercaseUsername=" + this.getLowercaseUsername() + ", experience=" + this.getExperience() + "]";
     }
 }

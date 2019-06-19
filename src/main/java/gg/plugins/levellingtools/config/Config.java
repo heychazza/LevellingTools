@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class Config {
-
     private final JavaPlugin plugin;
     private FileConfiguration config;
     private File configFile;
@@ -28,38 +27,36 @@ public class Config {
         this.folderName = null;
     }
 
-    public void setConfig(FileConfiguration c) {
+    public void setConfig(final FileConfiguration c) {
         this.config = c;
     }
 
     public FileConfiguration getConfig() {
-        if (config == null) {
-            loadConfig();
+        if (this.config == null) {
+            this.loadConfig();
         }
-        return config;
+        return this.config;
     }
 
-
     public FileConfiguration loadConfig() {
-        if (configFile == null) {
-            if (folderName != null && !folderName.isEmpty()) {
-                configFile = new File(plugin.getDataFolder() + File.separator + folderName, fileName);
+        if (this.configFile == null) {
+            if (this.folderName != null && !this.folderName.isEmpty()) {
+                this.configFile = new File(this.plugin.getDataFolder() + File.separator + this.folderName, this.fileName);
             } else {
-                configFile = new File(plugin.getDataFolder(), fileName);
+                this.configFile = new File(this.plugin.getDataFolder(), this.fileName);
             }
         }
-        config = YamlConfiguration.loadConfiguration(configFile);
-        return config;
+        return this.config = YamlConfiguration.loadConfiguration(this.configFile);
     }
 
     public void saveConfig() {
-        if (config == null || configFile == null) {
+        if (this.config == null || this.configFile == null) {
             return;
         }
         try {
-            getConfig().save(configFile);
-        } catch (final IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
+            this.getConfig().save(this.configFile);
+        } catch (IOException ex) {
+            this.plugin.getLogger().log(Level.SEVERE, "Could not save config to " + this.configFile, ex);
         }
     }
 }

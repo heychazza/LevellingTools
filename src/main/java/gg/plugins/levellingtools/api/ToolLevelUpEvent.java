@@ -10,16 +10,15 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
 public class ToolLevelUpEvent extends Event implements Cancellable {
-
     private Player player;
     private ItemStack item;
     private Block block;
     private PlayerEntity playerData;
     private LevellingTool tool;
-    private static final HandlerList HANDLERS_LIST = new HandlerList();
+    private static final HandlerList HANDLERS_LIST;
     private boolean isCancelled;
 
-    public ToolLevelUpEvent(Player player, ItemStack item, Block block, PlayerEntity playerData, LevellingTool tool) {
+    public ToolLevelUpEvent(final Player player, final ItemStack item, final Block block, final PlayerEntity playerData, final LevellingTool tool) {
         this.player = player;
         this.item = item;
         this.block = block;
@@ -28,42 +27,43 @@ public class ToolLevelUpEvent extends Event implements Cancellable {
         this.isCancelled = false;
     }
 
-    @Override
     public boolean isCancelled() {
-        return isCancelled;
+        return this.isCancelled;
     }
 
-    @Override
-    public void setCancelled(boolean cancelled) {
+    public void setCancelled(final boolean cancelled) {
         this.isCancelled = cancelled;
     }
 
-    @Override
     public HandlerList getHandlers() {
-        return HANDLERS_LIST;
+        return ToolLevelUpEvent.HANDLERS_LIST;
     }
 
     public static HandlerList getHandlerList() {
-        return HANDLERS_LIST;
+        return ToolLevelUpEvent.HANDLERS_LIST;
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public ItemStack getItem() {
-        return item;
+        return this.item;
     }
 
     public Block getBlock() {
-        return block;
+        return this.block;
     }
 
     public PlayerEntity getPlayerData() {
-        return playerData;
+        return this.playerData;
     }
 
     public LevellingTool getTool() {
-        return tool;
+        return this.tool;
+    }
+
+    static {
+        HANDLERS_LIST = new HandlerList();
     }
 }
