@@ -1,9 +1,8 @@
 package gg.plugins.levellingtools.util;
 
 import java.util.Arrays;
-import org.bukkit.enchantments.Enchantment;
 
-public enum Enchantments
+public enum Enchantment
 {
     POWER("ARROW_DAMAGE"), 
     FLAME("ARROW_FIRE"), 
@@ -37,7 +36,7 @@ public enum Enchantments
     
     private final String vanillaName;
     
-    Enchantments(final String vanillaName) {
+    Enchantment(final String vanillaName) {
         this.vanillaName = vanillaName;
     }
     
@@ -45,8 +44,8 @@ public enum Enchantments
         return this.vanillaName;
     }
     
-    public Enchantment getEnchantment() {
-        return Enchantment.getByName(this.vanillaName);
+    public org.bukkit.enchantments.Enchantment getEnchantment() {
+        return org.bukkit.enchantments.Enchantment.getByName(this.vanillaName);
     }
     
     public static boolean exists(final String bukkitName) {

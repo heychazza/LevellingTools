@@ -18,7 +18,8 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory> <!-- (your resources folder location) -->
-                <filtering>true</filtering> <!-- this is the important part, it's what replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
+                <filtering>true
+                </filtering> <!-- this is the important part, it's what replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
                 <includes>
                     <include>*.yml</include>
                 </includes>
@@ -33,41 +34,11 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgs>
+                    <compilerArgs>ó
                         <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
-            <!--            <plugin>
-                            <groupId>com.zelix.plugins</groupId>
-                            <artifactId>zkm-plugin</artifactId>
-                            <version>1.0.3</version>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>com.zelix.plugins</groupId>
-                                    <artifactId>ZKM</artifactId>
-                                    <version>12.0.2</version>
-                                    <scope>system</scope>
-                                    <systemPath>D:/Development/ZKM/ZKM.jar</systemPath>
-                                </dependency>
-                            </dependencies>
-                            <executions>
-                                <execution>
-                                    <phase>package</phase>
-                                    <goals>
-                                        <goal>obfuscate</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                            <configuration>
-                                &lt;!&ndash; Will be used to inject values into the plugin but will not be in project properties &ndash;&gt;
-                                <isSkip>false</isSkip>
-                                <scriptFile>script.txt</scriptFile>
-                                <classpathLibs>
-                                    <lib>${java.home}/lib/rt.jar</lib>
-                                </classpathLibs>
-                            </configuration>
-                        </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -94,7 +65,8 @@
                     <relocations>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.acf</shadedPattern> <!-- Replace this -->
+                            <shadedPattern>${project.groupId}.${project.artifactId}.acf
+                            </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>dev.morphia</pattern>
