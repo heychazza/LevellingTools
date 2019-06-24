@@ -6,7 +6,7 @@
 
     <groupId>gg.plugins</groupId>
     <artifactId>levellingtools</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <properties>
         <plugin>LevellingTools</plugin>
@@ -34,9 +34,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <compilerArgs>ó
-                        <arg>-parameters</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -88,11 +85,6 @@
                             <shadedPattern>${project.groupId}.${project.artifactId}.bson
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
-                        <relocation>
-                            <pattern>me.lucko.commodore</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.commodore
-                            </shadedPattern> <!-- Replace this -->
-                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -122,15 +114,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
-            <!--            <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-jar-plugin</artifactId>
-                            <version>2.3.1</version>
-                            <configuration>
-                                <outputDirectory>D:\Minecraft\Mysticv2\plugins</outputDirectory>
-                            </configuration>
-                        </plugin>-->
         </plugins>
     </build>
 
