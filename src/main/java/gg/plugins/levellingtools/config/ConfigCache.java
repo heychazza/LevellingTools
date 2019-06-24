@@ -41,6 +41,7 @@ public class ConfigCache {
     public static void setup() {
         ConfigCache.tools = Maps.newHashMap();
         ConfigCache.mongoDB = new MongoDB(
+                plugin.getConfig().getString("settings.database.prefix", ""),
                 plugin.getConfig().getString("settings.database.host", "127.0.0.1"),
                 plugin.getConfig().getInt("settings.database.port", 27017),
                 plugin.getConfig().getString("settings.database.name", "levellingtools"),
@@ -53,7 +54,7 @@ public class ConfigCache {
 
         plugin.getConfig().getConfigurationSection("level").getKeys(false).forEach(levelStr -> {
             int level = Integer.valueOf(levelStr);
-            int xpRequired = plugin.getConfig().getInt("level." + levelStr + ".settings.xp", -1);
+            double xpRequired = plugin.getConfig().getDouble("level." + levelStr + ".settings.xp", -1);
 
             String pickaxeName = StringUtil.getToolName("pickaxe", level, plugin);
             List<String> pickaxeLore = StringUtil.getToolLore("pickaxe", level, plugin);

@@ -6,9 +6,9 @@ public class BlockXP
 {
     private Material block;
     private byte data;
-    private Integer experience;
+    private double experience;
     
-    public BlockXP(final Material block, final Integer data, final Integer experience) {
+    public BlockXP(final Material block, final Integer data, final double experience) {
         this.block = block;
         this.data = data.byteValue();
         this.experience = experience;
@@ -22,7 +22,7 @@ public class BlockXP
         return this.data;
     }
     
-    public Integer getExperience() {
+    public double getExperience() {
         return this.experience;
     }
 }

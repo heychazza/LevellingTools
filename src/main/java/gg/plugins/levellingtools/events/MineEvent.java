@@ -56,7 +56,7 @@ public class MineEvent implements Listener {
             }
             final PlayerEntity user = PlayerEntity.getUser(player.getUniqueId());
             final LevellingTool playerTool = ConfigCache.getTools().get(user.getLevel());
-            final int xpGained = playerTool.getXpFromBlock(block);
+            final double xpGained = playerTool.getXpFromBlock(block);
             final ToolMineEvent mineEvent = new ToolMineEvent(player, item, xpGained, block, user, playerTool);
             Bukkit.getServer().getPluginManager().callEvent(mineEvent);
         }
@@ -68,8 +68,8 @@ public class MineEvent implements Listener {
         final Block block = e.getBlock();
         final PlayerEntity user = e.getPlayerData();
         LevellingTool tool = e.getTool();
-        final int xpGained = tool.getXpFromBlock(block);
-        final int totalXp = user.getExperience() + xpGained;
+        final double xpGained = tool.getXpFromBlock(block);
+        final double totalXp = user.getExperience() + xpGained;
         if (xpGained > 0) {
             StringUtil.sendActionbar(player, Lang.EXP_GAINED.asString(xpGained));
         }

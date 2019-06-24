@@ -12,14 +12,14 @@ import org.bukkit.inventory.ItemStack;
 public class ToolMineEvent extends Event implements Cancellable {
     private Player player;
     private ItemStack item;
-    private int xpGained;
+    private double xpGained;
     private Block block;
     private PlayerEntity playerData;
     private LevellingTool tool;
     private static final HandlerList HANDLERS_LIST;
     private boolean isCancelled;
 
-    public ToolMineEvent(final Player player, final ItemStack item, final int xpGained, final Block block, final PlayerEntity playerData, final LevellingTool tool) {
+    public ToolMineEvent(final Player player, final ItemStack item, final double xpGained, final Block block, final PlayerEntity playerData, final LevellingTool tool) {
         this.player = player;
         this.item = item;
         this.xpGained = xpGained;
@@ -53,7 +53,7 @@ public class ToolMineEvent extends Event implements Cancellable {
         return this.item;
     }
 
-    public int getXpGained() {
+    public double getXpGained() {
         return this.xpGained;
     }
 

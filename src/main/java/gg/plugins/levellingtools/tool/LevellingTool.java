@@ -19,7 +19,7 @@ import java.util.*;
 
 public class LevellingTool {
     private int level;
-    private int xpRequired;
+    private double xpRequired;
     private boolean restrict;
     private Map<Enchantment, Integer> enchantments;
     private List<BlockXP> blockXp;
@@ -42,11 +42,28 @@ public class LevellingTool {
 
     private static String replaceVariables(final String str, final PlayerEntity player) {
         final LevellingTool nextLevel = (ConfigCache.getTools().size() > player.getLevel()) ? ConfigCache.getTools().get(player.getLevel() + 1) : ConfigCache.getTools().get(player.getLevel());
-        return str.replace("{player}", player.getUsername()).replace("{blocks}", String.valueOf(player.getBlocksBroken())).replace("{currentxp}", String.valueOf(player.getExperience())).replace("{requiredxp}", String.valueOf(nextLevel.getXpRequired())).replace("{level}", String.valueOf(player.getLevel())).replace("{progress}", String.valueOf(player.getExperience() * 100 / nextLevel.getXpRequired())).replace("{progressbar}", getProgressBar(player));
+
+        Bukkit.broadcastMessage("Next Level: " + nextLevel);
+        String username = player.getUsername();
+        String blocks = String.valueOf(player.getBlocksBroken());
+        String currentXp = String.valueOf(player.getExperience());
+        String requiredXp = String.valueOf(nextLevel != null ? nextLevel.getXpRequired() : player.getExperience());
+        String level = String.valueOf(player.getLevel());
+        String progress = String.valueOf(getProgress(player, nextLevel));
+        String progressBar = getProgressBar(player);
+
+
+        return str.replace("{player}", username)
+                .replace("{blocks}", blocks)
+                .replace("{currentxp}", currentXp)
+                .replace("{requiredxp}", requiredXp)
+                .replace("{level}", level)
+                .replace("{progress}", progress)
+                .replace("{progressbar}", progressBar);
     }
 
     public static int getProgress(final PlayerEntity player, final LevellingTool nextLevel) {
-        return (int) (player.getExperience() / (float) nextLevel.getXpRequired());
+        return (int) (player.getExperience() * 100 / (nextLevel != null ? nextLevel.getXpRequired() : player.getExperience()));
     }
 
     public static String getProgressBar(final PlayerEntity player) {
@@ -101,16 +118,16 @@ public class LevellingTool {
         return nbtItem.getItem();
     }
 
-    public LevellingTool(final int level, final int xpRequired) {
+    public LevellingTool(final int level, final double xpRequired) {
         this.level = level;
-        this.xpRequired = xpRequired;
+        this.xpRequired = xpRequired == -1 ? 0 : xpRequired;
     }
 
     public int getLevel() {
         return this.level;
     }
 
-    public int getXpRequired() {
+    public double getXpRequired() {
         return this.xpRequired;
     }
 
@@ -163,7 +180,7 @@ public class LevellingTool {
     }
 
     public void setXpRequired(final int xpRequired) {
-        this.xpRequired = xpRequired;
+        this.xpRequired = xpRequired == -1 ? 0 : xpRequired;
     }
 
     public void setRestriction(final boolean restrict) {
@@ -224,9 +241,9 @@ public class LevellingTool {
         });
     }
 
-    public Integer getXpFromBlock(final Block block) {
+    public double getXpFromBlock(final Block block) {
         final Optional<BlockXP> optionalBlockXP = this.getBlockXp().stream().filter(blockXp -> blockXp.getBlock() == block.getType() && blockXp.getData() == block.getData()).findFirst();
-        return optionalBlockXP.isPresent() ? optionalBlockXP.get().getExperience() : 0;
+        return optionalBlockXP.isPresent() ? optionalBlockXP.get().getExperience() : 0.0;
     }
 
     public static int getOmnitoolSlot(final Player player) {

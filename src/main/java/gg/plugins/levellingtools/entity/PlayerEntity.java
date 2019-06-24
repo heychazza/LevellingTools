@@ -15,7 +15,7 @@ public class PlayerEntity extends BaseEntity
     private String uuid;
     private String username;
     private String lowercaseUsername;
-    private int experience;
+    private double experience;
     private int blocksBroken;
     private int level;
     
@@ -48,7 +48,7 @@ public class PlayerEntity extends BaseEntity
         return this.lowercaseUsername;
     }
     
-    public int getExperience() {
+    public double getExperience() {
         return this.experience;
     }
     
@@ -72,7 +72,7 @@ public class PlayerEntity extends BaseEntity
         this.lowercaseUsername = lowercaseUsername;
     }
     
-    public void setExperience(final int experience) {
+    public void setExperience(final double experience) {
         this.experience = experience;
     }
     
