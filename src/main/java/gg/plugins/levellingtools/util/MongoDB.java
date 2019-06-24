@@ -20,7 +20,7 @@ public class MongoDB {
         String newPrefix = prefix.isEmpty() ? "" : "+" + prefix;
         String auth = (username.isEmpty() && password.isEmpty()) ? "" : username + ":" + password + "@";
 
-        String connection = "mongodb" + newPrefix + "://" + auth + host + "/" + database + "?retryWrites=true&w=majority";
+        String connection = "mongodb" + newPrefix + "://" + auth + host + ":" + port + "/" + database + "?ssl=true&replicaSet=Cluster0-shard-0&authSource=" + username + "&retryWrites=true&w=majority";
         plugin.getLogger().info("Connection: " + connection);
         client = new MongoClient(new MongoClientURI(connection));
 
