@@ -5,7 +5,7 @@ import dev.morphia.Datastore;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.tool.BlockXP;
 import gg.plugins.levellingtools.tool.LevellingTool;
-import gg.plugins.levellingtools.util.Enchantments;
+import gg.plugins.levellingtools.util.EnchantUtil;
 import gg.plugins.levellingtools.util.MongoDB;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Material;
@@ -86,11 +86,11 @@ public class ConfigCache {
             plugin.getConfig().getConfigurationSection("level." + levelStr + ".settings.enchantments").getKeys(false).forEach(enchantmentStr -> {
                 int enchantLevel = plugin.getConfig().getInt("level." + levelStr + ".settings.enchantments." + enchantmentStr, 0);
 
-                if (!Enchantments.exists(enchantmentStr)) {
+                if (!EnchantUtil.exists(enchantmentStr)) {
                     plugin.getLogger().warning(String.format("Skipping invalid enchantment (%s) for level %s.", enchantmentStr, levelStr));
                     return;
                 }
-                enchantments.put(Enchantments.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
+                enchantments.put(EnchantUtil.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
             });
 
             List<BlockXP> blockXp = new ArrayList<>();
