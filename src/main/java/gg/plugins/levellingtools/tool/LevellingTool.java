@@ -50,7 +50,6 @@ public class LevellingTool {
         String progress = String.valueOf(getProgress(player, nextLevel));
         String progressBar = getProgressBar(player);
 
-
         return str.replace("{player}", username)
                 .replace("{blocks}", blocks)
                 .replace("{currentxp}", currentXp)
@@ -61,13 +60,16 @@ public class LevellingTool {
     }
 
     public static int getProgress(final PlayerEntity player, final LevellingTool nextLevel) {
-        return (int) (player.getExperience() * 100 / (nextLevel != null ? nextLevel.getXpRequired() : player.getExperience()));
+        double requirement = nextLevel != null ? nextLevel.getXpRequired() : player.getExperience();
+        int percent = StringUtil.calculatePercentage(player.getExperience(), requirement);
+        return (percent < 100) ? percent : 100;
     }
 
     public static String getProgressBar(final PlayerEntity player) {
         final LevellingTool nextLevel = (ConfigCache.getTools().size() > player.getLevel()) ? ConfigCache.getTools().get(player.getLevel() + 1) : ConfigCache.getTools().get(player.getLevel());
-        final int progressBars = 10 * getProgress(player, nextLevel);
-        final int leftOver = 10 - progressBars;
+        final int bars = 10;
+        final int progressBars = getProgress(player, nextLevel) / bars;
+        final int leftOver = bars - progressBars;
         final StringBuilder sb = new StringBuilder();
         sb.append(Lang.PROGRESS_START.asString());
         sb.append(Lang.PROGRESS_COMPLETE.asString());

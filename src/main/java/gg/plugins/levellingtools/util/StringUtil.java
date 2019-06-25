@@ -74,4 +74,8 @@ public class StringUtil
         }
         return experience;
     }
+
+    public static int calculatePercentage(double obtained, double total) {
+        return (int) (obtained * 100 / total);
+    }
 }
