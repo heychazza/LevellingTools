@@ -42,8 +42,6 @@ public class LevellingTool {
 
     private static String replaceVariables(final String str, final PlayerEntity player) {
         final LevellingTool nextLevel = (ConfigCache.getTools().size() > player.getLevel()) ? ConfigCache.getTools().get(player.getLevel() + 1) : ConfigCache.getTools().get(player.getLevel());
-
-        Bukkit.broadcastMessage("Next Level: " + nextLevel);
         String username = player.getUsername();
         String blocks = String.valueOf(player.getBlocksBroken());
         String currentXp = String.valueOf(player.getExperience());
