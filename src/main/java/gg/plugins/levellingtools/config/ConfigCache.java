@@ -58,6 +58,8 @@ public class ConfigCache {
             int level = Integer.valueOf(levelStr);
             double xpRequired = plugin.getConfig().getDouble("level." + levelStr + ".settings.xp", -1);
 
+            boolean useOneFormat = plugin.getConfig().getBoolean("settings.global.use_one_format", false);
+
             String pickaxeName = StringUtil.getToolName("pickaxe", level, plugin);
             List<String> pickaxeLore = StringUtil.getToolLore("pickaxe", level, plugin);
 
@@ -67,8 +69,8 @@ public class ConfigCache {
             lastPickName = pickaxeName;
             lastPickLore = pickaxeLore;
 
-            String axeName = StringUtil.getToolName("axe", level, plugin);
-            List<String> axeLore = StringUtil.getToolLore("axe", level, plugin);
+            String axeName = useOneFormat ? pickaxeName : StringUtil.getToolName("axe", level, plugin);
+            List<String> axeLore = useOneFormat ? pickaxeLore : StringUtil.getToolLore("axe", level, plugin);
 
             if (axeName == null || axeName.isEmpty()) axeName = lastAxeName;
             if (axeLore == null || axeLore.size() == 0) axeLore = lastAxeLore;
@@ -76,8 +78,8 @@ public class ConfigCache {
             lastAxeName = axeName;
             lastAxeLore = axeLore;
 
-            String shovelName = StringUtil.getToolName("shovel", level, plugin);
-            List<String> shovelLore = StringUtil.getToolLore("shovel", level, plugin);
+            String shovelName = useOneFormat ? pickaxeName : StringUtil.getToolName("shovel", level, plugin);
+            List<String> shovelLore = useOneFormat ? pickaxeLore : StringUtil.getToolLore("shovel", level, plugin);
 
             if (shovelName == null || shovelName.isEmpty()) shovelName = lastShovelName;
             if (shovelLore == null || shovelLore.size() == 0) shovelLore = lastShovelLore;

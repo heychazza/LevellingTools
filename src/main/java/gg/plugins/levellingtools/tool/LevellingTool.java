@@ -34,10 +34,10 @@ public class LevellingTool {
     private List<String> actions;
     private List<ItemFlag> itemFlags;
     private int bars = 10;
-    private static List<Material> axeBlocks;
-    private static List<Material> pickaxeBlocks;
-    private static List<Material> shovelBlocks;
-    private static LevellingTools tools;
+    private static List<Material> axeBlocks = Arrays.asList(Material.LOG, Material.LOG_2, Material.WOOD, Material.WOOD_STEP, Material.WOOD_DOUBLE_STEP, Material.WOOD_STAIRS, Material.BIRCH_WOOD_STAIRS, Material.JUNGLE_WOOD_STAIRS, Material.SPRUCE_WOOD_STAIRS, Material.ACACIA_STAIRS, Material.DARK_OAK_STAIRS, Material.WORKBENCH, Material.LADDER, Material.RAILS, Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL, Material.SIGN, Material.SIGN_POST, Material.PUMPKIN, Material.JACK_O_LANTERN, Material.HUGE_MUSHROOM_1, Material.HUGE_MUSHROOM_2, Material.FENCE, Material.FENCE_GATE);
+    private static List<Material> pickaxeBlocks = Arrays.asList(Material.STONE, Material.COBBLESTONE, Material.MOSSY_COBBLESTONE, Material.SANDSTONE, Material.OBSIDIAN, Material.COAL_ORE, Material.IRON_ORE, Material.IRON_BLOCK, Material.LAPIS_ORE, Material.LAPIS_BLOCK, Material.GOLD_ORE, Material.GOLD_BLOCK, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.REDSTONE_BLOCK, Material.EMERALD_ORE, Material.EMERALD_BLOCK, Material.DIAMOND_ORE, Material.DIAMOND_BLOCK, Material.STEP, Material.DOUBLE_STEP, Material.COBBLESTONE_STAIRS, Material.COBBLE_WALL, Material.BRICK, Material.BRICK_STAIRS, Material.ICE, Material.PACKED_ICE, Material.NETHERRACK, Material.NETHER_BRICK, Material.NETHER_BRICK_STAIRS, Material.NETHER_FENCE, Material.ANVIL, Material.QUARTZ_ORE, Material.QUARTZ_BLOCK, Material.QUARTZ_STAIRS, Material.CLAY_BRICK, Material.STAINED_CLAY, Material.HARD_CLAY, Material.FURNACE, Material.DISPENSER, Material.BREWING_STAND, Material.CAULDRON, Material.HOPPER);
+    private static List<Material> shovelBlocks = Arrays.asList(Material.GRASS, Material.DIRT, Material.SAND, Material.GRAVEL, Material.SNOW, Material.SNOW_BLOCK, Material.CLAY, Material.SOUL_SAND, Material.MYCEL);
+    private static LevellingTools tools = JavaPlugin.getPlugin(LevellingTools.class);
 
     public static LevellingTool getPlayerTool(final PlayerEntity playerEntity) {
         return ConfigCache.getTools().values().stream().filter(tool -> playerEntity.getExperience() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
@@ -64,11 +64,12 @@ public class LevellingTool {
 
     public static int getProgress(final PlayerEntity player, final LevellingTool nextLevel) {
         double requirement = nextLevel != null && nextLevel.getXpRequired() > 0 ? nextLevel.getXpRequired() : player.getExperience();
-        return StringUtil.calculatePercentage(player.getExperience(), requirement);
+        double percentage = StringUtil.calculatePercentage(player.getExperience(), requirement);
+        return percentage < 1.0 ? (int) Math.floor(percentage * 100) : 100;
     }
 
     public static String getProgressBar(final PlayerEntity player, final LevellingTool nextLevel) {
-        double percentage = (double) getProgress(player, nextLevel) / 100.0;
+        double percentage = getProgress(player, nextLevel) / 100.0;
         int filledBars = (int) (nextLevel.getBars() * percentage);
         int leftOver = nextLevel.getBars() - filledBars;
 
@@ -297,20 +298,14 @@ public class LevellingTool {
             if (LevellingTool.pickaxeBlocks.contains(block.getType())) {
                 return pickaxeType;
             }
-            if (LevellingTool.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("global.omnitool.axe")) {
+            else if (LevellingTool.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("global.omnitool.axe", true)) {
                 return axeType;
             }
-            if (LevellingTool.shovelBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("global.omnitool.shovel")) {
+            else if (LevellingTool.shovelBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("global.omnitool.shovel", true)) {
                 return shovelType;
             }
         }
         return pickaxeType;
     }
 
-    static {
-        LevellingTool.axeBlocks = Arrays.asList(Material.LOG, Material.LOG_2, Material.WOOD, Material.WOOD_STEP, Material.WOOD_DOUBLE_STEP, Material.WOOD_STAIRS, Material.BIRCH_WOOD_STAIRS, Material.JUNGLE_WOOD_STAIRS, Material.SPRUCE_WOOD_STAIRS, Material.ACACIA_STAIRS, Material.DARK_OAK_STAIRS, Material.WORKBENCH, Material.LADDER, Material.RAILS, Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL, Material.SIGN, Material.SIGN_POST, Material.PUMPKIN, Material.JACK_O_LANTERN, Material.HUGE_MUSHROOM_1, Material.HUGE_MUSHROOM_2, Material.FENCE, Material.FENCE_GATE);
-        LevellingTool.pickaxeBlocks = Arrays.asList(Material.STONE, Material.COBBLESTONE, Material.MOSSY_COBBLESTONE, Material.SANDSTONE, Material.OBSIDIAN, Material.COAL_ORE, Material.IRON_ORE, Material.IRON_BLOCK, Material.LAPIS_ORE, Material.LAPIS_BLOCK, Material.GOLD_ORE, Material.GOLD_BLOCK, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.REDSTONE_BLOCK, Material.EMERALD_ORE, Material.EMERALD_BLOCK, Material.DIAMOND_ORE, Material.DIAMOND_BLOCK, Material.STEP, Material.DOUBLE_STEP, Material.COBBLESTONE_STAIRS, Material.COBBLE_WALL, Material.BRICK, Material.BRICK_STAIRS, Material.ICE, Material.PACKED_ICE, Material.NETHERRACK, Material.NETHER_BRICK, Material.NETHER_BRICK_STAIRS, Material.NETHER_FENCE, Material.ANVIL, Material.QUARTZ_ORE, Material.QUARTZ_BLOCK, Material.QUARTZ_STAIRS, Material.CLAY_BRICK, Material.STAINED_CLAY, Material.HARD_CLAY, Material.FURNACE, Material.DISPENSER, Material.BREWING_STAND, Material.CAULDRON, Material.HOPPER);
-        LevellingTool.shovelBlocks = Arrays.asList(Material.GRASS, Material.DIRT, Material.SAND, Material.GRAVEL, Material.SNOW, Material.SNOW_BLOCK, Material.CLAY, Material.SOUL_SAND, Material.MYCEL);
-        LevellingTool.tools = JavaPlugin.getPlugin(LevellingTools.class);
-    }
 }

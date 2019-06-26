@@ -31,7 +31,7 @@ public class MineEvent implements Listener {
         final Block block = e.getBlock();
         final ItemStack item = player.getItemInHand();
         final NBTItem nbtItem = new NBTItem(item);
-        if (nbtItem.hasKey("omnitool")) {
+        if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             if (WorldGuardHook.getWorldGuard() != null) {
                 if (!WorldGuardHook.getWorldGuard().getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).allows(DefaultFlag.BLOCK_BREAK)) {
                     if (ConfigCache.cancelBlacklistedRegion()) {
