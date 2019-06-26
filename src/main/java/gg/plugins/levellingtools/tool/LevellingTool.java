@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,8 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
 public class LevellingTool {
-    private int level = 1;
-    private double xpRequired = -1;
+    private int level;
+    private double xpRequired;
     private boolean restrict = false;
     private Map<Enchantment, Integer> enchantments;
     private List<BlockXP> blockXp;
@@ -31,6 +32,7 @@ public class LevellingTool {
     private String shovelName = null;
     private List<String> shovelLore = null;
     private List<String> actions;
+    private List<ItemFlag> itemFlags;
     private int bars = 10;
     private static List<Material> axeBlocks;
     private static List<Material> pickaxeBlocks;
@@ -111,9 +113,18 @@ public class LevellingTool {
         } else {
             toolLore = tool.getShovelLore();
         }
-        final List<String> lore = new ArrayList<String>();
-        toolLore.forEach(localLore -> lore.add(StringUtil.translate(replaceVariables(localLore, user))));
-        toolMeta.setLore(lore);
+        final List<String> lore = new ArrayList<>();
+
+        if (toolLore != null && toolLore.size() > 0) {
+            toolLore.forEach(localLore -> lore.add(StringUtil.translate(replaceVariables(localLore, user))));
+            toolMeta.setLore(lore);
+        }
+
+        toolMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        toolMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
+        tool.getItemFlags().forEach(toolMeta::addItemFlags);
+
         toolItem.setItemMeta(toolMeta);
         tool.getEnchantments().forEach(toolItem::addUnsafeEnchantment);
         final NBTItem nbtItem = new NBTItem(toolItem);
@@ -124,6 +135,9 @@ public class LevellingTool {
     public LevellingTool(final int level, final double xpRequired) {
         this.level = level;
         this.xpRequired = xpRequired == -1 ? 0 : xpRequired;
+
+        this.enchantments = new HashMap<>();
+        this.itemFlags = new ArrayList<>();
     }
 
     public int getLevel() {
@@ -176,6 +190,10 @@ public class LevellingTool {
 
     public List<String> getActions() {
         return this.actions;
+    }
+
+    public List<ItemFlag> getItemFlags() {
+        return itemFlags;
     }
 
     public int getBars() {
@@ -234,6 +252,10 @@ public class LevellingTool {
         this.actions = actions;
     }
 
+    public void setItemFlags(List<ItemFlag> itemFlags) {
+        this.itemFlags = itemFlags;
+    }
+
     public void setBars(int bars) {
         this.bars = bars;
     }
@@ -243,7 +265,6 @@ public class LevellingTool {
             ConfigCache.getGlobalActions().forEach(globalAction -> {
                 globalAction = globalAction.replace("%player%", player.getName()).replace("{player}", player.getName()).replace("%level%", String.valueOf(this.getLevel())).replace("{level}", String.valueOf(this.getLevel()));
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), globalAction);
-                return;
             });
         }
         this.getActions().forEach(action -> {

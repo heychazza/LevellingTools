@@ -10,8 +10,10 @@ import gg.plugins.levellingtools.util.MongoDB;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ConfigCache {
 
@@ -133,6 +135,16 @@ public class ConfigCache {
                 return;
             }
 
+            List<ItemFlag> itemFlags = new ArrayList<>();
+            plugin.getConfig().getStringList("level." + levelStr + ".settings.flags").forEach(itemFlag -> {
+                boolean flagExists = Stream.of(ItemFlag.values()).anyMatch(e -> e.name().equalsIgnoreCase(itemFlag));
+                if (flagExists) {
+                    itemFlags.add(ItemFlag.valueOf(itemFlag));
+                } else {
+                    plugin.getLogger().warning("Item flag '" + itemFlag + "' is invalid.");
+                }
+            });
+
             List<String> actions = plugin.getConfig().getStringList("level." + levelStr + ".actions");
             LevellingTool levellingTool = new LevellingTool(level, xpRequired);
             levellingTool.setRestriction(plugin.getConfig().getBoolean("level." + levelStr + ".settings.restrict", false));
@@ -146,6 +158,7 @@ public class ConfigCache {
             levellingTool.setShovelLore(shovelLore);
             levellingTool.setType(configType);
             levellingTool.setActions(actions);
+            levellingTool.setItemFlags(itemFlags);
             levellingTool.setBars(plugin.getConfig().getInt("level." + levelStr + ".settings.bars", 10));
 
             getTools().put(level, levellingTool);
