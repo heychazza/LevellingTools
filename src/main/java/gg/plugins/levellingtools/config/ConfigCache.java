@@ -110,7 +110,7 @@ public class ConfigCache {
                         return;
                     }
 
-                    Integer xp = plugin.getConfig().getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
+                    int xp = plugin.getConfig().getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with data (" + blockData[1] + "), giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new BlockXP(matType, Integer.valueOf(blockData[1]), xp));
                 } else {
@@ -121,7 +121,7 @@ public class ConfigCache {
                         return;
                     }
 
-                    Integer xp = plugin.getConfig().getInt("level." + levelStr + ".settings.experience." + blockStr);
+                    int xp = plugin.getConfig().getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with no data, giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new BlockXP(matType, 0, xp));
                 }
@@ -146,6 +146,7 @@ public class ConfigCache {
             levellingTool.setShovelLore(shovelLore);
             levellingTool.setType(configType);
             levellingTool.setActions(actions);
+            levellingTool.setBars(plugin.getConfig().getInt("level." + levelStr + ".settings.bars", 10));
 
             getTools().put(level, levellingTool);
         });

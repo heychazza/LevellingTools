@@ -1,18 +1,15 @@
 package gg.plugins.levellingtools.util;
 
+import gg.plugins.levellingtools.LevellingTools;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import org.bukkit.configuration.file.FileConfiguration;
-import gg.plugins.levellingtools.LevellingTools;
-import java.lang.reflect.Field;
-import java.util.Objects;
-import java.lang.reflect.Method;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
 
 public class StringUtil
 {
@@ -75,7 +72,7 @@ public class StringUtil
         return experience;
     }
 
-    public static int calculatePercentage(double obtained, double total) {
-        return (int) (obtained * 100 / total);
+    public static int calculatePercentage(double amount, double total) {
+        return (int)(amount / total) * 100;
     }
 }

@@ -18,19 +18,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.*;
 
 public class LevellingTool {
-    private int level;
-    private double xpRequired;
-    private boolean restrict;
+    private int level = 1;
+    private double xpRequired = -1;
+    private boolean restrict = false;
     private Map<Enchantment, Integer> enchantments;
     private List<BlockXP> blockXp;
-    private String type;
-    private String pickaxeName;
-    private List<String> pickaxeLore;
-    private String axeName;
-    private List<String> axeLore;
-    private String shovelName;
-    private List<String> shovelLore;
+    private String type = "WOOD";
+    private String pickaxeName = null;
+    private List<String> pickaxeLore = null;
+    private String axeName = null;
+    private List<String> axeLore = null;
+    private String shovelName = null;
+    private List<String> shovelLore = null;
     private List<String> actions;
+    private int bars = 10;
     private static List<Material> axeBlocks;
     private static List<Material> pickaxeBlocks;
     private static List<Material> shovelBlocks;
@@ -48,7 +49,7 @@ public class LevellingTool {
         String requiredXp = String.valueOf(nextLevel != null ? nextLevel.getXpRequired() : player.getExperience());
         String level = String.valueOf(player.getLevel());
         String progress = String.valueOf(getProgress(player, nextLevel));
-        String progressBar = getProgressBar(player);
+        String progressBar = getProgressBar(player, Objects.requireNonNull(nextLevel));
 
         return str.replace("{player}", username)
                 .replace("{blocks}", blocks)
@@ -60,26 +61,28 @@ public class LevellingTool {
     }
 
     public static int getProgress(final PlayerEntity player, final LevellingTool nextLevel) {
-        double requirement = nextLevel != null ? nextLevel.getXpRequired() : player.getExperience();
-        int percent = StringUtil.calculatePercentage(player.getExperience(), requirement);
-        return (percent < 100) ? percent : 100;
+        double requirement = nextLevel != null && nextLevel.getXpRequired() > 0 ? nextLevel.getXpRequired() : player.getExperience();
+        return StringUtil.calculatePercentage(player.getExperience(), requirement);
     }
 
-    public static String getProgressBar(final PlayerEntity player) {
-        final LevellingTool nextLevel = (ConfigCache.getTools().size() > player.getLevel()) ? ConfigCache.getTools().get(player.getLevel() + 1) : ConfigCache.getTools().get(player.getLevel());
-        final int bars = 10;
-        final int progressBars = getProgress(player, nextLevel) / bars;
-        final int leftOver = bars - progressBars;
-        final StringBuilder sb = new StringBuilder();
+    public static String getProgressBar(final PlayerEntity player, final LevellingTool nextLevel) {
+        double percentage = (double) getProgress(player, nextLevel) / 100.0;
+        int filledBars = (int) (nextLevel.getBars() * percentage);
+        int leftOver = nextLevel.getBars() - filledBars;
+
+        StringBuilder sb = new StringBuilder();
         sb.append(Lang.PROGRESS_START.asString());
         sb.append(Lang.PROGRESS_COMPLETE.asString());
-        for (int i = 0; i < progressBars; ++i) {
+
+        for (int i = 0; i < filledBars; i++) {
             sb.append(Lang.PROGRESS_CHARACTER.asString());
         }
+
         sb.append(Lang.PROGRESS_INCOMPLETE.asString());
-        for (int i = 0; i < leftOver; ++i) {
+        for (int i = 0; i < leftOver; i++) {
             sb.append(Lang.PROGRESS_CHARACTER.asString());
         }
+
         sb.append(Lang.PROGRESS_END.asString());
         return sb.toString();
     }
@@ -175,6 +178,10 @@ public class LevellingTool {
         return this.actions;
     }
 
+    public int getBars() {
+        return bars;
+    }
+
     public void setLevel(final int level) {
         this.level = level;
     }
@@ -225,6 +232,10 @@ public class LevellingTool {
 
     public void setActions(final List<String> actions) {
         this.actions = actions;
+    }
+
+    public void setBars(int bars) {
+        this.bars = bars;
     }
 
     public void executeActions(final Player player, final boolean fireGlobalActions) {
@@ -279,6 +290,6 @@ public class LevellingTool {
         LevellingTool.axeBlocks = Arrays.asList(Material.LOG, Material.LOG_2, Material.WOOD, Material.WOOD_STEP, Material.WOOD_DOUBLE_STEP, Material.WOOD_STAIRS, Material.BIRCH_WOOD_STAIRS, Material.JUNGLE_WOOD_STAIRS, Material.SPRUCE_WOOD_STAIRS, Material.ACACIA_STAIRS, Material.DARK_OAK_STAIRS, Material.WORKBENCH, Material.LADDER, Material.RAILS, Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL, Material.POWERED_RAIL, Material.SIGN, Material.SIGN_POST, Material.PUMPKIN, Material.JACK_O_LANTERN, Material.HUGE_MUSHROOM_1, Material.HUGE_MUSHROOM_2, Material.FENCE, Material.FENCE_GATE);
         LevellingTool.pickaxeBlocks = Arrays.asList(Material.STONE, Material.COBBLESTONE, Material.MOSSY_COBBLESTONE, Material.SANDSTONE, Material.OBSIDIAN, Material.COAL_ORE, Material.IRON_ORE, Material.IRON_BLOCK, Material.LAPIS_ORE, Material.LAPIS_BLOCK, Material.GOLD_ORE, Material.GOLD_BLOCK, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.REDSTONE_BLOCK, Material.EMERALD_ORE, Material.EMERALD_BLOCK, Material.DIAMOND_ORE, Material.DIAMOND_BLOCK, Material.STEP, Material.DOUBLE_STEP, Material.COBBLESTONE_STAIRS, Material.COBBLE_WALL, Material.BRICK, Material.BRICK_STAIRS, Material.ICE, Material.PACKED_ICE, Material.NETHERRACK, Material.NETHER_BRICK, Material.NETHER_BRICK_STAIRS, Material.NETHER_FENCE, Material.ANVIL, Material.QUARTZ_ORE, Material.QUARTZ_BLOCK, Material.QUARTZ_STAIRS, Material.CLAY_BRICK, Material.STAINED_CLAY, Material.HARD_CLAY, Material.FURNACE, Material.DISPENSER, Material.BREWING_STAND, Material.CAULDRON, Material.HOPPER);
         LevellingTool.shovelBlocks = Arrays.asList(Material.GRASS, Material.DIRT, Material.SAND, Material.GRAVEL, Material.SNOW, Material.SNOW_BLOCK, Material.CLAY, Material.SOUL_SAND, Material.MYCEL);
-        LevellingTool.tools = (LevellingTools) JavaPlugin.getPlugin((Class) LevellingTools.class);
+        LevellingTool.tools = JavaPlugin.getPlugin(LevellingTools.class);
     }
 }

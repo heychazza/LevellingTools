@@ -41,10 +41,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion
             return String.valueOf(playerEntity.getBlocksBroken());
         }
         if (identifier.equals("progress")) {
-            return String.valueOf(playerEntity.getExperience() * 100 / nextLevel.getXpRequired());
+            return String.valueOf(LevellingTool.getProgress(playerEntity, nextLevel));
         }
         if (identifier.equals("progress_bar")) {
-            return LevellingTool.getProgressBar(playerEntity);
+            return LevellingTool.getProgressBar(playerEntity, nextLevel);
         }
         return null;
     }
