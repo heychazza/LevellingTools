@@ -29,7 +29,12 @@ public enum Lang
     COMMAND_NO_PERMISSION(new String[] { "{0} &cYou don't have permissions to do that." }), 
     COMMAND_PLAYER_ONLY(new String[] { "{0} &cThe command or args specified can only be used by a player." }), 
     COMMAND_INVALID(new String[] { "{0} &cThat command doesn't exist, use &f/lt help&c." }), 
-    COMMAND_UNKNOWN(new String[] { "{0} &cThat player couldn't be found." });
+    COMMAND_UNKNOWN(new String[] { "{0} &cThat player couldn't be found." }),
+
+    RESET_COMMAND_SELF(new String[] { "{0} &7You have reset your data." }),
+    RESET_COMMAND_OTHER(new String[] { "{0} &7You have reset &e{1}'s &7data." }),
+
+    ;
     
     private String message;
     private static Config config;

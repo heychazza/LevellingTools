@@ -3,6 +3,7 @@ package gg.plugins.levellingtools.command.util;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.command.HelpCommand;
 import gg.plugins.levellingtools.command.ReloadCommand;
+import gg.plugins.levellingtools.command.ResetCommand;
 import gg.plugins.levellingtools.command.XPCommand;
 import gg.plugins.levellingtools.config.Lang;
 import org.bukkit.command.CommandSender;
@@ -31,7 +32,8 @@ public class CommandManager {
         List<Class<?>> commandClasses = Arrays.asList(
                 HelpCommand.class,
                 ReloadCommand.class,
-                XPCommand.class
+                XPCommand.class,
+                ResetCommand.class
         );
 
         for (Class clazz : commandClasses) {
