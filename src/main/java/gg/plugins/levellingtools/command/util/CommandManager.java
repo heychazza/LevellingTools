@@ -57,7 +57,7 @@ public class CommandManager {
         }
     }
 
-    public boolean handle(CommandSender sender, String command, String[] args) {
+    boolean handle(CommandSender sender, String command, String[] args) {
         if (command == null) {
             Lang.MAIN_COMMAND.send(sender, Lang.PREFIX.asString(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin.getDescription().getAuthors().get(0));
             return true;

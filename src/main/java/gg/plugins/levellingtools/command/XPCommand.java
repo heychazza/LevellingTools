@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class XPCommand {
-    @Command(aliases = {"xp"}, about = "View yourself or another players xp.", permission = "levellingtools.xp", usage = "xp [player]")
+    @Command(aliases = {"xp"}, about = "View yourself or another players xp.", permission = "ltools.xp", usage = "xp [player]")
     public static void execute(final CommandSender sender, final LevellingTools plugin, final String[] args) {
         if (args.length > 0) {
             final OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);

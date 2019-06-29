@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelpCommand {
-    @Command(aliases = {"help"}, about = "View this menu.", permission = "levellingtools.help", usage = "help")
+    @Command(aliases = {"help"}, about = "View this menu.", permission = "ltools.help", usage = "help")
     public static void execute(final CommandSender sender, final LevellingTools plugin, final String[] args) {
         final List<Method> commandMethods = new ArrayList<Method>();
         for (final Method method : plugin.getCommandManager().getCommands().values()) {

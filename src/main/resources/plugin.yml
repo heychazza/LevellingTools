@@ -12,9 +12,14 @@ commands:
     aliases: ["ltools", "tools", "tool", "lt"]
 
 permissions:
-  levellingtools.reload:
-    description: Reload Plugin
+  ltools.reload:
+    description: Reload the configuration file into memory
+  ltools.info:
+    description: View information about the plugin
     default: true
-  levellingtools.info:
-    description: View Plugin Information
+  ltools.xp:
+    description: View yourself or another players xp amount
+    default: true
+  ltools.help:
+    description: View commands you have access to within the plugin
     default: true
