@@ -30,6 +30,9 @@ settings:
         - 'a_bad_region'
 
   global:
+    multiplier:
+      test: 1.2
+
     xp:
       STONE: 1
 

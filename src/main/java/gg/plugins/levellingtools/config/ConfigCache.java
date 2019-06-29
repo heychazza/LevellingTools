@@ -3,6 +3,7 @@ package gg.plugins.levellingtools.config;
 import com.google.common.collect.Maps;
 import dev.morphia.Datastore;
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Multiplier;
 import gg.plugins.levellingtools.tool.BlockXP;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import gg.plugins.levellingtools.util.EnchantUtil;
@@ -10,6 +11,7 @@ import gg.plugins.levellingtools.util.MongoDB;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
 import java.util.*;
@@ -18,7 +20,8 @@ import java.util.stream.Stream;
 public class ConfigCache {
 
     private static LevellingTools plugin;
-    private static HashMap<Integer, LevellingTool> tools;
+    private static Map<Integer, LevellingTool> tools;
+    private static List<Multiplier> multipliers;
     private static MongoDB mongoDB;
 
     private static List<String> blacklistedWorlds;
@@ -42,6 +45,8 @@ public class ConfigCache {
 
     public static void setup() {
         ConfigCache.tools = Maps.newHashMap();
+        ConfigCache.multipliers = new ArrayList<>();
+
         ConfigCache.mongoDB = new MongoDB(
                 plugin.getConfig().getString("settings.database.prefix", ""),
                 plugin.getConfig().getString("settings.database.host", "127.0.0.1"),
@@ -53,6 +58,25 @@ public class ConfigCache {
         );
 
         if (!plugin.isEnabled()) return;
+
+        plugin.getConfig().getConfigurationSection("settings.global.multiplier").getKeys(false).forEach(multiId -> {
+            double multiplier = plugin.getConfig().getDouble("settings.global.multiplier." + multiId, 1.0);
+
+            if(multiplier < 1.0) {
+                plugin.getLogger().warning("The multiplier by the id '" + multiId + "' has a value lower than expected and has been set to 1.0.");
+                multiplier = 1.0;
+            }
+
+            boolean exists = false;
+            for (Multiplier multiObj : multipliers) {
+                if(multiObj.getId().equalsIgnoreCase(multiId)) {
+                    plugin.getLogger().warning("A multiplier by the id '" + multiId + "' already exists.");
+                    exists = true;
+                }
+            }
+
+            if(!exists) multipliers.add(new Multiplier(multiId, multiplier));
+        });
 
         plugin.getConfig().getConfigurationSection("level").getKeys(false).forEach(levelStr -> {
             int level = Integer.valueOf(levelStr);
@@ -178,8 +202,20 @@ public class ConfigCache {
         globalActions = plugin.getConfig().getStringList("settings.global.actions");
     }
 
-    public static HashMap<Integer, LevellingTool> getTools() {
+    public static Map<Integer, LevellingTool> getTools() {
         return tools;
+    }
+
+    public static List<Multiplier> getMultipliers() {
+        return multipliers;
+    }
+
+    public static Multiplier getMultiplier(Player player) {
+        for (Multiplier multiplier : getMultipliers()) {
+            if(player.hasPermission(multiplier.getPermission())) return multiplier;
+        }
+
+        return null;
     }
 
     public static Datastore getDB() {

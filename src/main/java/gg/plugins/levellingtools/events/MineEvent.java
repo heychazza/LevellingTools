@@ -3,6 +3,7 @@ package gg.plugins.levellingtools.events;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Multiplier;
 import gg.plugins.levellingtools.api.ToolLevelUpEvent;
 import gg.plugins.levellingtools.api.ToolMineEvent;
 import gg.plugins.levellingtools.config.ConfigCache;
@@ -57,7 +58,8 @@ public class MineEvent implements Listener {
             final PlayerEntity user = PlayerEntity.getUser(player.getUniqueId());
             final LevellingTool playerTool = ConfigCache.getTools().get(user.getLevel());
             final double xpGained = playerTool.getXpFromBlock(block);
-            final ToolMineEvent mineEvent = new ToolMineEvent(player, item, xpGained, block, user, playerTool);
+            final Multiplier multiplier = ConfigCache.getMultiplier(player);
+            final ToolMineEvent mineEvent = new ToolMineEvent(player, item, xpGained, multiplier, block, user, playerTool);
             Bukkit.getServer().getPluginManager().callEvent(mineEvent);
         }
     }
@@ -68,7 +70,12 @@ public class MineEvent implements Listener {
         final Block block = e.getBlock();
         final PlayerEntity user = e.getPlayerData();
         LevellingTool tool = e.getTool();
-        final double xpGained = tool.getXpFromBlock(block);
+        double xpGained = tool.getXpFromBlock(block);
+
+        if(e.getMultiplier() != null) {
+            xpGained = xpGained * e.getMultiplier().getMultiplier();
+        }
+
         final double totalXp = user.getExperience() + xpGained;
         if (xpGained > 0) {
             StringUtil.sendActionbar(player, Lang.EXP_GAINED.asString(xpGained));
