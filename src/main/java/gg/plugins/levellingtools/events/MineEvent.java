@@ -72,7 +72,7 @@ public class MineEvent implements Listener {
         LevellingTool tool = e.getTool();
         double xpGained = tool.getXpFromBlock(block);
 
-        if(e.getMultiplier() != null) {
+        if (e.getMultiplier() != null) {
             xpGained = xpGained * e.getMultiplier().getMultiplier();
         }
 
@@ -101,7 +101,6 @@ public class MineEvent implements Listener {
         if (tool.isRestricted() && user.getExperience() > tool.getXpRequired()) {
             user.setExperience(tool.getXpRequired());
         }
-        ConfigCache.getDB().save(user);
         player.setItemInHand(LevellingTool.getItemStack(player, e.getBlock()));
     }
 

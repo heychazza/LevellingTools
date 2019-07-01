@@ -12,27 +12,27 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public enum Lang
 {
-    EXP_GAINED(new String[] { "&6&l+{0} EXP" }), 
-    PREFIX(new String[] { "&8[&6Tools&8]" }), 
-    MAIN_COMMAND(new String[] { "{0} &7Running &f{1} &7version &6{2} &7by &e{3}&7." }), 
-    HELP_COMMAND_HEADER(new String[] { "", "{0} &7Listing Commands:", "&7" }), 
-    HELP_COMMAND_FORMAT(new String[] { " &e/ltools {1} &8- &7{2}" }), 
-    HELP_COMMAND_FOOTER(new String[] { "", "{0} &7Total of &f{1} &7commands." }), 
-    RELOAD_COMMAND(new String[] { "{0} &7Successfully reloaded the configuration file." }), 
-    XP_COMMAND_SELF(new String[] { "{0} &7You have a total of {1} xp." }), 
-    XP_COMMAND_OTHER(new String[] { "{0} &7{1} has a total of {2} xp." }), 
-    PROGRESS_START(new String[] { "&8[" }), 
-    PROGRESS_CHARACTER(new String[] { ":" }), 
-    PROGRESS_END(new String[] { "&8]" }), 
-    PROGRESS_INCOMPLETE(new String[] { "&7" }), 
-    PROGRESS_COMPLETE(new String[] { "&a" }), 
-    COMMAND_NO_PERMISSION(new String[] { "{0} &cYou don't have permissions to do that." }), 
-    COMMAND_PLAYER_ONLY(new String[] { "{0} &cThe command or args specified can only be used by a player." }), 
-    COMMAND_INVALID(new String[] { "{0} &cThat command doesn't exist, use &f/lt help&c." }), 
-    COMMAND_UNKNOWN(new String[] { "{0} &cThat player couldn't be found." }),
+    EXP_GAINED("&6&l+{0} EXP"),
+    PREFIX("&8[&6Tools&8]"),
+    MAIN_COMMAND("{0} &7Running &f{1} &7version &6{2} &7by &e{3}&7."),
+    HELP_COMMAND_HEADER("", "{0} &7Listing Commands:", "&7"),
+    HELP_COMMAND_FORMAT(" &e/ltools {1} &8- &7{2}"),
+    HELP_COMMAND_FOOTER("", "{0} &7Total of &f{1} &7commands."),
+    RELOAD_COMMAND("{0} &7Successfully reloaded the configuration file."),
+    XP_COMMAND_SELF("{0} &7You have a total of {1} xp."),
+    XP_COMMAND_OTHER("{0} &7{1} has a total of {2} xp."),
+    PROGRESS_START("&8["),
+    PROGRESS_CHARACTER(":"),
+    PROGRESS_END("&8]"),
+    PROGRESS_INCOMPLETE("&7"),
+    PROGRESS_COMPLETE("&a"),
+    COMMAND_NO_PERMISSION("{0} &cYou don't have permissions to do that."),
+    COMMAND_PLAYER_ONLY("{0} &cThe command or args specified can only be used by a player."),
+    COMMAND_INVALID("{0} &cThat command doesn't exist, use &f/lt help&c."),
+    COMMAND_UNKNOWN("{0} &cThat player couldn't be found."),
 
-    RESET_COMMAND_SELF(new String[] { "{0} &7You have reset your data." }),
-    RESET_COMMAND_OTHER(new String[] { "{0} &7You have reset &e{1}'s &7data." }),
+    RESET_COMMAND_SELF("{0} &7You have reset your data."),
+    RESET_COMMAND_OTHER("{0} &7You have reset &e{1}'s &7data."),
 
     ;
     
@@ -40,7 +40,7 @@ public enum Lang
     private static Config config;
     private static FileConfiguration c;
     
-    Lang(final String[] def) {
+    Lang(final String... def) {
         this.message = String.join("\n", (CharSequence[])def);
     }
     

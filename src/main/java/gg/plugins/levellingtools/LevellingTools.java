@@ -6,6 +6,7 @@ import gg.plugins.levellingtools.command.util.CommandManager;
 import gg.plugins.levellingtools.config.Config;
 import gg.plugins.levellingtools.config.ConfigCache;
 import gg.plugins.levellingtools.config.Lang;
+import gg.plugins.levellingtools.entity.PlayerEntity;
 import gg.plugins.levellingtools.events.JoinEvent;
 import gg.plugins.levellingtools.events.MineEvent;
 import gg.plugins.levellingtools.events.PreMineEvent;
@@ -13,11 +14,19 @@ import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LevellingTools extends JavaPlugin {
     private CommandManager commandManager;
+    private Map<UUID, PlayerEntity> playerEntities;
+
+    public Map<UUID, PlayerEntity> getPlayerEntities() {
+        return playerEntities;
+    }
 
     public void onEnable() {
         this.saveDefaultConfig();
@@ -47,10 +56,10 @@ public class LevellingTools extends JavaPlugin {
         this.hook("WorldGuard");
         this.handleReload();
         this.registerCommands();
+        playerEntities = new HashMap<>();
     }
 
-    public void onDisable() {
-    }
+    public void onDisable() {}
 
     public CommandManager getCommandManager() {
         return this.commandManager;
