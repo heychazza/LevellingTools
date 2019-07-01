@@ -3,6 +3,9 @@ package gg.plugins.levellingtools.entity;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Indexed;
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.config.ConfigCache;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
@@ -17,7 +20,32 @@ public class PlayerEntity extends BaseEntity {
     private int level;
 
     public static PlayerEntity getUser(final UUID player) {
-        return LevellingTools.getPlugin(LevellingTools.class).getPlayerEntities().get(player);
+        LevellingTools plugin = LevellingTools.getPlugin(LevellingTools.class);
+
+        if(plugin.getPlayerEntities().containsKey(player)) {
+            return LevellingTools.getPlugin(LevellingTools.class).getPlayerEntities().get(player);
+        } else {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
+            PlayerEntity playerEntity = ConfigCache.getDB().createQuery(PlayerEntity.class).filter("uuid", offlinePlayer.getUniqueId().toString()).get();
+
+            if (playerEntity == null) {
+                PlayerEntity newPlayerEntity = new PlayerEntity();
+                newPlayerEntity.setUuid(offlinePlayer.getUniqueId().toString());
+                newPlayerEntity.setUsername(offlinePlayer.getName());
+                newPlayerEntity.setLowercaseUsername(offlinePlayer.getName().toLowerCase());
+                newPlayerEntity.setExperience(0);
+                newPlayerEntity.setBlocksBroken(0);
+                newPlayerEntity.setLevel(1);
+                playerEntity = newPlayerEntity;
+            }
+
+            plugin.getPlayerEntities().put(offlinePlayer.getUniqueId(), playerEntity);
+            return plugin.getPlayerEntities().get(player);
+        }
+    }
+
+    public void save() {
+        ConfigCache.getDB().save(this);
     }
 
     public String getUuid() {

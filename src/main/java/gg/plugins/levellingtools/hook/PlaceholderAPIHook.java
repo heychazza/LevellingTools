@@ -6,6 +6,7 @@ import gg.plugins.levellingtools.entity.PlayerEntity;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
     private LevellingTools plugin;
