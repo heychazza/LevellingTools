@@ -13,6 +13,7 @@ import gg.plugins.levellingtools.hook.WorldGuardHook;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,19 +32,25 @@ public class MineEvent implements Listener {
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
         final ItemStack item = player.getItemInHand();
+
+        if (item.getType() == Material.AIR) return;
+
         final NBTItem nbtItem = new NBTItem(item);
+
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             if (WorldGuardHook.getWorldGuard() != null) {
                 if (!WorldGuardHook.getWorldGuard().getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).allows(DefaultFlag.BLOCK_BREAK)) {
                     if (ConfigCache.cancelBlacklistedRegion()) {
-                        e.setCancelled(true);
+                        if (!player.hasPermission("levellingtools.bypass"))
+                            e.setCancelled(true);
                     }
                     return;
                 }
                 for (final String region : ConfigCache.getBlacklistedRegions()) {
                     if (WorldGuardHook.checkIfPlayerInRegion(player, region)) {
                         if (ConfigCache.cancelBlacklistedRegion()) {
-                            e.setCancelled(true);
+                            if (!player.hasPermission("levellingtools.bypass"))
+                                e.setCancelled(true);
                         }
                         return;
                     }

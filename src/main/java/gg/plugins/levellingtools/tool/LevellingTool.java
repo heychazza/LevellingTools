@@ -298,10 +298,10 @@ public class LevellingTool {
             if (LevellingTool.pickaxeBlocks.contains(block.getType())) {
                 return pickaxeType;
             }
-            else if (LevellingTool.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("global.omnitool.axe", true)) {
+            else if (LevellingTool.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.global.omnitool.axe", true)) {
                 return axeType;
             }
-            else if (LevellingTool.shovelBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("global.omnitool.shovel", true)) {
+            else if (LevellingTool.shovelBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.global.omnitool.shovel", true)) {
                 return shovelType;
             }
         }

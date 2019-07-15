@@ -12,6 +12,7 @@ import gg.plugins.levellingtools.events.MineEvent;
 import gg.plugins.levellingtools.events.PreMineEvent;
 import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -59,7 +60,12 @@ public class LevellingTools extends JavaPlugin {
         playerEntities = new HashMap<>();
     }
 
-    public void onDisable() {}
+    public void onDisable() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (getPlayerEntities().containsKey(player.getUniqueId()))
+                getPlayerEntities().get(player.getUniqueId()).save();
+        }
+    }
 
     public CommandManager getCommandManager() {
         return this.commandManager;
