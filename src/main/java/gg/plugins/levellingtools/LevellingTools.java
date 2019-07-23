@@ -47,18 +47,20 @@ public class LevellingTools extends JavaPlugin {
         new PreMineEvent(this);
         new MineEvent(this);
 
-        getLogger().info("");
-        getLogger().info("");
-        getLogger().info("  _                        _  _  _                 _                 _      ");
-        getLogger().info(" | |                      | || |(_)               | |               | |     ");
-        getLogger().info(" | |      ___ __   __ ___ | || | _  _ __    __ _  | |_  ___    ___  | | ___ ");
-        getLogger().info(" | |     / _ \\ \\ / // _ \\| || || || '_ \\  / _` | | __|/ _ \\  / _ \\ | |/ __|");
-        getLogger().info(" | |____|  __/ \\ V /|  __/| || || || | | || (_| | | |_| (_) || (_) || |\\__ \\");
-        getLogger().info(" |______|\\___|  \\_/  \\___||_||_||_||_| |_| \\__, |  \\__|\\___/  \\___/ |_||___/");
-        getLogger().info("                                            __/ |                           ");
-        getLogger().info("                                           |___/                            ");
-        getLogger().info("");
-        getLogger().info("");
+        if (getConfig().getBoolean("settings.header", true)) {
+            getLogger().info("");
+            getLogger().info("");
+            getLogger().info("  _                        _  _  _                 _                 _      ");
+            getLogger().info(" | |                      | || |(_)               | |               | |     ");
+            getLogger().info(" | |      ___ __   __ ___ | || | _  _ __    __ _  | |_  ___    ___  | | ___ ");
+            getLogger().info(" | |     / _ \\ \\ / // _ \\| || || || '_ \\  / _` | | __|/ _ \\  / _ \\ | |/ __|");
+            getLogger().info(" | |____|  __/ \\ V /|  __/| || || || | | || (_| | | |_| (_) || (_) || |\\__ \\");
+            getLogger().info(" |______|\\___|  \\_/  \\___||_||_||_||_| |_| \\__, |  \\__|\\___/  \\___/ |_||___/");
+            getLogger().info("                                            __/ |                           ");
+            getLogger().info("                                           |___/                            ");
+            getLogger().info("");
+            getLogger().info("");
+        }
         NBTAPI.setLogging(false);
 
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");

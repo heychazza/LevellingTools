@@ -3,6 +3,7 @@ version: ${project.version}
 main: ${package}
 author: Chazza
 website: https://plugins.gg/
+description: "The ultimate way to make your server stand out from the rest."
 softdepend: ["PlaceholderAPI", "WorldGuard"]
 
 commands:
@@ -12,14 +13,15 @@ commands:
     aliases: ["ltools", "tools", "tool", "lt"]
 
 permissions:
+  ltools.give:
+    description: Give yourself or a player a levelling tool
   ltools.reload:
     description: Reload the configuration file into memory
+  ltools.help:
+    description: View commands you have access to within the plugin
   ltools.info:
     description: View information about the plugin
     default: true
   ltools.xp:
     description: View yourself or another players xp amount
-    default: true
-  ltools.help:
-    description: View commands you have access to within the plugin
     default: true

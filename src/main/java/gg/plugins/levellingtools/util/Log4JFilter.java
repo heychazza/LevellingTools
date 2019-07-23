@@ -14,7 +14,7 @@ public class Log4JFilter extends AbstractFilter {
 
     private static final long serialVersionUID = -5594073755007974254L;
 
-    private static List<String> hiddenLogs = Arrays.asList("creating table", "table statement changed", "/ormlite/core/VERSION.txt");
+    private static List<String> hiddenLogs = Arrays.asList("creating table", "table statement changed", "/ormlite/core/VERSION.txt", "ORMLite", ".storage.sqlite", "closed connection #", "Xerial SQLite driver.", "/playerdata.db");
 
     private static Result validateMessage(Message message) {
         if (message == null) {

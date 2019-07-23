@@ -47,6 +47,7 @@
                                 <exclude>/*.png</exclude>
                                 <exclude>/*.html</exclude>
                                 <exclude>/*.jpeg</exclude>
+                                <exclude>*.xsd</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -60,22 +61,17 @@
                         </relocation>
                         <relocation>
                             <pattern>de.tr7zw.itemnbtapi</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.nbtapi
+                            <shadedPattern>${project.groupId}.${project.artifactId}.apple
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>com.mongodb</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.mongodb
-                            </shadedPattern> <!-- Replace this -->
-                        </relocation>
-                        <relocation>
-                            <pattern>org.bson</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.bson
+                            <shadedPattern>${project.groupId}.${project.artifactId}.banana
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
                         <relocation>
                             <pattern>com.j256.ormlite</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.ormlite
+                            <shadedPattern>${project.groupId}.${project.artifactId}.pear
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
                     </relocations>
@@ -91,6 +87,9 @@
                                 <excludes>
                                     <exclude>org.jetbrains:annotations</exclude>
                                     <exclude>org.bstats:*</exclude>
+                                    <exclude>com.j256.ormlite:ormlite-core:jar</exclude>
+                                    <exclude>com.github.Chazza.Item-NBT-API:item-nbt-api:jar</exclude>
+                                    <exclude>com.github.Chazza.Item-NBT-API:item-nbt-api-plugin:jar</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

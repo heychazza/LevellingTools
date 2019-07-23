@@ -72,6 +72,7 @@ public class MineEvent implements Listener {
 
             for (final String region : ConfigCache.getBlacklistedRegions()) {
                 if (WorldGuardHook.checkIfPlayerInRegion(player, region)) {
+                    plugin.log(player.getName() + " wasn't able to gain xp due to '" + region + "' being a blacklisted region.");
                     canLevelUp = false;
                     break;
                 }
@@ -79,12 +80,13 @@ public class MineEvent implements Listener {
         }
 
         if (ConfigCache.getBlacklistedWorlds().contains(block.getWorld().getName())) {
+            plugin.log(player.getName() + " wasn't able to gain xp due to being in a blacklisted world.");
             canLevelUp = false;
         }
 
         if (canLevelUp) {
             final double totalXp = user.getXp() + xpGained;
-            if (xpGained > 0) {
+            if (xpGained > 0 && !Lang.EXP_GAINED.asString().isEmpty()) {
                 StringUtil.sendActionbar(player, Lang.EXP_GAINED.asString(xpGained));
             }
             user.setXp(totalXp);
