@@ -1,48 +1,61 @@
-# __       ___________    ____  _______  __       __       __  .__   __.   _______    .___________.  ______     ______    __          _______.
-# |  |     |   ____\   \  /   / |   ____||  |     |  |     |  | |  \ |  |  /  _____|   |           | /  __  \   /  __  \  |  |        /       |
-# |  |     |  |__   \   \/   /  |  |__   |  |     |  |     |  | |   \|  | |  |  __     `---|  |----`|  |  |  | |  |  |  | |  |       |   (----`
-# |  |     |   __|   \      /   |   __|  |  |     |  |     |  | |  . `  | |  | |_ |        |  |     |  |  |  | |  |  |  | |  |        \   \
-# |  `----.|  |____   \    /    |  |____ |  `----.|  `----.|  | |  |\   | |  |__| |        |  |     |  `--'  | |  `--'  | |  `----.----)   |
-# |_______||_______|   \__/     |_______||_______||_______||__| |__| \__|  \______|        |__|      \______/   \______/  |_______|_______/
-#
+## Tool Upgrades - v2.0.0 ##
 
 settings:
 
-  # Enter your mongodb credentials here.
-  database:
-    name: "levellingtools"
+  # If enabled, this option will only use the 'pickaxe'
+  # format for each level. This is useful if you only
+  # want to use the same format for all tool types.
+  use_one_format: true
+
+  # You may specify if you wish to give a levelling tool
+  # on join or not. By turning this off, you'll need to use
+  # the give command to give these - useful for selling as a
+  # special tool on the store.
+  give_on_join: true
+
+  # This is where all your player data will be saved.
+  # It is not recommended to change this on a live
+  # server, as players can lose data.
+  storage:
+    # Options: FLATFILE, MYSQL & MONGODB
+    type: MYSQL
+    database: "levellingtools"
     host: "127.0.0.1"
     port: 27017
+    username: ""
+    password: ""
 
-  # You may blacklist a world or region, which will stop
-  # players from being able to level up their tool.
   blacklist:
     world:
-      # Enabling the cancel option will stop the block being
-      # placed, or disabling will allow but not add xp.
-      cancel: true
       list: []
     region:
-      cancel: true
-      # If you wish to enable these, add them below.
-      # To disable change it to 'list: []'
-      list:
-        - 'a_bad_region'
+      list: []
 
-  global:
-    multiplier:
-      test: 1.2
+  # You may optionally disable a particular type,
+  # the pickaxe type will always remain enabled.
+  type:
+    axe: true
+    shovel: true
 
-    xp:
-      STONE: 1
+  # These are the settings related to enchants,
+  # the prefix is used if the specified enchant doesn't
+  # exist. This is useful for custom enchants, where
+  # you may define a prefix.
+  enchants:
+    prefix: "&7&r"
 
-    actions:
-      - 'tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}'
-      - 'msg {player} &6[&eTool&6] &7You''ve reached level &f%level% with &e%blocks% &7block(s) broken. Congrats!'
+  # You may give players xp boosts, which multipliers
+  # their total amount that they receive. The permission
+  # will be ltools.multi.<name>, where the name is in lowercase.
+  boosters:
+    donor: 1.05 # 5% boost
+    staff: 1.25 # 25% boost
 
-# You can specify the default format for the tools,
-# which may be overridden inside of the 'level' section.
-# Placeholders: {level} (current tool level), {blocks} (total blocks broken)
+  actions:
+    - 'tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}'
+    - 'msg {player} &6[&eTool&6] &7You''ve reached level &f%level% with &e%blocks% &7block(s) broken. Congrats!'
+
+
 format:
   pickaxe:
     name: "&e&lLEVELLING PICKAXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
@@ -76,7 +89,7 @@ format:
       - "&8-------------------------------------"
 
 # This is the primary section, where you define
-# your tools levels, alongside its enchantments.
+# your tools levels, alongside its enchants.
 level:
   1:
     settings:
@@ -101,7 +114,7 @@ level:
           lore: []
       # The enchantments you wish to set onto the tool.
       # For example, 'EFFICIENCY', 'FORTUNE', 'UNBREAKING' etc.
-      enchantments:
+      enchants:
         # Format is '<ENCHANT>:<LEVEL>'
         EFFICIENCY: 1
       # The xp a player will gain from mining the listed block.
@@ -112,7 +125,6 @@ level:
     # These are the commands that are executed on level up.
     # You may ignore the below, and configure it for level 2+.
     actions: []
-
   2:
     settings:
       type: GOLD
@@ -128,7 +140,7 @@ level:
         shovel:
           name: ""
           lore: []
-      enchantments:
+      enchants:
         EFFICIENCY: 1
       experience:
         STONE: 25
@@ -151,7 +163,7 @@ level:
         shovel:
           name: ""
           lore: []
-      enchantments:
+      enchants:
         EFFICIENCY: 1
       experience:
         STONE: 25
@@ -174,7 +186,7 @@ level:
         shovel:
           name: ""
           lore: []
-      enchantments:
+      enchants:
         EFFICIENCY: 1
         FORTUNE: 5
       experience:

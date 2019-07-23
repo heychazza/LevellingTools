@@ -1,12 +1,10 @@
 package gg.plugins.levellingtools.hook;
 
 import gg.plugins.levellingtools.LevellingTools;
-import gg.plugins.levellingtools.config.ConfigCache;
-import gg.plugins.levellingtools.entity.PlayerEntity;
+import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
     private LevellingTools plugin;
@@ -23,7 +21,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
      * @return true to persist through reloads
      */
     @Override
-    public boolean persist(){
+    public boolean persist() {
         return true;
     }
 
@@ -34,7 +32,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
      * @return Always true since it's an internal class.
      */
     @Override
-    public boolean canRegister(){
+    public boolean canRegister() {
         return true;
     }
 
@@ -45,7 +43,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
      * @return The name of the author as a String.
      */
     @Override
-    public String getAuthor(){
+    public String getAuthor() {
         return plugin.getDescription().getAuthors().toString();
     }
 
@@ -59,26 +57,26 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
      * @return The identifier in {@code %<identifier>_<value>%} as String.
      */
     @Override
-    public String getIdentifier(){
+    public String getIdentifier() {
         return plugin.getDescription().getName().toLowerCase();
     }
 
     /**
      * This is the version of the expansion.
      * <br>You don't have to use numbers, since it is set as a String.
-     *
+     * <p>
      * For convienience do we return the version from the plugin.yml
      *
      * @return The version as a String.
      */
     @Override
-    public String getVersion(){
+    public String getVersion() {
         return plugin.getDescription().getVersion();
     }
 
     public String onRequest(final OfflinePlayer player, final String identifier) {
-        final PlayerEntity playerEntity = PlayerEntity.getUser(player.getUniqueId());
-        final LevellingTool nextLevel = (ConfigCache.getTools().size() > playerEntity.getLevel()) ? ConfigCache.getTools().get(playerEntity.getLevel() + 1) : ConfigCache.getTools().get(playerEntity.getLevel());
+        final PlayerData playerEntity = PlayerData.get().get(player.getUniqueId());
+
         if (identifier.equals("level")) {
             return String.valueOf(playerEntity.getLevel());
         }
@@ -86,10 +84,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             return String.valueOf(playerEntity.getBlocksBroken());
         }
         if (identifier.equals("progress")) {
-            return String.valueOf(LevellingTool.getProgress(playerEntity, nextLevel));
+            return String.valueOf(LevellingTool.getProgress(playerEntity));
         }
         if (identifier.equals("progress_bar")) {
-            return LevellingTool.getProgressBar(playerEntity, nextLevel);
+            return LevellingTool.getProgressBar(playerEntity);
         }
         return null;
     }

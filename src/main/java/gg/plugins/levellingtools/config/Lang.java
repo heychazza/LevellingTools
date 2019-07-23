@@ -1,14 +1,12 @@
 package gg.plugins.levellingtools.config;
 
-import org.bukkit.command.CommandSender;
-import java.util.function.Consumer;
-import java.util.Arrays;
-import org.bukkit.entity.Player;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.Optional;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 public enum Lang
 {
@@ -21,6 +19,8 @@ public enum Lang
     RELOAD_COMMAND("{0} &7Successfully reloaded the configuration file."),
     XP_COMMAND_SELF("{0} &7You have a total of {1} xp."),
     XP_COMMAND_OTHER("{0} &7{1} has a total of {2} xp."),
+    GIVE_COMMAND_SELF("{0} &7You've given yourself a levelling tool&7."),
+    GIVE_COMMAND_OTHER("{0} &7You've given &e{1} &7a levelling tool."),
     PROGRESS_START("&8["),
     PROGRESS_CHARACTER(":"),
     PROGRESS_END("&8]"),
@@ -58,18 +58,24 @@ public enum Lang
         }
         return ChatColor.translateAlternateColorCodes('&', s);
     }
-    
-    public String asString(final Object... objects) {
-        Optional<String> opt = Optional.empty();
-        if (Lang.c.contains(this.name())) {
-            if (Lang.c.isList(this.name())) {
-                opt = Optional.ofNullable(Lang.c.getStringList(this.name()).stream().collect(Collectors.joining("\n")));
-            }
-            else if (Lang.c.isString(this.name())) {
-                opt = Optional.ofNullable(Lang.c.getString(this.name()));
+
+    public static boolean init(final Config wrapper) {
+        wrapper.loadConfig();
+        if (wrapper.getConfig() == null) {
+            return false;
+        }
+        Lang.config = wrapper;
+        Lang.c = wrapper.getConfig();
+        for (final Lang value : values()) {
+            if (value.getMessage().split("\n").length == 1) {
+                Lang.c.addDefault(value.getPath().toLowerCase(), value.getMessage());
+            } else {
+                Lang.c.addDefault(value.getPath().toLowerCase(), value.getMessage().split("\n"));
             }
         }
-        return this.format(opt.orElse(this.message), objects);
+        Lang.c.options().copyDefaults(true);
+        wrapper.saveConfig();
+        return true;
     }
     
     public void send(final Player player, final Object... args) {
@@ -94,25 +100,17 @@ public enum Lang
     public static Config getConfig() {
         return Lang.config;
     }
-    
-    public static boolean init(final Config wrapper) {
-        wrapper.loadConfig();
-        if (wrapper.getConfig() == null) {
-            return false;
-        }
-        Lang.config = wrapper;
-        Lang.c = wrapper.getConfig();
-        for (final Lang value : values()) {
-            if (value.getMessage().split("\n").length == 1) {
-                Lang.c.addDefault(value.getPath(), value.getMessage());
-            }
-            else {
-                Lang.c.addDefault(value.getPath(), value.getMessage().split("\n"));
+
+    public String asString(final Object... objects) {
+        Optional<String> opt = Optional.empty();
+        if (Lang.c.contains(this.name())) {
+            if (Lang.c.isList(this.name())) {
+                opt = Optional.of(String.join("\n", Lang.c.getStringList(this.name())));
+            } else if (Lang.c.isString(this.name())) {
+                opt = Optional.ofNullable(Lang.c.getString(this.name()));
             }
         }
-        Lang.c.options().copyDefaults(true);
-        wrapper.saveConfig();
-        return true;
+        return this.format(opt.orElse(this.message), objects);
     }
     
     public static void reload() {

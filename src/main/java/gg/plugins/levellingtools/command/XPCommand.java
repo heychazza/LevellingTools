@@ -3,7 +3,7 @@ package gg.plugins.levellingtools.command;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.command.util.Command;
 import gg.plugins.levellingtools.config.Lang;
-import gg.plugins.levellingtools.entity.PlayerEntity;
+import gg.plugins.levellingtools.storage.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -18,23 +18,23 @@ public class XPCommand {
                 Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
                 return;
             }
-            final PlayerEntity playerEntity = PlayerEntity.getUser(target.getUniqueId());
+            final PlayerData playerEntity = PlayerData.get().get(target.getUniqueId());
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
                 if (player.getUniqueId() == target.getUniqueId()) {
-                    Lang.XP_COMMAND_SELF.send(player, Lang.PREFIX.asString(), playerEntity.getExperience());
+                    Lang.XP_COMMAND_SELF.send(player, Lang.PREFIX.asString(), playerEntity.getXp());
                     return;
                 }
             }
-            Lang.XP_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), playerEntity.getUsername(), playerEntity.getExperience());
+            Lang.XP_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), playerEntity.getUsername(), playerEntity.getXp());
         } else {
             if (!(sender instanceof Player)) {
                 Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
                 return;
             }
             final Player player2 = (Player) sender;
-            final PlayerEntity playerEntity = PlayerEntity.getUser(player2.getUniqueId());
-            Lang.XP_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), playerEntity.getExperience());
+            final PlayerData playerEntity = PlayerData.get().get(player2.getUniqueId());
+            Lang.XP_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), playerEntity.getXp());
         }
     }
 }

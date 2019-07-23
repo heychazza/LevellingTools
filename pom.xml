@@ -6,7 +6,7 @@
 
     <groupId>gg.plugins</groupId>
     <artifactId>levellingtools</artifactId>
-    <version>1.2.8</version>
+    <version>2.0.0</version>
 
     <properties>
         <plugin>LevellingTools</plugin>
@@ -54,11 +54,6 @@
                     </dependencyReducedPomLocation>
                     <relocations>
                         <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>${project.groupId}.${project.artifactId}.acf
-                            </shadedPattern> <!-- Replace this -->
-                        </relocation>
-                        <relocation>
                             <pattern>dev.morphia</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.morphia
                             </shadedPattern> <!-- Replace this -->
@@ -76,6 +71,11 @@
                         <relocation>
                             <pattern>org.bson</pattern>
                             <shadedPattern>${project.groupId}.${project.artifactId}.bson
+                            </shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>com.j256.ormlite</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.ormlite
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
                     </relocations>
@@ -119,40 +119,49 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>dev.morphia.morphia</groupId>
+            <artifactId>core</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.j256</groupId>
+            <artifactId>ormlite-core</artifactId>
+            <version>4.43</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.j256</groupId>
+            <artifactId>ormlite-jdbc</artifactId>
+            <version>4.43</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.7</version>
+        </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.10.1</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>dev.morphia.morphia</groupId>
-            <artifactId>core</artifactId>
-            <version>1.5.2</version>
-        </dependency>
-
         <dependency>
             <groupId>com.github.Chazza</groupId>
             <artifactId>Item-NBT-API</artifactId>
             <version>3d06992b2a</version>
         </dependency>
-
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>6.1.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <repositories>

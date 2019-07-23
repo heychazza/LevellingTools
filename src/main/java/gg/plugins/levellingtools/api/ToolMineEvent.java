@@ -1,6 +1,6 @@
 package gg.plugins.levellingtools.api;
 
-import gg.plugins.levellingtools.entity.PlayerEntity;
+import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,18 +13,18 @@ public class ToolMineEvent extends Event implements Cancellable {
     private Player player;
     private ItemStack item;
     private double xpGained;
-    private Multiplier multiplier;
+    private Booster booster;
     private Block block;
-    private PlayerEntity playerData;
+    private PlayerData playerData;
     private LevellingTool tool;
     private static final HandlerList HANDLERS_LIST;
     private boolean isCancelled;
 
-    public ToolMineEvent(final Player player, final ItemStack item, final double xpGained, final Multiplier multiplier, final Block block, final PlayerEntity playerData, final LevellingTool tool) {
+    public ToolMineEvent(final Player player, final ItemStack item, final double xpGained, final Booster booster, final Block block, final PlayerData playerData, final LevellingTool tool) {
         this.player = player;
         this.item = item;
         this.xpGained = xpGained;
-        this.multiplier = multiplier;
+        this.booster = booster;
         this.block = block;
         this.playerData = playerData;
         this.tool = tool;
@@ -59,16 +59,16 @@ public class ToolMineEvent extends Event implements Cancellable {
         return this.xpGained;
     }
 
-    public Multiplier getMultiplier() {
-        return multiplier;
+    public Booster getBooster() {
+        return booster;
     }
 
     public Block getBlock() {
         return this.block;
     }
 
-    public PlayerEntity getPlayerData() {
-        return this.playerData;
+    public void setBooster(Booster booster) {
+        this.booster = booster;
     }
 
     public LevellingTool getTool() {
@@ -79,8 +79,8 @@ public class ToolMineEvent extends Event implements Cancellable {
         this.xpGained = xpGained;
     }
 
-    public void setMultiplier(Multiplier multiplier) {
-        this.multiplier = multiplier;
+    public PlayerData getPlayerData() {
+        return this.playerData;
     }
 
     static {

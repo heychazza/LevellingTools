@@ -1,10 +1,7 @@
 package gg.plugins.levellingtools.command.util;
 
 import gg.plugins.levellingtools.LevellingTools;
-import gg.plugins.levellingtools.command.HelpCommand;
-import gg.plugins.levellingtools.command.ReloadCommand;
-import gg.plugins.levellingtools.command.ResetCommand;
-import gg.plugins.levellingtools.command.XPCommand;
+import gg.plugins.levellingtools.command.*;
 import gg.plugins.levellingtools.config.Lang;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,11 +30,12 @@ public class CommandManager {
                 HelpCommand.class,
                 ReloadCommand.class,
                 XPCommand.class,
-                ResetCommand.class
+                ResetCommand.class,
+                GiveCommand.class
         );
 
-        for (Class clazz : commandClasses) {
-            for (Method method : clazz.getMethods()) {
+        for (Class cmdClass : commandClasses) {
+            for (Method method : cmdClass.getMethods()) {
                 if (!method.isAnnotationPresent(Command.class)) continue; // make sure method is marked as an annotation
 
                 if (method.getParameters().length != 3) {
