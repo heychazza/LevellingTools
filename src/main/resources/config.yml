@@ -55,6 +55,90 @@ settings:
     - 'tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}'
     - 'msg {player} &6[&eTool&6] &7You''ve reached level &f%level% with &e%blocks% &7block(s) broken. Congrats!'
 
+  # These are the list of materials that determine which
+  # tool should be used for each block specified.
+  blocks:
+    pickaxe:
+      - STONE
+      - COBBLESTONE
+      - MOSSY_COBBLESTONE
+      - SANDSTONE
+      - OBSIDIAN
+      - COAL_ORE
+      - IRON_ORE
+      - IRON_BLOCK
+      - LAPIS_ORE
+      - LAPIS_BLOCK
+      - GOLD_ORE
+      - GOLD_BLOCK
+      - REDSTONE_ORE
+      - GLOWING_REDSTONE_ORE
+      - REDSTONE_BLOCK
+      - EMERALD_ORE
+      - EMERALD_BLOCK
+      - DIAMOND_ORE
+      - DIAMOND_BLOCK
+      - STEP
+      - DOUBLE_STEP
+      - COBBLESTONE_STAIRS
+      - COBBLE_WALL
+      - BRICK
+      - BRICK_STAIRS
+      - ICE
+      - PACKED_ICE
+      - NETHERRACK
+      - NETHER_BRICK
+      - NETHER_BRICK_STAIRS
+      - NETHER_FENCE
+      - ANVIL
+      - QUARTZ_ORE
+      - QUARTZ_BLOCK
+      - QUARTZ_STAIRS
+      - CLAY_BRICK
+      - STAINED_CLAY
+      - HARD_CLAY
+      - FURNACE
+      - DISPENSER
+      - BREWING_STAND
+      - CAULDRON
+      - HOPPER
+    axe:
+      - LOG
+      - LOG_2
+      - WOOD
+      - WOOD_STEP
+      - WOOD_DOUBLE_STEP
+      - WOOD_STAIRS
+      - BIRCH_WOOD_STAIRS
+      - JUNGLE_WOOD_STAIRS
+      - SPRUCE_WOOD_STAIRS
+      - ACACIA_STAIRS
+      - DARK_OAK_STAIRS
+      - WORKBENCH
+      - LADDER
+      - RAILS
+      - ACTIVATOR_RAIL
+      - DETECTOR_RAIL
+      - POWERED_RAIL
+      - SIGN
+      - SIGN_POST
+      - PUMPKIN
+      - JACK_O_LANTERN
+      - HUGE_MUSHROOM_1
+      - HUGE_MUSHROOM_2
+      - FENCE
+      - FENCE_GATE
+    shovel:
+      - GRASS
+      - DIRT
+      - SAND
+      - GRAVEL
+      - SNOW
+      - SNOW_BLOCK
+      - CLAY
+      - SOUL_SAND
+      - MYCEL
+
 
 format:
   pickaxe:

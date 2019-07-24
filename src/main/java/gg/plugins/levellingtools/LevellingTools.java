@@ -125,6 +125,7 @@ public class LevellingTools extends JavaPlugin {
 
     public void handleReload() {
         reloadConfig();
+
         Lang.init(new Config(this, "lang.yml"));
         new ConfigCache(this).setup();
         setupStorage();

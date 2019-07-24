@@ -39,6 +39,10 @@ public class ConfigCache {
     private static boolean giveOnJoin;
     private static boolean debug;
 
+    public static List<Material> pickaxeBlocks;
+    public static List<Material> axeBlocks;
+    public static List<Material> shovelBlocks;
+
 
     public ConfigCache(LevellingTools plugin) {
         ConfigCache.plugin = plugin;
@@ -95,6 +99,34 @@ public class ConfigCache {
         enchantPrefix = StringUtil.translate(data.getString("settings.enchants.prefix", "&7"));
         giveOnJoin = data.getBoolean("settings.give_on_join", true);
         giveOnJoin = data.getBoolean("settings.debug", false);
+
+        pickaxeBlocks = new ArrayList<>();
+        axeBlocks = new ArrayList<>();
+        shovelBlocks = new ArrayList<>();
+
+        plugin.getConfig().getStringList("settings.blocks.pickaxe").forEach(pickaxeBlock -> {
+            if (Material.getMaterial(pickaxeBlock) == null) {
+                plugin.getLogger().warning("Material '" + pickaxeBlock + "' for pickaxe blocks is invalid. Skipping!");
+                return;
+            }
+            pickaxeBlocks.add(Material.valueOf(pickaxeBlock));
+        });
+
+        plugin.getConfig().getStringList("settings.blocks.shovel").forEach(shovelBlock -> {
+            if (Material.getMaterial(shovelBlock) == null) {
+                plugin.getLogger().warning("Material '" + shovelBlock + "' for shovel blocks is invalid. Skipping!");
+                return;
+            }
+            axeBlocks.add(Material.valueOf(shovelBlock));
+        });
+
+        plugin.getConfig().getStringList("settings.blocks.axe").forEach(axeBlock -> {
+            if (Material.getMaterial(axeBlock) == null) {
+                plugin.getLogger().warning("Material '" + axeBlock + "' for axe blocks is invalid. Skipping!");
+                return;
+            }
+            shovelBlocks.add(Material.valueOf(axeBlock));
+        });
 
         data.getConfigurationSection("settings.boosters").getKeys(false).forEach(multiId -> {
             double multiplier = data.getDouble("settings.boosters." + multiId, 1.0);
