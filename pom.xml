@@ -74,6 +74,10 @@
                             <shadedPattern>${project.groupId}.${project.artifactId}.pear
                             </shadedPattern> <!-- Replace this -->
                         </relocation>
+                        <relocation>
+                            <pattern>org.codemc.worldguardwrapper</pattern>
+                            <shadedPattern>${project.groupId}.${project.artifactId}.regions</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -121,7 +125,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.14.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -156,10 +160,9 @@
             <version>3d06992b2a</version>
         </dependency>
         <dependency>
-            <groupId>com.sk89q</groupId>
-            <artifactId>worldguard</artifactId>
-            <version>6.1.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.codemc.worldguardwrapper</groupId>
+            <artifactId>worldguardwrapper</artifactId>
+            <version>1.1.6-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -179,6 +182,10 @@
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
     </repositories>
 </project>

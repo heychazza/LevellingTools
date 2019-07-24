@@ -10,6 +10,7 @@ import gg.plugins.levellingtools.event.JoinEvent;
 import gg.plugins.levellingtools.event.MineEvent;
 import gg.plugins.levellingtools.event.PreMineEvent;
 import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
+import gg.plugins.levellingtools.hook.WorldGuardHook;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.storage.StorageHandler;
 import gg.plugins.levellingtools.storage.mongodb.MongoDBHandler;
@@ -18,8 +19,6 @@ import gg.plugins.levellingtools.storage.sqlite.SQLiteHandler;
 import gg.plugins.levellingtools.util.Log4JFilter;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -75,6 +74,13 @@ public class LevellingTools extends JavaPlugin {
         registerCommands();
     }
 
+    @Override
+    public void onDisable() {
+        PlayerData.users.forEach(((uuid, playerData) -> {
+            getStorageHandler().pushData(uuid);
+        }));
+    }
+
     private void setupStorage() {
         String storageType = getConfig().getString("settings.storage.type", "FLATFILE").toUpperCase();
 
@@ -125,13 +131,13 @@ public class LevellingTools extends JavaPlugin {
 
     public void handleReload() {
         reloadConfig();
-
         Lang.init(new Config(this, "lang.yml"));
-        new ConfigCache(this).setup();
+        new ConfigCache(this);
+        ConfigCache.setup();
         setupStorage();
     }
 
-    private boolean hook(final String plugin) {
+    private void hook(final String plugin) {
         final boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);
         if (enabled) {
             getLogger().info(String.format("I've hooked into %s.", plugin));
@@ -139,19 +145,10 @@ public class LevellingTools extends JavaPlugin {
             if (plugin.equalsIgnoreCase("PlaceholderAPI")) {
                 new PlaceholderAPIHook(this).register();
             }
+
+            if (plugin.equalsIgnoreCase("WorldGuard")) {
+                new WorldGuardHook(this);
+            }
         }
-        return enabled;
     }
-
-    @Override
-    public void onDisable() {
-        PlayerData.get().forEach((user, playerData) -> storageHandler.pushData(user));
-    }
-
-    @EventHandler
-    public void onJoin(BlockBreakEvent e) {
-        PlayerData playerData = storageHandler.getPlayer(e.getPlayer().getUniqueId());
-        playerData.setBlocksBroken(playerData.getBlocksBroken() + 1);
-    }
-
 }

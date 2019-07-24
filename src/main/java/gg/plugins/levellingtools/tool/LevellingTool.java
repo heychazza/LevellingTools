@@ -186,13 +186,26 @@ public class LevellingTool {
     }
 
     public static Material getType(final Block block, final String type) {
-        final Material pickaxeType = Material.valueOf((type + "_PICKAXE").toUpperCase());
-        final Material axeType = Material.valueOf((type + "_AXE").toUpperCase());
-        final Material shovelType = Material.valueOf((type + "_SPADE").toUpperCase());
+        String pickaxeTypeStr = type + "_PICKAXE";
+        String axeTypeStr = type + "_AXE";
+        String shovelTypeStr = type + "_SHOVEL";
+
+        Material pickaxeType;
+        Material axeType;
+        Material shovelType;
+
+        if (ConfigCache.useNewMaterials()) {
+            pickaxeTypeStr = "LEGACY_" + pickaxeTypeStr;
+            axeTypeStr = "LEGACY_" + axeTypeStr;
+            shovelTypeStr = "LEGACY_" + type + "_SPADE";
+        }
+
+        pickaxeType = Material.valueOf(pickaxeTypeStr.toUpperCase());
+        axeType = Material.valueOf(axeTypeStr.toUpperCase());
+        shovelType = Material.valueOf(shovelTypeStr.toUpperCase());
+
         if (block != null && block.getType() != Material.AIR) {
-            if (ConfigCache.pickaxeBlocks.contains(block.getType())) {
-                return pickaxeType;
-            } else if (ConfigCache.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.type.axe", true)) {
+            if (ConfigCache.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.type.axe", true)) {
                 return axeType;
             } else if (ConfigCache.shovelBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.type.shovel", true)) {
                 return shovelType;

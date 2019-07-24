@@ -7,6 +7,7 @@ import gg.plugins.levellingtools.tool.BlockXP;
 import gg.plugins.levellingtools.tool.LevellingTool;
 import gg.plugins.levellingtools.util.EnchantUtil;
 import gg.plugins.levellingtools.util.StringUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -42,6 +43,8 @@ public class ConfigCache {
     public static List<Material> pickaxeBlocks;
     public static List<Material> axeBlocks;
     public static List<Material> shovelBlocks;
+
+    private static boolean useNewMaterials;
 
 
     public ConfigCache(LevellingTools plugin) {
@@ -88,7 +91,11 @@ public class ConfigCache {
         return giveOnJoin;
     }
 
-    public void setup() {
+    public static boolean useNewMaterials() {
+        return useNewMaterials;
+    }
+
+    public static void setup() {
         ConfigCache.tools = Maps.newHashMap();
         ConfigCache.boosters = new ArrayList<>();
 
@@ -98,13 +105,18 @@ public class ConfigCache {
 
         enchantPrefix = StringUtil.translate(data.getString("settings.enchants.prefix", "&7"));
         giveOnJoin = data.getBoolean("settings.give_on_join", true);
-        giveOnJoin = data.getBoolean("settings.debug", false);
+        debug = data.getBoolean("settings.debug", false);
+        if (Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].replace("v", "").replace("_", "").split("R", 2)[0]) >= 114) {
+            useNewMaterials = true;
+            plugin.getLogger().info("Plugin set to use material names from 1.14 and above.");
 
+        }
         pickaxeBlocks = new ArrayList<>();
         axeBlocks = new ArrayList<>();
         shovelBlocks = new ArrayList<>();
 
         plugin.getConfig().getStringList("settings.blocks.pickaxe").forEach(pickaxeBlock -> {
+            pickaxeBlock = useNewMaterials ? "LEGACY_" + pickaxeBlock : pickaxeBlock;
             if (Material.getMaterial(pickaxeBlock) == null) {
                 plugin.getLogger().warning("Material '" + pickaxeBlock + "' for pickaxe blocks is invalid. Skipping!");
                 return;
@@ -113,6 +125,7 @@ public class ConfigCache {
         });
 
         plugin.getConfig().getStringList("settings.blocks.shovel").forEach(shovelBlock -> {
+            shovelBlock = useNewMaterials ? "LEGACY_" + shovelBlock : shovelBlock;
             if (Material.getMaterial(shovelBlock) == null) {
                 plugin.getLogger().warning("Material '" + shovelBlock + "' for shovel blocks is invalid. Skipping!");
                 return;
@@ -121,6 +134,7 @@ public class ConfigCache {
         });
 
         plugin.getConfig().getStringList("settings.blocks.axe").forEach(axeBlock -> {
+            axeBlock = useNewMaterials ? "LEGACY_" + axeBlock : axeBlock;
             if (Material.getMaterial(axeBlock) == null) {
                 plugin.getLogger().warning("Material '" + axeBlock + "' for axe blocks is invalid. Skipping!");
                 return;
@@ -197,7 +211,7 @@ public class ConfigCache {
             List<BlockXP> blockXp = new ArrayList<>();
             Set<String> configBlockXp = StringUtil.getToolXp(level, plugin).getKeys(false);
 
-            if (configBlockXp == null || configBlockXp.size() == 0) configBlockXp = lastBlockXp;
+            if (configBlockXp.size() == 0) configBlockXp = lastBlockXp;
             lastBlockXp = configBlockXp;
 
             configBlockXp.forEach(blockStr -> {

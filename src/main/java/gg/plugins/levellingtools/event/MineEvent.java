@@ -1,6 +1,5 @@
 package gg.plugins.levellingtools.event;
 
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.Booster;
@@ -29,7 +28,7 @@ public class MineEvent implements Listener {
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final BlockBreakEvent e) {
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
@@ -63,15 +62,9 @@ public class MineEvent implements Listener {
 
         boolean canLevelUp = true;
 
-        if (WorldGuardHook.getWorldGuard() != null) {
-            if (!WorldGuardHook.getWorldGuard().getRegionManager(block.getWorld()).getApplicableRegions(block.getLocation()).allows(DefaultFlag.BLOCK_BREAK)) {
-                e.setCancelled(true);
-                plugin.log(player.getName() + " wasn't able to break '" + block.getType().name() + "', you may need to add the 'BLOCK_BREAK' flag.");
-                return;
-            }
-
+        if (WorldGuardHook.isEnabled()) {
             for (final String region : ConfigCache.getBlacklistedRegions()) {
-                if (WorldGuardHook.checkIfPlayerInRegion(player, region)) {
+                if (WorldGuardHook.checkIfPlayerInRegion(player, block, region)) {
                     plugin.log(player.getName() + " wasn't able to gain xp due to '" + region + "' being a blacklisted region.");
                     canLevelUp = false;
                     break;

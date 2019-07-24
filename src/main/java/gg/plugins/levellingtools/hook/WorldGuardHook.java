@@ -1,24 +1,31 @@
 package gg.plugins.levellingtools.hook;
 
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import gg.plugins.levellingtools.LevellingTools;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import java.util.Objects;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
 
 public class WorldGuardHook {
-    public static WorldGuardPlugin getWorldGuard() {
-        final Plugin wgplugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        if (!(wgplugin instanceof WorldGuardPlugin)) {
-            return null;
+
+    private static boolean enabled;
+    private static WorldGuardWrapper worldGuardWrapper;
+
+    public WorldGuardHook(LevellingTools levellingTools) {
+        enabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuard");
+
+        if (enabled) {
+            levellingTools.getLogger().info("Hooked into WorldGuard");
+            worldGuardWrapper = WorldGuardWrapper.getInstance();
         }
-        return (WorldGuardPlugin) wgplugin;
     }
 
-    public static boolean checkIfPlayerInRegion(final Player player, final String region) {
-        final Vector v = new Vector(player.getLocation().getX(), (double) player.getLocation().getBlockY(), player.getLocation().getZ());
-        return Objects.requireNonNull(getWorldGuard()).getRegionManager(player.getLocation().getWorld()).getApplicableRegionsIDs(v).contains(region);
+    public static boolean isEnabled() {
+        return enabled;
     }
+
+    public static boolean checkIfPlayerInRegion(final Player player, final Block block, final String region) {
+        return worldGuardWrapper.getRegions(block.getLocation()).stream().anyMatch(iWrappedRegion -> iWrappedRegion.getId().equalsIgnoreCase(region));
+    }
+
 }
