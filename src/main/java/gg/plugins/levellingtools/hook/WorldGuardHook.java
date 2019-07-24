@@ -15,7 +15,6 @@ public class WorldGuardHook {
         enabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuard");
 
         if (enabled) {
-            levellingTools.getLogger().info("Hooked into WorldGuard");
             worldGuardWrapper = WorldGuardWrapper.getInstance();
         }
     }

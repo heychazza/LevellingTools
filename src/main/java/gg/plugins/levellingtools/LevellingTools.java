@@ -140,7 +140,7 @@ public class LevellingTools extends JavaPlugin {
     private void hook(final String plugin) {
         final boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);
         if (enabled) {
-            getLogger().info(String.format("I've hooked into %s.", plugin));
+            getLogger().info(String.format("Hooked into %s.", plugin));
 
             if (plugin.equalsIgnoreCase("PlaceholderAPI")) {
                 new PlaceholderAPIHook(this).register();
