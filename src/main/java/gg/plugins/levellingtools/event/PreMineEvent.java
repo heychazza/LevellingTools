@@ -14,7 +14,10 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PreMineEvent implements Listener {
+
+    private LevellingTools levellingTools;
     public PreMineEvent(final LevellingTools levellingTools) {
+        this.levellingTools = levellingTools;
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
@@ -37,6 +40,9 @@ public class PreMineEvent implements Listener {
     public void onBlockDamage(final ToolDamageEvent e) {
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
+
+        if (levellingTools.getStorageHandler().getPlayer(player.getUniqueId()) == null)
+            levellingTools.getStorageHandler().pullData(player.getUniqueId());
         player.setItemInHand(LevellingTool.getItemStack(player, block));
     }
 }

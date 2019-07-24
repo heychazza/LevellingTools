@@ -54,9 +54,4 @@ public class MongoDBHandler implements StorageHandler {
         PlayerData playerData = PlayerData.get().get(player);
         datastore.save((MongoDBPlayerData) playerData);
     }
-
-    @Override
-    public PlayerData getPlayer(UUID uuid) {
-        return PlayerData.get().get(uuid);
-    }
 }

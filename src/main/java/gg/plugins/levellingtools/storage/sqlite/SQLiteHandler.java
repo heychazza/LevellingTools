@@ -57,9 +57,4 @@ public class SQLiteHandler implements StorageHandler {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public PlayerData getPlayer(UUID uuid) {
-        return PlayerData.get().get(uuid);
-    }
 }

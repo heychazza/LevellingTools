@@ -8,5 +8,7 @@ public interface StorageHandler {
 
     void pushData(UUID uuid);
 
-    PlayerData getPlayer(UUID uuid);
+    default PlayerData getPlayer(UUID uuid) {
+        return PlayerData.get().get(uuid);
+    }
 }
