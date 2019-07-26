@@ -272,6 +272,7 @@ public class CachedConfig {
             tool.setActions(actions);
             tool.setItemFlags(itemFlags);
             tool.setBars(data.getInt("level." + levelStr + ".settings.bars", 10));
+            tool.createItem();
 
             getTools().put(level, tool);
         });

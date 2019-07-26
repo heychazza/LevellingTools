@@ -36,6 +36,7 @@ public class Tool {
     private List<ItemFlag> itemFlags;
     private int bars = 10;
     private static LevellingTools tools = JavaPlugin.getPlugin(LevellingTools.class);
+    private ItemStack item;
 
     public Tool(final int level, final double xpRequired) {
         this.level = level;
@@ -112,68 +113,46 @@ public class Tool {
         return sb.toString();
     }
 
-    public static ItemStack getItemStack(final Player player, final Block block) {
-        final PlayerData user = PlayerData.get().get(player.getUniqueId());
-        final Tool tool = getPlayerTool(user);
-        final Material toolType = getType(block, tool.getType());
-        final ItemStack toolItem = new ItemStack(toolType);
-        final ItemMeta toolMeta = toolItem.getItemMeta();
+    public static ItemStack getItemStack(Player player, Block block) {
+        PlayerData playerData = PlayerData.get().get(player.getUniqueId());
+        Tool tool = getPlayerTool(playerData);
 
-        String username = user.getUsername();
-        String blocks = String.valueOf(user.getBlocksBroken());
-        String currentXp = String.valueOf(user.getXp());
-        String requiredXp = String.valueOf(getNextLevel(user) != null ? getNextLevel(user).getXpRequired() : user.getXp());
-        String level = String.valueOf(user.getLevel());
-        double progress = getProgress(user);
-        String progressStr = String.valueOf(progress);
-        String progressBar = getProgressBar(user, progress);
+        ItemStack toolItem = tool.getItem().clone();
+        ItemMeta toolMeta = toolItem.getItemMeta();
+        Material toolType = getType(block != null ? block.getType() : Material.AIR, tool.getType());
 
         String toolName;
         if (toolType.name().contains("PICKAXE")) toolName = tool.getPickaxeName();
         else if (toolType.name().contains("AXE")) toolName = tool.getAxeName();
         else toolName = tool.getShovelName();
-        toolName = replaceVariables(toolName, username, blocks, currentXp, requiredXp, level, progressStr, progressBar);
-        toolMeta.setDisplayName(StringUtil.translate(toolName));
+
         List<String> toolLore;
         if (toolType.name().contains("PICKAXE")) toolLore = tool.getPickaxeLore();
         else if (toolType.name().contains("AXE")) toolLore = tool.getAxeLore();
         else toolLore = tool.getShovelLore();
-        final List<String> lore = new ArrayList<>();
 
-        tool.getCustomEnchants().forEach((enchant, enchantLvl) -> {
-            lore.add(CachedConfig.getEnchantPrefix() + enchant + " " + enchantLvl);
-        });
+        String username = playerData.getUsername();
+        String blocks = String.valueOf(playerData.getBlocksBroken());
+        String currentXp = String.valueOf(playerData.getXp());
+        String requiredXp = String.valueOf(getNextLevel(playerData) != null ? getNextLevel(playerData).getXpRequired() : playerData.getXp());
+        String level = String.valueOf(playerData.getLevel());
+        double progress = getProgress(playerData);
+        String progressStr = String.valueOf(progress);
+        String progressBar = getProgressBar(playerData, progress);
 
-        if (toolLore != null && toolLore.size() > 0) {
-            toolLore.forEach(localLore -> lore.add(StringUtil.translate(replaceVariables(localLore, username, blocks, currentXp, requiredXp, level, progressStr, progressBar))));
-            toolMeta.setLore(lore);
-        }
+        Objects.requireNonNull(toolMeta).setDisplayName(StringUtil.translate(replaceVariables(toolName, username, blocks, currentXp, requiredXp, level, progressStr, progressBar)));
 
-        toolMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        toolMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-
-        tool.getItemFlags().forEach(toolMeta::addItemFlags);
-
+        List<String> updatedLore = new ArrayList<>();
+        Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(StringUtil.translate(replaceVariables(lore, username, blocks, currentXp, requiredXp, level, progressStr, progressBar))));
+        toolMeta.setLore(updatedLore);
         toolItem.setItemMeta(toolMeta);
-        tool.getVanillaEnchants().forEach(toolItem::addUnsafeEnchantment);
+
         final NBTItem nbtItem = new NBTItem(toolItem);
         nbtItem.setString("omnitool", player.getUniqueId().toString());
         return nbtItem.getItem();
     }
 
-    public int getLevel() {
-        return this.level;
-    }
-
-    public double getXpRequired() {
-        return this.xpRequired;
-    }
-
-    public boolean isRestricted() {
-        return this.restrict;
-    }
-
-    public static int getOmnitoolSlot(final Player player) {
+    public static int getSlot(final Player player) {
         int i = 0;
         ItemStack[] contents = player.getInventory().getContents();
         for (ItemStack item : contents) {
@@ -185,7 +164,7 @@ public class Tool {
         return -1;
     }
 
-    public static Material getType(final Block block, final String type) {
+    public static Material getType(final Material block, final String type) {
         String pickaxeTypeStr = type + "_PICKAXE";
         String axeTypeStr = type + "_AXE";
         String shovelTypeStr = type + "_SPADE";
@@ -204,14 +183,64 @@ public class Tool {
         axeType = Material.valueOf(axeTypeStr.toUpperCase());
         shovelType = Material.valueOf(shovelTypeStr.toUpperCase());
 
-        if (block != null && block.getType() != Material.AIR) {
-            if (CachedConfig.axeBlocks.contains(block.getType()) && Tool.tools.getConfig().getBoolean("settings.type.axe", true)) {
+        if (block != null && block != Material.AIR) {
+            if (CachedConfig.axeBlocks.contains(block) && Tool.tools.getConfig().getBoolean("settings.type.axe", true)) {
                 return axeType;
-            } else if (CachedConfig.shovelBlocks.contains(block.getType()) && Tool.tools.getConfig().getBoolean("settings.type.shovel", true)) {
+            } else if (CachedConfig.shovelBlocks.contains(block) && Tool.tools.getConfig().getBoolean("settings.type.shovel", true)) {
                 return shovelType;
             }
         }
         return pickaxeType;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public double getXpRequired() {
+        return this.xpRequired;
+    }
+
+    public boolean isRestricted() {
+        return this.restrict;
+    }
+
+    public void createItem() {
+        final Material toolType = getType(Material.STONE, getType());
+        final ItemStack toolItem = new ItemStack(toolType);
+        final ItemMeta toolMeta = toolItem.getItemMeta();
+
+        String toolName = getPickaxeName();
+
+        toolName = StringUtil.translate(toolName);
+
+        Objects.requireNonNull(toolMeta).setDisplayName(StringUtil.translate(toolName));
+        List<String> toolLore = getPickaxeLore();
+
+        final List<String> lore = new ArrayList<>();
+
+        getCustomEnchants().forEach((enchant, enchantLvl) -> {
+            lore.add(CachedConfig.getEnchantPrefix() + enchant + " " + enchantLvl);
+        });
+
+        if (toolLore != null && toolLore.size() > 0) {
+            toolLore.forEach(localLore -> lore.add(StringUtil.translate(localLore)));
+            toolMeta.setLore(lore);
+        }
+
+        toolMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        toolMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
+        getItemFlags().forEach(toolMeta::addItemFlags);
+
+        toolItem.setItemMeta(toolMeta);
+        getVanillaEnchants().forEach(toolItem::addUnsafeEnchantment);
+
+        this.item = toolItem;
+    }
+
+    public ItemStack getItem() {
+        return item;
     }
 
     public List<BlockXP> getBlockXp() {
