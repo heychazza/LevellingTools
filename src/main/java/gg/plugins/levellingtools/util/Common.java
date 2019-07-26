@@ -1,6 +1,9 @@
 package gg.plugins.levellingtools.util;
 
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Tool;
+import gg.plugins.levellingtools.config.Lang;
+import gg.plugins.levellingtools.storage.PlayerData;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -13,7 +16,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class StringUtil
+public class Common
 {
     public static String translate(final String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
@@ -72,5 +75,46 @@ public class StringUtil
             return config.getConfigurationSection("settings.global.xp");
         }
         return experience;
+    }
+
+
+    public static double calculatePercentage(double obtained, double total) {
+        return obtained * 100 / total;
+    }
+
+    public static int getProgress(PlayerData playerData) {
+        Tool currentLvl = Tool.getCurrentLevel(playerData);
+        Tool nextLevel = Tool.getNextLevel(playerData);
+
+        double minXp = playerData.getXp() - currentLvl.getXpRequired();
+        double maxXp = nextLevel.getXpRequired() - currentLvl.getXpRequired();
+
+        double percent = calculatePercentage(minXp, maxXp);
+        return (int) (percent > 100 ? 100 : percent);
+    }
+
+    public static String getProgressBar(final PlayerData playerData) {
+        return getProgressBar(playerData, getProgress(playerData));
+    }
+
+    public static String getProgressBar(final PlayerData playerData, final double percentage) {
+        int filledBars = (int) (Tool.getNextLevel(playerData).getBars() * percentage);
+        int leftOver = Tool.getNextLevel(playerData).getBars() - filledBars;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(Lang.PROGRESS_START.asString());
+        sb.append(Lang.PROGRESS_COMPLETE.asString());
+
+        for (int i = 0; i < filledBars; i++) {
+            sb.append(Lang.PROGRESS_CHARACTER.asString());
+        }
+
+        sb.append(Lang.PROGRESS_INCOMPLETE.asString());
+        for (int i = 0; i < leftOver; i++) {
+            sb.append(Lang.PROGRESS_CHARACTER.asString());
+        }
+
+        sb.append(Lang.PROGRESS_END.asString());
+        return sb.toString();
     }
 }

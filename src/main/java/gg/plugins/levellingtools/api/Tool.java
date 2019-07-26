@@ -3,9 +3,8 @@ package gg.plugins.levellingtools.api;
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.config.CachedConfig;
-import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.storage.PlayerData;
-import gg.plugins.levellingtools.util.StringUtil;
+import gg.plugins.levellingtools.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -73,45 +72,6 @@ public class Tool {
         return CachedConfig.getTools().size() > playerData.getLevel() ? CachedConfig.getTools().get(playerData.getLevel() + 1) : CachedConfig.getTools().get(playerData.getLevel());
     }
 
-    public static double calculatePercentage(double obtained, double total) {
-        return obtained * 100 / total;
-    }
-
-    public static int getProgress(PlayerData playerData) {
-        Tool currentLvl = getCurrentLevel(playerData);
-        Tool nextLevel = getNextLevel(playerData);
-
-        double minXp = playerData.getXp() - currentLvl.getXpRequired();
-        double maxXp = nextLevel.getXpRequired() - currentLvl.getXpRequired();
-
-        double percent = calculatePercentage(minXp, maxXp);
-        return (int) (percent > 100 ? 100 : percent);
-    }
-
-    public static String getProgressBar(final PlayerData playerData) {
-        return getProgressBar(playerData, getProgress(playerData));
-    }
-
-    public static String getProgressBar(final PlayerData playerData, final double percentage) {
-        int filledBars = (int) (getNextLevel(playerData).getBars() * percentage);
-        int leftOver = getNextLevel(playerData).getBars() - filledBars;
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(Lang.PROGRESS_START.asString());
-        sb.append(Lang.PROGRESS_COMPLETE.asString());
-
-        for (int i = 0; i < filledBars; i++) {
-            sb.append(Lang.PROGRESS_CHARACTER.asString());
-        }
-
-        sb.append(Lang.PROGRESS_INCOMPLETE.asString());
-        for (int i = 0; i < leftOver; i++) {
-            sb.append(Lang.PROGRESS_CHARACTER.asString());
-        }
-
-        sb.append(Lang.PROGRESS_END.asString());
-        return sb.toString();
-    }
 
     public static ItemStack getItemStack(Player player, Block block) {
         PlayerData playerData = PlayerData.get().get(player.getUniqueId());
@@ -136,14 +96,14 @@ public class Tool {
         String currentXp = String.valueOf(playerData.getXp());
         String requiredXp = String.valueOf(getNextLevel(playerData) != null ? getNextLevel(playerData).getXpRequired() : playerData.getXp());
         String level = String.valueOf(playerData.getLevel());
-        double progress = getProgress(playerData);
+        double progress = Common.getProgress(playerData);
         String progressStr = String.valueOf(progress);
-        String progressBar = getProgressBar(playerData, progress);
+        String progressBar = Common.getProgressBar(playerData, progress);
 
-        Objects.requireNonNull(toolMeta).setDisplayName(StringUtil.translate(replaceVariables(toolName, username, blocks, currentXp, requiredXp, level, progressStr, progressBar)));
+        Objects.requireNonNull(toolMeta).setDisplayName(Common.translate(replaceVariables(toolName, username, blocks, currentXp, requiredXp, level, progressStr, progressBar)));
 
         List<String> updatedLore = new ArrayList<>();
-        Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(StringUtil.translate(replaceVariables(lore, username, blocks, currentXp, requiredXp, level, progressStr, progressBar))));
+        Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(Common.translate(replaceVariables(lore, username, blocks, currentXp, requiredXp, level, progressStr, progressBar))));
         toolMeta.setLore(updatedLore);
         toolItem.setItemMeta(toolMeta);
 
@@ -212,9 +172,9 @@ public class Tool {
 
         String toolName = getPickaxeName();
 
-        toolName = StringUtil.translate(toolName);
+        toolName = Common.translate(toolName);
 
-        Objects.requireNonNull(toolMeta).setDisplayName(StringUtil.translate(toolName));
+        Objects.requireNonNull(toolMeta).setDisplayName(Common.translate(toolName));
         List<String> toolLore = getPickaxeLore();
 
         final List<String> lore = new ArrayList<>();
@@ -224,7 +184,7 @@ public class Tool {
         });
 
         if (toolLore != null && toolLore.size() > 0) {
-            toolLore.forEach(localLore -> lore.add(StringUtil.translate(localLore)));
+            toolLore.forEach(localLore -> lore.add(Common.translate(localLore)));
             toolMeta.setLore(lore);
         }
 

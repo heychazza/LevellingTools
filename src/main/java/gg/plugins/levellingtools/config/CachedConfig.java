@@ -4,8 +4,8 @@ import com.google.common.collect.Maps;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.Booster;
 import gg.plugins.levellingtools.api.Tool;
+import gg.plugins.levellingtools.util.Common;
 import gg.plugins.levellingtools.util.Enchant;
-import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -102,7 +102,7 @@ public class CachedConfig {
 
         if (!plugin.isEnabled()) return;
 
-        enchantPrefix = StringUtil.translate(data.getString("settings.enchants.prefix", "&7"));
+        enchantPrefix = Common.translate(data.getString("settings.enchants.prefix", "&7"));
         giveOnJoin = data.getBoolean("settings.give_on_join", true);
         debug = data.getBoolean("settings.debug", false);
         if (Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].replace("v", "").replace("_", "").split("R", 2)[0]) >= 114) {
@@ -166,8 +166,8 @@ public class CachedConfig {
 
             boolean useOneFormat = data.getBoolean("settings.use_one_format", false);
 
-            String pickaxeName = StringUtil.getToolName("pickaxe", level, plugin);
-            List<String> pickaxeLore = StringUtil.getToolLore("pickaxe", level, plugin);
+            String pickaxeName = Common.getToolName("pickaxe", level, plugin);
+            List<String> pickaxeLore = Common.getToolLore("pickaxe", level, plugin);
 
             if (pickaxeName == null || pickaxeName.isEmpty()) pickaxeName = lastPickName;
             if (pickaxeLore == null || pickaxeLore.size() == 0) pickaxeLore = lastPickLore;
@@ -175,8 +175,8 @@ public class CachedConfig {
             lastPickName = pickaxeName;
             lastPickLore = pickaxeLore;
 
-            String axeName = useOneFormat ? pickaxeName : StringUtil.getToolName("axe", level, plugin);
-            List<String> axeLore = useOneFormat ? pickaxeLore : StringUtil.getToolLore("axe", level, plugin);
+            String axeName = useOneFormat ? pickaxeName : Common.getToolName("axe", level, plugin);
+            List<String> axeLore = useOneFormat ? pickaxeLore : Common.getToolLore("axe", level, plugin);
 
             if (axeName == null || axeName.isEmpty()) axeName = lastAxeName;
             if (axeLore == null || axeLore.size() == 0) axeLore = lastAxeLore;
@@ -184,8 +184,8 @@ public class CachedConfig {
             lastAxeName = axeName;
             lastAxeLore = axeLore;
 
-            String shovelName = useOneFormat ? pickaxeName : StringUtil.getToolName("shovel", level, plugin);
-            List<String> shovelLore = useOneFormat ? pickaxeLore : StringUtil.getToolLore("shovel", level, plugin);
+            String shovelName = useOneFormat ? pickaxeName : Common.getToolName("shovel", level, plugin);
+            List<String> shovelLore = useOneFormat ? pickaxeLore : Common.getToolLore("shovel", level, plugin);
 
             if (shovelName == null || shovelName.isEmpty()) shovelName = lastShovelName;
             if (shovelLore == null || shovelLore.size() == 0) shovelLore = lastShovelLore;
@@ -208,7 +208,7 @@ public class CachedConfig {
             });
 
             List<Tool.BlockXP> blockXp = new ArrayList<>();
-            Set<String> configBlockXp = StringUtil.getToolXp(level, plugin).getKeys(false);
+            Set<String> configBlockXp = Common.getToolXp(level, plugin).getKeys(false);
 
             if (configBlockXp.size() == 0) configBlockXp = lastBlockXp;
             lastBlockXp = configBlockXp;

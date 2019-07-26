@@ -1,16 +1,13 @@
-package gg.plugins.levellingtools.event;
+package gg.plugins.levellingtools.listener;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
-import gg.plugins.levellingtools.api.Booster;
-import gg.plugins.levellingtools.api.Tool;
-import gg.plugins.levellingtools.api.ToolLevelUpEvent;
-import gg.plugins.levellingtools.api.ToolMineEvent;
+import gg.plugins.levellingtools.api.*;
 import gg.plugins.levellingtools.config.CachedConfig;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.hook.WorldGuardHook;
 import gg.plugins.levellingtools.storage.PlayerData;
-import gg.plugins.levellingtools.util.StringUtil;
+import gg.plugins.levellingtools.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,14 +15,40 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class MineEvent implements Listener {
+public class MineListener implements Listener {
     private LevellingTools plugin;
 
-    public MineEvent(final LevellingTools levellingTools) {
+    public MineListener(final LevellingTools levellingTools) {
         this.plugin = levellingTools;
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
+    }
+
+    @EventHandler
+    public void onBlockDamage(final BlockDamageEvent e) {
+        final Player player = e.getPlayer();
+        final Block block = e.getBlock();
+        final ItemStack item = player.getItemInHand();
+        final NBTItem nbtItem = new NBTItem(item);
+        if (item.getType() == Material.AIR) {
+            return;
+        }
+        if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
+            final ToolDamageEvent damageEvent = new ToolDamageEvent(player, item, block);
+            Bukkit.getServer().getPluginManager().callEvent(damageEvent);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockDamage(final ToolDamageEvent e) {
+        final Player player = e.getPlayer();
+        final Block block = e.getBlock();
+
+        if (plugin.getStorageHandler().getPlayer(player.getUniqueId()) == null)
+            plugin.getStorageHandler().pullData(player.getUniqueId());
+        player.setItemInHand(Tool.getItemStack(player, block));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -80,7 +103,7 @@ public class MineEvent implements Listener {
         if (canLevelUp) {
             final double totalXp = user.getXp() + xpGained;
             if (xpGained > 0 && !Lang.EXP_GAINED.asString().isEmpty()) {
-                StringUtil.sendActionbar(player, Lang.EXP_GAINED.asString(xpGained));
+                Common.sendActionbar(player, Lang.EXP_GAINED.asString(xpGained));
             }
             user.setXp(totalXp);
             user.setBlocksBroken(user.getBlocksBroken() + 1);

@@ -6,11 +6,10 @@ import gg.plugins.levellingtools.command.util.CommandManager;
 import gg.plugins.levellingtools.config.CachedConfig;
 import gg.plugins.levellingtools.config.Config;
 import gg.plugins.levellingtools.config.Lang;
-import gg.plugins.levellingtools.event.JoinEvent;
-import gg.plugins.levellingtools.event.MineEvent;
-import gg.plugins.levellingtools.event.PreMineEvent;
 import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import gg.plugins.levellingtools.hook.WorldGuardHook;
+import gg.plugins.levellingtools.listener.JoinListener;
+import gg.plugins.levellingtools.listener.MineListener;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.storage.StorageHandler;
 import gg.plugins.levellingtools.storage.mongodb.MongoDBHandler;
@@ -43,9 +42,8 @@ public class LevellingTools extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
 
-        new JoinEvent(this);
-        new PreMineEvent(this);
-        new MineEvent(this);
+        new JoinListener(this);
+        new MineListener(this);
 
         if (getConfig().getBoolean("settings.header", true)) {
             getLogger().info("");

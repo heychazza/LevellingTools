@@ -1,4 +1,4 @@
-package gg.plugins.levellingtools.event;
+package gg.plugins.levellingtools.listener;
 
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.Tool;
@@ -12,12 +12,13 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class JoinEvent implements Listener {
+public class JoinListener implements Listener {
 
     private LevellingTools plugin;
 
-    public JoinEvent(LevellingTools plugin) {
+    public JoinListener(LevellingTools plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -51,6 +52,11 @@ public class JoinEvent implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        plugin.getStorageHandler().pushData(e.getPlayer().getUniqueId());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                plugin.getStorageHandler().pushData(e.getPlayer().getUniqueId());
+            }
+        }.runTaskLaterAsynchronously(plugin, 20);
     }
 }
