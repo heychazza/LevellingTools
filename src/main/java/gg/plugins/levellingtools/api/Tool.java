@@ -46,7 +46,8 @@ public class Tool {
         this.itemFlags = new ArrayList<>();
     }
 
-    public static Tool getPlayerTool(final PlayerData playerData) {
+    public static Tool getPlayerTool(UUID player, PlayerData playerData) {
+        tools.getLogger().info("Data: " + playerData);
         return CachedConfig.getTools().values().stream().filter(tool -> playerData.getXp() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
     }
 
@@ -72,10 +73,14 @@ public class Tool {
         return CachedConfig.getTools().size() > playerData.getLevel() ? CachedConfig.getTools().get(playerData.getLevel() + 1) : CachedConfig.getTools().get(playerData.getLevel());
     }
 
-
     public static ItemStack getItemStack(Player player, Block block) {
         PlayerData playerData = PlayerData.get().get(player.getUniqueId());
-        Tool tool = getPlayerTool(playerData);
+
+        if (playerData == null) {
+            tools.getStorageHandler().pullData(player.getUniqueId());
+            playerData = PlayerData.get().get(player.getUniqueId());
+        }
+        Tool tool = getPlayerTool(player.getUniqueId(), playerData);
 
         ItemStack toolItem = tool.getItem().clone();
         ItemMeta toolMeta = toolItem.getItemMeta();
