@@ -3,8 +3,8 @@ package gg.plugins.levellingtools;
 import de.tr7zw.itemnbtapi.NBTAPI;
 import gg.plugins.levellingtools.command.util.CommandExecutor;
 import gg.plugins.levellingtools.command.util.CommandManager;
+import gg.plugins.levellingtools.config.CachedConfig;
 import gg.plugins.levellingtools.config.Config;
-import gg.plugins.levellingtools.config.ConfigCache;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.event.JoinEvent;
 import gg.plugins.levellingtools.event.MineEvent;
@@ -16,12 +16,13 @@ import gg.plugins.levellingtools.storage.StorageHandler;
 import gg.plugins.levellingtools.storage.mongodb.MongoDBHandler;
 import gg.plugins.levellingtools.storage.mysql.MySQLHandler;
 import gg.plugins.levellingtools.storage.sqlite.SQLiteHandler;
-import gg.plugins.levellingtools.util.Log4JFilter;
+import gg.plugins.levellingtools.util.ConsoleFilter;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +36,7 @@ public class LevellingTools extends JavaPlugin {
     }
 
     public void log(String message) {
-        if (ConfigCache.debugMode()) this.getLogger().info(message);
+        if (CachedConfig.debugMode()) this.getLogger().info(message);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class LevellingTools extends JavaPlugin {
         mongoLogger.setLevel(Level.SEVERE);
         org.apache.logging.log4j.core.Logger logger;
         logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
-        logger.addFilter(new Log4JFilter());
+        logger.addFilter(new ConsoleFilter());
 
         hook("PlaceholderAPI");
         hook("WorldGuard");
@@ -82,7 +83,7 @@ public class LevellingTools extends JavaPlugin {
     }
 
     private void setupStorage() {
-        String storageType = getConfig().getString("settings.storage.type", "FLATFILE").toUpperCase();
+        String storageType = Objects.requireNonNull(getConfig().getString("settings.storage.type", "FLATFILE")).toUpperCase();
 
         if (Arrays.asList("SQLITE", "MYSQL", "MONGODB").contains(storageType)) {
             getLogger().info("Using '" + storageType + "' for data storage.");
@@ -131,9 +132,9 @@ public class LevellingTools extends JavaPlugin {
 
     public void handleReload() {
         reloadConfig();
-        Lang.init(new Config(this, "lang.yml"));
-        new ConfigCache(this);
-        ConfigCache.setup();
+        Lang.init(new Config(this, "config.yml"));
+        new CachedConfig(this);
+        CachedConfig.setup();
         setupStorage();
     }
 

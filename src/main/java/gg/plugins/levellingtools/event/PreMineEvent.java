@@ -2,8 +2,8 @@ package gg.plugins.levellingtools.event;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Tool;
 import gg.plugins.levellingtools.api.ToolDamageEvent;
-import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -43,6 +43,6 @@ public class PreMineEvent implements Listener {
 
         if (levellingTools.getStorageHandler().getPlayer(player.getUniqueId()) == null)
             levellingTools.getStorageHandler().pullData(player.getUniqueId());
-        player.setItemInHand(LevellingTool.getItemStack(player, block));
+        player.setItemInHand(Tool.getItemStack(player, block));
     }
 }

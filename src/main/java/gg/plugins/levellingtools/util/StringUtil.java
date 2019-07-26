@@ -73,8 +73,4 @@ public class StringUtil
         }
         return experience;
     }
-
-    public static double calculatePercentage(double amount, double total) {
-        return amount / total;
-    }
 }

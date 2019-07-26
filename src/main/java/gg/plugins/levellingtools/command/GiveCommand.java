@@ -1,9 +1,9 @@
 package gg.plugins.levellingtools.command;
 
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Tool;
 import gg.plugins.levellingtools.command.util.Command;
 import gg.plugins.levellingtools.config.Lang;
-import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ public class GiveCommand {
                 return;
             }
 
-            target.getInventory().addItem(LevellingTool.getItemStack(target, null));
+            target.getInventory().addItem(Tool.getItemStack(target, null));
 
             Lang.GIVE_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), target.getName());
         } else {
@@ -27,7 +27,7 @@ public class GiveCommand {
                 return;
             }
             final Player player = (Player) sender;
-            player.getInventory().addItem(LevellingTool.getItemStack(player, null));
+            player.getInventory().addItem(Tool.getItemStack(player, null));
             Lang.GIVE_COMMAND_SELF.send(sender, Lang.PREFIX.asString());
         }
     }

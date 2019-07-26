@@ -1,8 +1,8 @@
-package gg.plugins.levellingtools.tool;
+package gg.plugins.levellingtools.api;
 
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
-import gg.plugins.levellingtools.config.ConfigCache;
+import gg.plugins.levellingtools.config.CachedConfig;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.util.StringUtil;
@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
-public class LevellingTool {
+public class Tool {
     private int level;
     private double xpRequired;
     private boolean restrict = false;
@@ -37,7 +37,7 @@ public class LevellingTool {
     private int bars = 10;
     private static LevellingTools tools = JavaPlugin.getPlugin(LevellingTools.class);
 
-    public LevellingTool(final int level, final double xpRequired) {
+    public Tool(final int level, final double xpRequired) {
         this.level = level;
         this.xpRequired = xpRequired == -1 ? 0 : xpRequired;
 
@@ -46,8 +46,8 @@ public class LevellingTool {
         this.itemFlags = new ArrayList<>();
     }
 
-    public static LevellingTool getPlayerTool(final PlayerData playerData) {
-        return ConfigCache.getTools().values().stream().filter(tool -> playerData.getXp() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
+    public static Tool getPlayerTool(final PlayerData playerData) {
+        return CachedConfig.getTools().values().stream().filter(tool -> playerData.getXp() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
     }
 
     private static String replaceVariables(final String message, final String player, final String blocks, final String currentXp, final String requiredXp, final String level, final String progress, final String progressBar) {
@@ -60,16 +60,16 @@ public class LevellingTool {
                 .replace("{progressbar}", progressBar);
     }
 
-    public static LevellingTool getPreviousLevel(PlayerData playerData) {
-        return ConfigCache.getTools().size() > 1 && playerData.getLevel() > 1 ? ConfigCache.getTools().get(playerData.getLevel() - 1) : ConfigCache.getTools().get(playerData.getLevel());
+    public static Tool getPreviousLevel(PlayerData playerData) {
+        return CachedConfig.getTools().size() > 1 && playerData.getLevel() > 1 ? CachedConfig.getTools().get(playerData.getLevel() - 1) : CachedConfig.getTools().get(playerData.getLevel());
     }
 
-    public static LevellingTool getCurrentLevel(PlayerData playerData) {
-        return playerData.getLevel() < ConfigCache.getTools().size() ? ConfigCache.getTools().get(playerData.getLevel()) : ConfigCache.getTools().get(ConfigCache.getTools().size());
+    public static Tool getCurrentLevel(PlayerData playerData) {
+        return playerData.getLevel() < CachedConfig.getTools().size() ? CachedConfig.getTools().get(playerData.getLevel()) : CachedConfig.getTools().get(CachedConfig.getTools().size());
     }
 
-    public static LevellingTool getNextLevel(PlayerData playerData) {
-        return ConfigCache.getTools().size() > playerData.getLevel() ? ConfigCache.getTools().get(playerData.getLevel() + 1) : ConfigCache.getTools().get(playerData.getLevel());
+    public static Tool getNextLevel(PlayerData playerData) {
+        return CachedConfig.getTools().size() > playerData.getLevel() ? CachedConfig.getTools().get(playerData.getLevel() + 1) : CachedConfig.getTools().get(playerData.getLevel());
     }
 
     public static double calculatePercentage(double obtained, double total) {
@@ -77,8 +77,8 @@ public class LevellingTool {
     }
 
     public static int getProgress(PlayerData playerData) {
-        LevellingTool currentLvl = getCurrentLevel(playerData);
-        LevellingTool nextLevel = getNextLevel(playerData);
+        Tool currentLvl = getCurrentLevel(playerData);
+        Tool nextLevel = getNextLevel(playerData);
 
         double minXp = playerData.getXp() - currentLvl.getXpRequired();
         double maxXp = nextLevel.getXpRequired() - currentLvl.getXpRequired();
@@ -114,7 +114,7 @@ public class LevellingTool {
 
     public static ItemStack getItemStack(final Player player, final Block block) {
         final PlayerData user = PlayerData.get().get(player.getUniqueId());
-        final LevellingTool tool = getPlayerTool(user);
+        final Tool tool = getPlayerTool(user);
         final Material toolType = getType(block, tool.getType());
         final ItemStack toolItem = new ItemStack(toolType);
         final ItemMeta toolMeta = toolItem.getItemMeta();
@@ -141,7 +141,7 @@ public class LevellingTool {
         final List<String> lore = new ArrayList<>();
 
         tool.getCustomEnchants().forEach((enchant, enchantLvl) -> {
-            lore.add(ConfigCache.getEnchantPrefix() + enchant + " " + enchantLvl);
+            lore.add(CachedConfig.getEnchantPrefix() + enchant + " " + enchantLvl);
         });
 
         if (toolLore != null && toolLore.size() > 0) {
@@ -188,13 +188,13 @@ public class LevellingTool {
     public static Material getType(final Block block, final String type) {
         String pickaxeTypeStr = type + "_PICKAXE";
         String axeTypeStr = type + "_AXE";
-        String shovelTypeStr = type + "_SHOVEL";
+        String shovelTypeStr = type + "_SPADE";
 
         Material pickaxeType;
         Material axeType;
         Material shovelType;
 
-        if (ConfigCache.useNewMaterials()) {
+        if (CachedConfig.useNewMaterials()) {
             pickaxeTypeStr = "LEGACY_" + pickaxeTypeStr;
             axeTypeStr = "LEGACY_" + axeTypeStr;
             shovelTypeStr = "LEGACY_" + type + "_SPADE";
@@ -205,9 +205,9 @@ public class LevellingTool {
         shovelType = Material.valueOf(shovelTypeStr.toUpperCase());
 
         if (block != null && block.getType() != Material.AIR) {
-            if (ConfigCache.axeBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.type.axe", true)) {
+            if (CachedConfig.axeBlocks.contains(block.getType()) && Tool.tools.getConfig().getBoolean("settings.type.axe", true)) {
                 return axeType;
-            } else if (ConfigCache.shovelBlocks.contains(block.getType()) && LevellingTool.tools.getConfig().getBoolean("settings.type.shovel", true)) {
+            } else if (CachedConfig.shovelBlocks.contains(block.getType()) && Tool.tools.getConfig().getBoolean("settings.type.shovel", true)) {
                 return shovelType;
             }
         }
@@ -324,7 +324,7 @@ public class LevellingTool {
 
     public void executeActions(final Player player, final boolean fireGlobalActions) {
         if (fireGlobalActions) {
-            ConfigCache.getGlobalActions().forEach(globalAction -> {
+            CachedConfig.getGlobalActions().forEach(globalAction -> {
                 globalAction = globalAction.replace("%player%", player.getName()).replace("{player}", player.getName()).replace("%level%", String.valueOf(this.getLevel())).replace("{level}", String.valueOf(this.getLevel()));
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), globalAction);
             });
@@ -346,6 +346,30 @@ public class LevellingTool {
     public double getXpFromBlock(final Block block) {
         final Optional<BlockXP> optionalBlockXP = this.getBlockXp().stream().filter(blockXp -> blockXp.getBlock() == block.getType() && blockXp.getData() == block.getData()).findFirst();
         return optionalBlockXP.isPresent() ? optionalBlockXP.get().getXp() : 0.0;
+    }
+
+    public static class BlockXP {
+        private Material block;
+        private byte data;
+        private double xp;
+
+        public BlockXP(final Material block, final Integer data, final double xp) {
+            this.block = block;
+            this.data = data.byteValue();
+            this.xp = xp;
+        }
+
+        public Material getBlock() {
+            return this.block;
+        }
+
+        public byte getData() {
+            return this.data;
+        }
+
+        public double getXp() {
+            return this.xp;
+        }
     }
 
 }

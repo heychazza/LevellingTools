@@ -10,7 +10,7 @@ import org.apache.logging.log4j.message.Message;
 import java.util.Arrays;
 import java.util.List;
 
-public class Log4JFilter extends AbstractFilter {
+public class ConsoleFilter extends AbstractFilter {
 
     private static final long serialVersionUID = -5594073755007974254L;
 

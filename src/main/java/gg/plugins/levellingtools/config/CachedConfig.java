@@ -3,9 +3,8 @@ package gg.plugins.levellingtools.config;
 import com.google.common.collect.Maps;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.Booster;
-import gg.plugins.levellingtools.tool.BlockXP;
-import gg.plugins.levellingtools.tool.LevellingTool;
-import gg.plugins.levellingtools.util.EnchantUtil;
+import gg.plugins.levellingtools.api.Tool;
+import gg.plugins.levellingtools.util.Enchant;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,10 +16,10 @@ import org.bukkit.inventory.ItemFlag;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class ConfigCache {
+public class CachedConfig {
 
     private static LevellingTools plugin;
-    private static Map<Integer, LevellingTool> tools;
+    private static Map<Integer, Tool> tools;
     private static List<Booster> boosters;
 
     private static List<String> blacklistedWorlds;
@@ -47,8 +46,8 @@ public class ConfigCache {
     private static boolean useNewMaterials;
 
 
-    public ConfigCache(LevellingTools plugin) {
-        ConfigCache.plugin = plugin;
+    public CachedConfig(LevellingTools plugin) {
+        CachedConfig.plugin = plugin;
     }
 
     public static boolean debugMode() {
@@ -59,7 +58,7 @@ public class ConfigCache {
         return boosters;
     }
 
-    public static Map<Integer, LevellingTool> getTools() {
+    public static Map<Integer, Tool> getTools() {
         return tools;
     }
 
@@ -96,8 +95,8 @@ public class ConfigCache {
     }
 
     public static void setup() {
-        ConfigCache.tools = Maps.newHashMap();
-        ConfigCache.boosters = new ArrayList<>();
+        CachedConfig.tools = Maps.newHashMap();
+        CachedConfig.boosters = new ArrayList<>();
 
         FileConfiguration data = plugin.getConfig();
 
@@ -130,7 +129,7 @@ public class ConfigCache {
                 plugin.getLogger().warning("Material '" + shovelBlock + "' for shovel blocks is invalid. Skipping!");
                 return;
             }
-            axeBlocks.add(Material.valueOf(shovelBlock));
+            shovelBlocks.add(Material.valueOf(shovelBlock));
         });
 
         plugin.getConfig().getStringList("settings.blocks.axe").forEach(axeBlock -> {
@@ -139,10 +138,10 @@ public class ConfigCache {
                 plugin.getLogger().warning("Material '" + axeBlock + "' for axe blocks is invalid. Skipping!");
                 return;
             }
-            shovelBlocks.add(Material.valueOf(axeBlock));
+            axeBlocks.add(Material.valueOf(axeBlock));
         });
 
-        data.getConfigurationSection("settings.boosters").getKeys(false).forEach(multiId -> {
+        Objects.requireNonNull(data.getConfigurationSection("settings.boosters")).getKeys(false).forEach(multiId -> {
             double multiplier = data.getDouble("settings.boosters." + multiId, 1.0);
 
             if (multiplier < 1.0) {
@@ -199,16 +198,16 @@ public class ConfigCache {
 
             data.getConfigurationSection("level." + levelStr + ".settings.enchants").getKeys(false).forEach(enchantmentStr -> {
 
-                if (!EnchantUtil.exists(enchantmentStr)) {
+                if (!Enchant.exists(enchantmentStr)) {
                     customEnchants.put(enchantmentStr, data.getString("level." + levelStr + ".settings.enchants." + enchantmentStr, "I"));
                     return;
                 }
 
                 int enchantLevel = data.getInt("level." + levelStr + ".settings.enchants." + enchantmentStr, 0);
-                vanillaEnchants.put(EnchantUtil.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
+                vanillaEnchants.put(Enchant.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
             });
 
-            List<BlockXP> blockXp = new ArrayList<>();
+            List<Tool.BlockXP> blockXp = new ArrayList<>();
             Set<String> configBlockXp = StringUtil.getToolXp(level, plugin).getKeys(false);
 
             if (configBlockXp.size() == 0) configBlockXp = lastBlockXp;
@@ -226,7 +225,7 @@ public class ConfigCache {
 
                     int xp = data.getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with data (" + blockData[1] + "), giving " + xp + " xp to level " + toolLevel + ".");
-                    blockXp.add(new BlockXP(matType, Integer.valueOf(blockData[1]), xp));
+                    blockXp.add(new Tool.BlockXP(matType, Integer.valueOf(blockData[1]), xp));
                 } else {
                     // No Data
                     Material matType = Material.getMaterial(blockStr);
@@ -237,7 +236,7 @@ public class ConfigCache {
 
                     int xp = data.getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with no data, giving " + xp + " xp to level " + toolLevel + ".");
-                    blockXp.add(new BlockXP(matType, 0, xp));
+                    blockXp.add(new Tool.BlockXP(matType, 0, xp));
                 }
             });
 
@@ -258,23 +257,23 @@ public class ConfigCache {
             });
 
             List<String> actions = data.getStringList("level." + levelStr + ".actions");
-            LevellingTool levellingTool = new LevellingTool(level, xpRequired);
-            levellingTool.setRestriction(data.getBoolean("level." + levelStr + ".settings.restrict", false));
-            levellingTool.setVanillaEnchants(vanillaEnchants);
-            levellingTool.setCustomEnchants(customEnchants);
-            levellingTool.setBlockXp(blockXp);
-            levellingTool.setPickaxeName(pickaxeName);
-            levellingTool.setPickaxeLore(pickaxeLore);
-            levellingTool.setAxeName(axeName);
-            levellingTool.setAxeLore(axeLore);
-            levellingTool.setShovelName(shovelName);
-            levellingTool.setShovelLore(shovelLore);
-            levellingTool.setType(configType);
-            levellingTool.setActions(actions);
-            levellingTool.setItemFlags(itemFlags);
-            levellingTool.setBars(data.getInt("level." + levelStr + ".settings.bars", 10));
+            Tool tool = new Tool(level, xpRequired);
+            tool.setRestriction(data.getBoolean("level." + levelStr + ".settings.restrict", false));
+            tool.setVanillaEnchants(vanillaEnchants);
+            tool.setCustomEnchants(customEnchants);
+            tool.setBlockXp(blockXp);
+            tool.setPickaxeName(pickaxeName);
+            tool.setPickaxeLore(pickaxeLore);
+            tool.setAxeName(axeName);
+            tool.setAxeLore(axeLore);
+            tool.setShovelName(shovelName);
+            tool.setShovelLore(shovelLore);
+            tool.setType(configType);
+            tool.setActions(actions);
+            tool.setItemFlags(itemFlags);
+            tool.setBars(data.getInt("level." + levelStr + ".settings.bars", 10));
 
-            getTools().put(level, levellingTool);
+            getTools().put(level, tool);
         });
 
         blacklistedWorlds = new ArrayList<>();

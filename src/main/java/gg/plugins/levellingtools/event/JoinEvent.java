@@ -1,9 +1,9 @@
 package gg.plugins.levellingtools.event;
 
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Tool;
 import gg.plugins.levellingtools.api.ToolJoinEvent;
-import gg.plugins.levellingtools.config.ConfigCache;
-import gg.plugins.levellingtools.tool.LevellingTool;
+import gg.plugins.levellingtools.config.CachedConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +25,7 @@ public class JoinEvent implements Listener {
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         plugin.getStorageHandler().pullData(e.getPlayer().getUniqueId());
-        final ToolJoinEvent joinEvent = new ToolJoinEvent(player, LevellingTool.getItemStack(player, null), LevellingTool.getOmnitoolSlot(player));
+        final ToolJoinEvent joinEvent = new ToolJoinEvent(player, Tool.getItemStack(player, null), Tool.getOmnitoolSlot(player));
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
     }
 
@@ -35,7 +35,7 @@ public class JoinEvent implements Listener {
         final ItemStack tool = e.getItem();
         final int slot = e.getSlot();
 
-        if (ConfigCache.canGiveOnJoin()) {
+        if (CachedConfig.canGiveOnJoin()) {
             if (slot == -1) {
                 player.getInventory().addItem(tool);
             } else {

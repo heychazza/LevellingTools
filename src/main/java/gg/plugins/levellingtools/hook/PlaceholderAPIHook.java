@@ -1,8 +1,8 @@
 package gg.plugins.levellingtools.hook;
 
 import gg.plugins.levellingtools.LevellingTools;
+import gg.plugins.levellingtools.api.Tool;
 import gg.plugins.levellingtools.storage.PlayerData;
-import gg.plugins.levellingtools.tool.LevellingTool;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 
@@ -84,10 +84,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             return String.valueOf(playerEntity.getBlocksBroken());
         }
         if (identifier.equals("progress")) {
-            return String.valueOf(LevellingTool.getProgress(playerEntity));
+            return String.valueOf(Tool.getProgress(playerEntity));
         }
         if (identifier.equals("progress_bar")) {
-            return LevellingTool.getProgressBar(playerEntity);
+            return Tool.getProgressBar(playerEntity);
         }
         return null;
     }

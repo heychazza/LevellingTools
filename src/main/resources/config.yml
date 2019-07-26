@@ -1,4 +1,4 @@
-## Tool Upgrades - v2.0.0 ##
+## LevellingTools - v2.0.0 ##
 
 settings:
 
@@ -17,7 +17,7 @@ settings:
   # It is not recommended to change this on a live
   # server, as players can lose data.
   storage:
-    # Options: FLATFILE, MYSQL & MONGODB
+    # Options: SQLITE, MYSQL & MONGODB
     type: SQLITE
     database: "levellingtools"
     host: "127.0.0.1"

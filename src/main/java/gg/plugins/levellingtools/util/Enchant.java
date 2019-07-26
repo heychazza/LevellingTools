@@ -2,7 +2,7 @@ package gg.plugins.levellingtools.util;
 
 import java.util.Arrays;
 
-public enum EnchantUtil
+public enum Enchant
 {
     POWER("ARROW_DAMAGE"), 
     FLAME("ARROW_FIRE"), 
@@ -35,8 +35,8 @@ public enum EnchantUtil
     CURSE_OF_VANISHING("VANISHING_CURSE");
     
     private final String vanillaName;
-    
-    EnchantUtil(final String vanillaName) {
+
+    Enchant(final String vanillaName) {
         this.vanillaName = vanillaName;
     }
     

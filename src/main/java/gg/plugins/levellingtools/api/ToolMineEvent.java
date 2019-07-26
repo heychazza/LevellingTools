@@ -1,7 +1,6 @@
 package gg.plugins.levellingtools.api;
 
 import gg.plugins.levellingtools.storage.PlayerData;
-import gg.plugins.levellingtools.tool.LevellingTool;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -16,11 +15,11 @@ public class ToolMineEvent extends Event implements Cancellable {
     private Booster booster;
     private Block block;
     private PlayerData playerData;
-    private LevellingTool tool;
+    private Tool tool;
     private static final HandlerList HANDLERS_LIST;
     private boolean isCancelled;
 
-    public ToolMineEvent(final Player player, final ItemStack item, final double xpGained, final Booster booster, final Block block, final PlayerData playerData, final LevellingTool tool) {
+    public ToolMineEvent(final Player player, final ItemStack item, final double xpGained, final Booster booster, final Block block, final PlayerData playerData, final Tool tool) {
         this.player = player;
         this.item = item;
         this.xpGained = xpGained;
@@ -71,7 +70,7 @@ public class ToolMineEvent extends Event implements Cancellable {
         this.booster = booster;
     }
 
-    public LevellingTool getTool() {
+    public Tool getTool() {
         return this.tool;
     }
 

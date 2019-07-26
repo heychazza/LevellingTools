@@ -3,13 +3,13 @@ package gg.plugins.levellingtools.event;
 import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.Booster;
+import gg.plugins.levellingtools.api.Tool;
 import gg.plugins.levellingtools.api.ToolLevelUpEvent;
 import gg.plugins.levellingtools.api.ToolMineEvent;
-import gg.plugins.levellingtools.config.ConfigCache;
+import gg.plugins.levellingtools.config.CachedConfig;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.hook.WorldGuardHook;
 import gg.plugins.levellingtools.storage.PlayerData;
-import gg.plugins.levellingtools.tool.LevellingTool;
 import gg.plugins.levellingtools.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -40,9 +40,9 @@ public class MineEvent implements Listener {
 
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             final PlayerData user = PlayerData.get().get(player.getUniqueId());
-            final LevellingTool playerTool = ConfigCache.getTools().get(user.getLevel());
+            final Tool playerTool = CachedConfig.getTools().get(user.getLevel());
             final double xpGained = playerTool.getXpFromBlock(block);
-            final Booster booster = ConfigCache.getMultiplier(player);
+            final Booster booster = CachedConfig.getMultiplier(player);
             final ToolMineEvent mineEvent = new ToolMineEvent(player, item, xpGained, booster, block, user, playerTool);
             Bukkit.getServer().getPluginManager().callEvent(mineEvent);
         }
@@ -53,7 +53,7 @@ public class MineEvent implements Listener {
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
         final PlayerData user = e.getPlayerData();
-        LevellingTool tool = e.getTool();
+        Tool tool = e.getTool();
         double xpGained = tool.getXpFromBlock(block);
 
         if (e.getBooster() != null) {
@@ -63,7 +63,7 @@ public class MineEvent implements Listener {
         boolean canLevelUp = true;
 
         if (WorldGuardHook.isEnabled()) {
-            for (final String region : ConfigCache.getBlacklistedRegions()) {
+            for (final String region : CachedConfig.getBlacklistedRegions()) {
                 if (WorldGuardHook.checkIfPlayerInRegion(player, block, region)) {
                     plugin.log(player.getName() + " wasn't able to gain xp due to '" + region + "' being a blacklisted region.");
                     canLevelUp = false;
@@ -72,7 +72,7 @@ public class MineEvent implements Listener {
             }
         }
 
-        if (ConfigCache.getBlacklistedWorlds().contains(block.getWorld().getName())) {
+        if (CachedConfig.getBlacklistedWorlds().contains(block.getWorld().getName())) {
             plugin.log(player.getName() + " wasn't able to gain xp due to being in a blacklisted world.");
             canLevelUp = false;
         }
@@ -85,7 +85,7 @@ public class MineEvent implements Listener {
             user.setXp(totalXp);
             user.setBlocksBroken(user.getBlocksBroken() + 1);
             user.setLevel(tool.getLevel());
-            for (final LevellingTool toolObj : ConfigCache.getTools().values()) {
+            for (final Tool toolObj : CachedConfig.getTools().values()) {
                 if (toolObj.getLevel() == 1) {
                     continue;
                 }
@@ -103,14 +103,14 @@ public class MineEvent implements Listener {
             if (tool.isRestricted() && user.getXp() > tool.getXpRequired()) {
                 user.setXp(tool.getXpRequired());
             }
-            player.setItemInHand(LevellingTool.getItemStack(player, e.getBlock()));
+            player.setItemInHand(Tool.getItemStack(player, e.getBlock()));
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onLevelUp(final ToolLevelUpEvent e) {
         final Player player = e.getPlayer();
-        final LevellingTool tool = e.getTool();
+        final Tool tool = e.getTool();
         tool.executeActions(player, true);
     }
 }

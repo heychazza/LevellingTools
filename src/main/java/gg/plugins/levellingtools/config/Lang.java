@@ -68,9 +68,9 @@ public enum Lang
         Lang.c = wrapper.getConfig();
         for (final Lang value : values()) {
             if (value.getMessage().split("\n").length == 1) {
-                Lang.c.addDefault(value.getPath().toLowerCase(), value.getMessage());
+                Lang.c.addDefault("message." + value.getPath().toLowerCase(), value.getMessage());
             } else {
-                Lang.c.addDefault(value.getPath().toLowerCase(), value.getMessage().split("\n"));
+                Lang.c.addDefault("message." + value.getPath().toLowerCase(), value.getMessage().split("\n"));
             }
         }
         Lang.c.options().copyDefaults(true);
