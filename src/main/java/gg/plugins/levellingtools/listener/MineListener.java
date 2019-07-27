@@ -26,8 +26,12 @@ public class MineListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockDamage(final BlockDamageEvent e) {
+        if (e.isCancelled()) {
+            plugin.log("Failed to change omnitool as a plugin disabled the BlockDamageEvent.");
+            return;
+        }
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
         final ItemStack item = player.getItemInHand();
@@ -41,7 +45,7 @@ public class MineListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onBlockDamage(final ToolDamageEvent e) {
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
@@ -53,6 +57,11 @@ public class MineListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final BlockBreakEvent e) {
+        if (e.isCancelled()) {
+            plugin.log("Failed to break block with omnitool as a plugin disabled the BlockBreakEvent.");
+            return;
+        }
+
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
         final ItemStack item = player.getItemInHand();
@@ -71,7 +80,7 @@ public class MineListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onMine(final ToolMineEvent e) {
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
