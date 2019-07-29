@@ -10,7 +10,7 @@ public class SQLitePlayerData implements PlayerData {
     @DatabaseField(id = true, useGetSet = true)
     private String uuid;
 
-    @DatabaseField(canBeNull = false, useGetSet = true)
+    @DatabaseField(useGetSet = true)
     private String username;
 
     @DatabaseField(defaultValue = "0", useGetSet = true, columnName = "xp")

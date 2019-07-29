@@ -85,6 +85,9 @@ public class Tool {
         ItemStack toolItem = tool.getItem().clone();
         ItemMeta toolMeta = toolItem.getItemMeta();
         Material toolType = getType(block != null ? block.getType() : Material.AIR, tool.getType());
+        toolItem.setType(toolType);
+
+        tools.log(player.getName() + " wants a " + toolType + " tool.");
 
         String toolName;
         if (toolType.name().contains("PICKAXE")) toolName = tool.getPickaxeName();
@@ -111,6 +114,7 @@ public class Tool {
         Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(Common.translate(replaceVariables(lore, username, blocks, currentXp, requiredXp, level, progressStr, progressBar))));
         toolMeta.setLore(updatedLore);
         toolItem.setItemMeta(toolMeta);
+
 
         final NBTItem nbtItem = new NBTItem(toolItem);
         nbtItem.setString("omnitool", player.getUniqueId().toString());
