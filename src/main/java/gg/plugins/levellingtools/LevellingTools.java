@@ -81,13 +81,13 @@ public class LevellingTools extends JavaPlugin {
     }
 
     private void setupStorage() {
-        String storageType = Objects.requireNonNull(getConfig().getString("settings.storage.type", "FLATFILE")).toUpperCase();
+        String storageType = Objects.requireNonNull(getConfig().getString("settings.storage.type", "SQLITE")).toUpperCase();
 
         if (Arrays.asList("SQLITE", "MYSQL", "MONGODB").contains(storageType)) {
             getLogger().info("Using '" + storageType + "' for data storage.");
         } else {
-            getLogger().info("The storage type '" + storageType + "' is invalid, defaulting to FLATFILE.");
-            storageType = "FLATFILE";
+            getLogger().info("The storage type '" + storageType + "' is invalid, defaulting to SQLITE.");
+            storageType = "SQLITE";
         }
 
         switch (storageType) {
