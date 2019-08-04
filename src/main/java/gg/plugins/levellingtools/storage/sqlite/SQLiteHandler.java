@@ -7,8 +7,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.storage.StorageHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -30,14 +28,13 @@ public class SQLiteHandler implements StorageHandler {
     }
 
     @Override
-    public void pullData(UUID uuid) {
+    public void pullData(String name, UUID uuid) {
         try {
             SQLitePlayerData user = accountDao.queryForId(uuid.toString());
             if (user == null) {
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
                 user = new SQLitePlayerData();
                 user.setUuid(uuid.toString());
-                user.setUsername(offlinePlayer.getName());
+                user.setUsername(name);
                 user.setLevel(1);
                 PlayerData.get().put(uuid, user);
             } else {

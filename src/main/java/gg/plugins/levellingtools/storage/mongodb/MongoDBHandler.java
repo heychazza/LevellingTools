@@ -7,8 +7,6 @@ import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.storage.StorageHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
@@ -32,14 +30,13 @@ public class MongoDBHandler implements StorageHandler {
     }
 
     @Override
-    public void pullData(UUID uuid) {
+    public void pullData(String name, UUID uuid) {
         MongoDBPlayerData playerData = datastore.createQuery(MongoDBPlayerData.class).filter("uuid", uuid.toString()).get();
 
         if (playerData == null) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             MongoDBPlayerData newPlayerData = new MongoDBPlayerData();
-            newPlayerData.setUuid(offlinePlayer.getUniqueId().toString());
-            newPlayerData.setUsername(offlinePlayer.getName());
+            newPlayerData.setUuid(uuid.toString());
+            newPlayerData.setUsername(name);
             newPlayerData.setXp(0);
             newPlayerData.setBlocksBroken(0);
             newPlayerData.setLevel(1);

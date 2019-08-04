@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public interface StorageHandler {
 
-    void pullData(UUID uuid);
+    void pullData(String name, UUID uuid);
 
     void pushData(UUID uuid);
 

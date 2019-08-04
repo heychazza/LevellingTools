@@ -52,7 +52,7 @@ public class MineListener implements Listener {
         final Block block = e.getBlock();
 
         if (plugin.getStorageHandler().getPlayer(player.getUniqueId()) == null)
-            plugin.getStorageHandler().pullData(player.getUniqueId());
+            plugin.getStorageHandler().pullData(player.getName(), player.getUniqueId());
         player.setItemInHand(Tool.getItemStack(player, block));
     }
 

@@ -25,7 +25,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(final AsyncPlayerPreLoginEvent e) {
-        plugin.getStorageHandler().pullData(e.getUniqueId());
+        plugin.getStorageHandler().pullData(e.getName(), e.getUniqueId());
     }
 
     @EventHandler

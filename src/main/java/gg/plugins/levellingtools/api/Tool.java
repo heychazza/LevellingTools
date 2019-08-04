@@ -51,7 +51,8 @@ public class Tool {
     }
 
     private static String replaceVariables(final String message, final String player, final String blocks, final String currentXp, final String requiredXp, final String level, final String progress, final String progressBar) {
-        return message.replace("{player}", player)
+        return message
+                .replace("{player}", player)
                 .replace("{blocks}", blocks)
                 .replace("{currentxp}", currentXp)
                 .replace("{requiredxp}", requiredXp)
@@ -72,7 +73,7 @@ public class Tool {
         PlayerData playerData = PlayerData.get().get(player.getUniqueId());
 
         if (playerData == null) {
-            tools.getStorageHandler().pullData(player.getUniqueId());
+            tools.getStorageHandler().pullData(player.getName(), player.getUniqueId());
             playerData = PlayerData.get().get(player.getUniqueId());
         }
         Tool tool = getPlayerTool(playerData);
@@ -114,15 +115,33 @@ public class Tool {
         tools.log("Progress Bar: " + progressBar);
         tools.log(" ");
 
-        Objects.requireNonNull(toolMeta).setDisplayName(Common.translate(replaceVariables(toolName, username, blocks, currentXp, requiredXp, level, progressStr, progressBar)));
+        if (toolMeta != null) {
+            toolMeta.setDisplayName(Common.translate(replaceVariables(
+                    toolName,
+                    username,
+                    blocks,
+                    currentXp,
+                    requiredXp,
+                    level,
+                    progressStr,
+                    progressBar)
+            ));
+            List<String> updatedLore = new ArrayList<>();
+            Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(Common.translate(replaceVariables(
+                    lore,
+                    username,
+                    blocks,
+                    currentXp,
+                    requiredXp,
+                    level,
+                    progressStr,
+                    progressBar))
+            ));
+            toolMeta.setLore(updatedLore);
+            toolItem.setItemMeta(toolMeta);
+        }
 
-        List<String> updatedLore = new ArrayList<>();
-        Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(Common.translate(replaceVariables(lore, username, blocks, currentXp, requiredXp, level, progressStr, progressBar))));
-        toolMeta.setLore(updatedLore);
-        toolItem.setItemMeta(toolMeta);
-
-
-        final NBTItem nbtItem = new NBTItem(toolItem);
+        NBTItem nbtItem = new NBTItem(toolItem);
         nbtItem.setString("omnitool", player.getUniqueId().toString());
         return nbtItem.getItem();
     }
