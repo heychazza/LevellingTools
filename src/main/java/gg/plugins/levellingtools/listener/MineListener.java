@@ -9,6 +9,7 @@ import gg.plugins.levellingtools.hook.WorldGuardHook;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.util.Common;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -67,6 +68,7 @@ public class MineListener implements Listener {
         final ItemStack item = player.getItemInHand();
 
         if (item.getType() == Material.AIR) return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
 
         final NBTItem nbtItem = new NBTItem(item);
 
@@ -112,7 +114,7 @@ public class MineListener implements Listener {
         if (canLevelUp) {
             final double totalXp = user.getXp() + xpGained;
             if (xpGained > 0 && !Lang.EXP_GAINED.asString().isEmpty()) {
-                Common.sendActionbar(player, Lang.EXP_GAINED.asString(xpGained));
+                Common.sendActionbar(player, Lang.EXP_GAINED.asString(Common.format(xpGained)));
             }
             user.setXp(totalXp);
             user.setBlocksBroken(user.getBlocksBroken() + 1);

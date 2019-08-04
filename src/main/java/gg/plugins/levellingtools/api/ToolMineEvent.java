@@ -66,20 +66,20 @@ public class ToolMineEvent extends Event implements Cancellable {
         return this.block;
     }
 
-    public void setBooster(Booster booster) {
-        this.booster = booster;
-    }
-
     public Tool getTool() {
         return this.tool;
     }
 
-    public void setXpGained(final int xpGained) {
+    public PlayerData getPlayerData() {
+        return this.playerData;
+    }
+
+    public void setXpGained(double xpGained) {
         this.xpGained = xpGained;
     }
 
-    public PlayerData getPlayerData() {
-        return this.playerData;
+    public void setBooster(Booster booster) {
+        this.booster = booster;
     }
 
     static {

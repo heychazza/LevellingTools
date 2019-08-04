@@ -6,7 +6,7 @@
 
     <groupId>gg.plugins</groupId>
     <artifactId>levellingtools</artifactId>
-    <version>2.1.4</version>
+    <version>2.1.6</version>
 
     <properties>
         <plugin>LevellingTools</plugin>
@@ -165,6 +165,11 @@
             <groupId>org.codemc.worldguardwrapper</groupId>
             <artifactId>worldguardwrapper</artifactId>
             <version>1.1.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.7.2</version>
         </dependency>
     </dependencies>
 

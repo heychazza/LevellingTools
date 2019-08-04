@@ -2,6 +2,15 @@
 
 settings:
 
+  # Turn this on to get insightful information from
+  # the plugin as its running. This is useful if
+  # something isn't working the way it should.
+  debug: false
+
+  # You may customise how many bars are used for the
+  # progress bar placeholder.
+  progress-bar: 10
+
   # If enabled, this option will only use the 'pickaxe'
   # format for each level. This is useful if you only
   # want to use the same format for all tool types.
@@ -49,7 +58,7 @@ settings:
   # their total amount that they receive. The permission
   # will be ltools.multi.<name>, where the name is in lowercase.
   boosters:
-    donor: 1.0 # 5% boost
+    donor: 1.05 # 5% boost
 
   actions:
     - 'tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}'

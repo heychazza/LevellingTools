@@ -1,6 +1,5 @@
 package gg.plugins.levellingtools.hook;
 
-import gg.plugins.levellingtools.LevellingTools;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -11,7 +10,7 @@ public class WorldGuardHook {
     private static boolean enabled;
     private static WorldGuardWrapper worldGuardWrapper;
 
-    public WorldGuardHook(LevellingTools levellingTools) {
+    public WorldGuardHook() {
         enabled = Bukkit.getPluginManager().isPluginEnabled("WorldGuard");
 
         if (enabled) {

@@ -4,7 +4,6 @@ import de.tr7zw.itemnbtapi.NBTAPI;
 import gg.plugins.levellingtools.command.util.CommandExecutor;
 import gg.plugins.levellingtools.command.util.CommandManager;
 import gg.plugins.levellingtools.config.CachedConfig;
-import gg.plugins.levellingtools.config.Config;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.hook.PlaceholderAPIHook;
 import gg.plugins.levellingtools.hook.WorldGuardHook;
@@ -35,7 +34,7 @@ public class LevellingTools extends JavaPlugin {
     }
 
     public void log(String message) {
-        if (CachedConfig.debugMode()) this.getLogger().info(message);
+        if (CachedConfig.debugMode()) this.getLogger().info("Debugger: " + message);
     }
 
     @Override
@@ -130,7 +129,7 @@ public class LevellingTools extends JavaPlugin {
 
     public void handleReload() {
         reloadConfig();
-        Lang.init(new Config(this, "config.yml"));
+        Lang.init(this);
         new CachedConfig(this);
         CachedConfig.setup();
         setupStorage();
@@ -146,7 +145,7 @@ public class LevellingTools extends JavaPlugin {
             }
 
             if (plugin.equalsIgnoreCase("WorldGuard")) {
-                new WorldGuardHook(this);
+                new WorldGuardHook();
             }
         }
     }

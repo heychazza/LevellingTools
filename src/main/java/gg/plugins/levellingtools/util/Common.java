@@ -11,15 +11,25 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.List;
 
-public class Common
-{
+public class Common {
+
+    private static LevellingTools levellingTools = JavaPlugin.getPlugin(LevellingTools.class);
+
     public static String translate(final String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
+
+    public static String format(double doubleStr) {
+        return decimalFormat.format(doubleStr);
     }
 
     public static void sendActionbar(Player player, String message) {
@@ -28,7 +38,7 @@ public class Common
 
             Object icbc = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"" + message + "\"}");
             Object packet = constructor.newInstance(icbc, (byte) 2);
-            Object entityPlayer= player.getClass().getMethod("getHandle").invoke(player);
+            Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
             Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);
 
             playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
@@ -49,7 +59,7 @@ public class Common
     private static String getVersion() {
         return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     }
-    
+
     public static String getToolName(final String type, final Integer level, final LevellingTools levellingTools) {
         final FileConfiguration config = levellingTools.getConfig();
         final String configName = config.getString("level." + level + ".settings.format." + type + ".name");
@@ -58,7 +68,7 @@ public class Common
         }
         return configName;
     }
-    
+
     public static List<String> getToolLore(final String type, final Integer level, final LevellingTools levellingTools) {
         final FileConfiguration config = levellingTools.getConfig();
         final List<String> configLore = config.getStringList("level." + level + ".settings.format." + type + ".lore");
@@ -67,7 +77,7 @@ public class Common
         }
         return configLore;
     }
-    
+
     public static ConfigurationSection getToolXp(final Integer level, final LevellingTools levellingTools) {
         final FileConfiguration config = levellingTools.getConfig();
         final ConfigurationSection experience = config.getConfigurationSection("level." + level + ".settings.experience");
@@ -94,12 +104,17 @@ public class Common
     }
 
     public static String getProgressBar(final PlayerData playerData) {
-        return getProgressBar(playerData, getProgress(playerData));
+        return getProgressBar(getProgress(playerData));
     }
 
-    public static String getProgressBar(final PlayerData playerData, final double percentage) {
-        int filledBars = (int) (Tool.getNextLevel(playerData).getBars() * percentage);
-        int leftOver = Tool.getNextLevel(playerData).getBars() - filledBars;
+    public static String getProgressBar(final double percentage) {
+        int bars = levellingTools.getConfig().getInt("settings.progress-bar", 10);
+        int filledBars = (int) (bars * (percentage / 100));
+        int leftOver = bars - filledBars;
+
+        levellingTools.log("Creating Progress Bar..");
+        levellingTools.log("Filled Bars: " + filledBars);
+        levellingTools.log("Left Over Bars: " + leftOver);
 
         StringBuilder sb = new StringBuilder();
         sb.append(Lang.PROGRESS_START.asString());

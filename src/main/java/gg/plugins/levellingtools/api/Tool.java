@@ -33,7 +33,6 @@ public class Tool {
     private List<String> shovelLore = null;
     private List<String> actions;
     private List<ItemFlag> itemFlags;
-    private int bars = 10;
     private static LevellingTools tools = JavaPlugin.getPlugin(LevellingTools.class);
     private ItemStack item;
 
@@ -46,7 +45,7 @@ public class Tool {
         this.itemFlags = new ArrayList<>();
     }
 
-    public static Tool getPlayerTool(UUID player, PlayerData playerData) {
+    public static Tool getPlayerTool(PlayerData playerData) {
         tools.getLogger().info("Data: " + playerData);
         return CachedConfig.getTools().values().stream().filter(tool -> playerData.getXp() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
     }
@@ -59,10 +58,6 @@ public class Tool {
                 .replace("{level}", level)
                 .replace("{progress}", progress)
                 .replace("{progressbar}", progressBar);
-    }
-
-    public static Tool getPreviousLevel(PlayerData playerData) {
-        return CachedConfig.getTools().size() > 1 && playerData.getLevel() > 1 ? CachedConfig.getTools().get(playerData.getLevel() - 1) : CachedConfig.getTools().get(playerData.getLevel());
     }
 
     public static Tool getCurrentLevel(PlayerData playerData) {
@@ -80,7 +75,7 @@ public class Tool {
             tools.getStorageHandler().pullData(player.getUniqueId());
             playerData = PlayerData.get().get(player.getUniqueId());
         }
-        Tool tool = getPlayerTool(player.getUniqueId(), playerData);
+        Tool tool = getPlayerTool(playerData);
 
         ItemStack toolItem = tool.getItem().clone();
         ItemMeta toolMeta = toolItem.getItemMeta();
@@ -101,12 +96,23 @@ public class Tool {
 
         String username = playerData.getUsername();
         String blocks = String.valueOf(playerData.getBlocksBroken());
-        String currentXp = String.valueOf(playerData.getXp());
+        String currentXp = String.valueOf(Common.format(playerData.getXp()));
         String requiredXp = String.valueOf(getNextLevel(playerData) != null ? getNextLevel(playerData).getXpRequired() : playerData.getXp());
         String level = String.valueOf(playerData.getLevel());
         double progress = Common.getProgress(playerData);
-        String progressStr = String.valueOf(progress);
-        String progressBar = Common.getProgressBar(playerData, progress);
+        String progressStr = String.valueOf(Common.format(progress));
+        String progressBar = Common.getProgressBar(progress);
+
+        tools.log(" ");
+        tools.log("Updating " + player.getName() + "..");
+        tools.log(" ");
+        tools.log("Blocks: " + blocks);
+        tools.log("Current XP: " + currentXp);
+        tools.log("Required XP: " + requiredXp);
+        tools.log("Level: " + level);
+        tools.log("Progress: " + progress + "% (" + progressStr + "%)");
+        tools.log("Progress Bar: " + progressBar);
+        tools.log(" ");
 
         Objects.requireNonNull(toolMeta).setDisplayName(Common.translate(replaceVariables(toolName, username, blocks, currentXp, requiredXp, level, progressStr, progressBar)));
 
@@ -252,10 +258,6 @@ public class Tool {
         return itemFlags;
     }
 
-    public int getBars() {
-        return bars;
-    }
-
     public void setLevel(final int level) {
         this.level = level;
     }
@@ -314,10 +316,6 @@ public class Tool {
 
     public void setItemFlags(List<ItemFlag> itemFlags) {
         this.itemFlags = itemFlags;
-    }
-
-    public void setBars(int bars) {
-        this.bars = bars;
     }
 
     public void executeActions(final Player player, final boolean fireGlobalActions) {

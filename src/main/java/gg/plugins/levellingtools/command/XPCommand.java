@@ -4,6 +4,7 @@ import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.command.util.Command;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.storage.PlayerData;
+import gg.plugins.levellingtools.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -22,11 +23,11 @@ public class XPCommand {
             if (sender instanceof Player) {
                 final Player player = (Player) sender;
                 if (player.getUniqueId() == target.getUniqueId()) {
-                    Lang.XP_COMMAND_SELF.send(player, Lang.PREFIX.asString(), playerEntity.getXp());
+                    Lang.XP_COMMAND_SELF.send(player, Lang.PREFIX.asString(), Common.format(playerEntity.getXp()));
                     return;
                 }
             }
-            Lang.XP_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), playerEntity.getUsername(), playerEntity.getXp());
+            Lang.XP_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), playerEntity.getUsername(), Common.format(playerEntity.getXp()));
         } else {
             if (!(sender instanceof Player)) {
                 Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
@@ -34,7 +35,7 @@ public class XPCommand {
             }
             final Player player2 = (Player) sender;
             final PlayerData playerEntity = PlayerData.get().get(player2.getUniqueId());
-            Lang.XP_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), playerEntity.getXp());
+            Lang.XP_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), Common.format(playerEntity.getXp()));
         }
     }
 }

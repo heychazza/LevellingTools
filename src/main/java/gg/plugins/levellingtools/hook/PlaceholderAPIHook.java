@@ -84,7 +84,10 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             return String.valueOf(playerEntity.getBlocksBroken());
         }
         if (identifier.equals("progress")) {
-            return String.valueOf(Common.getProgress(playerEntity));
+            return String.valueOf(Common.format(Common.getProgress(playerEntity)));
+        }
+        if (identifier.equals("xp")) {
+            return String.valueOf(Common.format(playerEntity.getXp()));
         }
         if (identifier.equals("progress_bar")) {
             return Common.getProgressBar(playerEntity);

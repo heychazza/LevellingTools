@@ -196,7 +196,7 @@ public class CachedConfig {
             Map<Enchantment, Integer> vanillaEnchants = Maps.newHashMap();
             Map<String, String> customEnchants = Maps.newHashMap();
 
-            data.getConfigurationSection("level." + levelStr + ".settings.enchants").getKeys(false).forEach(enchantmentStr -> {
+            Objects.requireNonNull(data.getConfigurationSection("level." + levelStr + ".settings.enchants")).getKeys(false).forEach(enchantmentStr -> {
 
                 if (!Enchant.exists(enchantmentStr)) {
                     customEnchants.put(enchantmentStr, data.getString("level." + levelStr + ".settings.enchants." + enchantmentStr, "I"));
@@ -271,7 +271,6 @@ public class CachedConfig {
             tool.setType(configType);
             tool.setActions(actions);
             tool.setItemFlags(itemFlags);
-            tool.setBars(data.getInt("level." + levelStr + ".settings.bars", 10));
             tool.createItem();
 
             getTools().put(level, tool);
