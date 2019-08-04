@@ -1,6 +1,5 @@
 package gg.plugins.levellingtools;
 
-import de.tr7zw.itemnbtapi.NBTAPI;
 import gg.plugins.levellingtools.command.util.CommandExecutor;
 import gg.plugins.levellingtools.command.util.CommandManager;
 import gg.plugins.levellingtools.config.CachedConfig;
@@ -58,7 +57,6 @@ public class LevellingTools extends JavaPlugin {
             getLogger().info("");
             getLogger().info("");
         }
-        NBTAPI.setLogging(false);
 
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);

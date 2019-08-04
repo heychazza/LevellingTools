@@ -29,6 +29,7 @@ public class Common {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
     public static String format(double doubleStr) {
+        levellingTools.log("Formatting " + doubleStr + " to " + decimalFormat.format(doubleStr));
         return decimalFormat.format(doubleStr);
     }
 

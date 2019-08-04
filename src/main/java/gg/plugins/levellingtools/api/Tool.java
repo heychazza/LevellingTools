@@ -1,8 +1,8 @@
 package gg.plugins.levellingtools.api;
 
-import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.config.CachedConfig;
+import gg.plugins.levellingtools.nbt.NBT;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.util.Common;
 import org.bukkit.Bukkit;
@@ -141,16 +141,16 @@ public class Tool {
             toolItem.setItemMeta(toolMeta);
         }
 
-        NBTItem nbtItem = new NBTItem(toolItem);
-        nbtItem.setString("omnitool", player.getUniqueId().toString());
-        return nbtItem.getItem();
+        NBT item = NBT.get(toolItem);
+        item.setString("omnitool", player.getUniqueId().toString());
+        return item.apply(toolItem);
     }
 
     public static int getSlot(final Player player) {
         int i = 0;
         ItemStack[] contents = player.getInventory().getContents();
         for (ItemStack item : contents) {
-            if (item != null && new NBTItem(item).hasKey("omnitool")) {
+            if (item != null && NBT.get(item).hasKey("omnitool")) {
                 return i;
             }
             ++i;

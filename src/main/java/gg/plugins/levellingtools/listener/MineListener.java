@@ -1,11 +1,11 @@
 package gg.plugins.levellingtools.listener;
 
-import de.tr7zw.itemnbtapi.NBTItem;
 import gg.plugins.levellingtools.LevellingTools;
 import gg.plugins.levellingtools.api.*;
 import gg.plugins.levellingtools.config.CachedConfig;
 import gg.plugins.levellingtools.config.Lang;
 import gg.plugins.levellingtools.hook.WorldGuardHook;
+import gg.plugins.levellingtools.nbt.NBT;
 import gg.plugins.levellingtools.storage.PlayerData;
 import gg.plugins.levellingtools.util.Common;
 import org.bukkit.Bukkit;
@@ -33,13 +33,15 @@ public class MineListener implements Listener {
             plugin.log("Failed to change omnitool as a plugin disabled the BlockDamageEvent.");
             return;
         }
+
         final Player player = e.getPlayer();
         final Block block = e.getBlock();
         final ItemStack item = player.getItemInHand();
-        final NBTItem nbtItem = new NBTItem(item);
-        if (item.getType() == Material.AIR) {
-            return;
-        }
+
+        if (item.getType() == Material.AIR) return;
+        final NBT nbtItem = NBT.get(item);
+        if (item.getType() == Material.AIR) return;
+
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             final ToolDamageEvent damageEvent = new ToolDamageEvent(player, item, block);
             Bukkit.getServer().getPluginManager().callEvent(damageEvent);
@@ -70,7 +72,7 @@ public class MineListener implements Listener {
         if (item.getType() == Material.AIR) return;
         if (player.getGameMode() != GameMode.SURVIVAL) return;
 
-        final NBTItem nbtItem = new NBTItem(item);
+        final NBT nbtItem = NBT.get(item);
 
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             final PlayerData user = PlayerData.get().get(player.getUniqueId());
