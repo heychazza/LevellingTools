@@ -5,7 +5,6 @@ author: Chazza
 website: https://plugins.gg/
 description: "The ultimate way to make your server stand out from the rest."
 softdepend: ["PlaceholderAPI", "WorldGuard"]
-api-version: "1.13"
 
 commands:
   levellingtools:

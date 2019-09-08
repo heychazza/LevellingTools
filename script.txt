@@ -1,0 +1,36 @@
+classpath     "%classpathLibs%"
+              "%compileArtifactPath%"
+              "%pluginArtifactPath%";
+open          "%project.build.directory%%file.separator%%project.build.finalName%.%project.packaging%";
+
+stringEncryptionExclude
+              net.chazza.levellingtools.LevellingTools;
+
+trimExclude   *.* @*.EventHandler *(*);
+
+exclude       net.chazza.levellingtools. and
+              net.chazza.levellingtools.LevellingTools and
+
+              net.chazza.levellingtools.api. and
+              net.chazza.levellingtools.api.* and
+              net.chazza.levellingtools.api.* * and
+              net.chazza.levellingtools.api.* * (*) and
+
+              net.chazza.levellingtools.storage.*.*PlayerData and
+              net.chazza.levellingtools.storage.*.*PlayerData * and
+              net.chazza.levellingtools.storage.*.*PlayerData * (*)
+              ;
+
+obfuscate   obfuscateFlow=extraAggressive
+            encryptStringLiterals=enhanced
+            mixedCaseClassNames=false
+            aggressiveMethodRenaming=true
+            randomize=true
+            localVariables=delete
+            lineNumbers=scramble
+            autoReflectionHandling=normal
+            obfuscateReferences=none
+            obfuscateReferenceStructures=inSpecialClass
+            lineNumbers=scramble;
+
+saveAll     "%project.build.directory%";
