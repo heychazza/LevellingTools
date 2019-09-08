@@ -30,6 +30,10 @@ public class Common {
         Bukkit.getConsoleSender().sendMessage(translate(msg));
     }
 
+    public static void loading(String object) {
+        sendConsoleMessage("[LT] Loading " + object + "..");
+    }
+
     private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
     public static String format(double doubleStr) {

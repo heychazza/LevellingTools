@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 @MavenLibrary(groupId = "com.github.j256", artifactId = "ormlite-jdbc", version = "4.43", repo = @Repository(url = "https://jitpack.io"))
 @MavenLibrary(groupId = "org.apache.logging.log4j", artifactId = "log4j-core", version = "2.7")
 @MavenLibrary(groupId = "com.github.CodeMC.WorldGuardWrapper", artifactId = "worldguardwrapper", version = "master-5e50edd862-1", repo = @Repository(url = "https://jitpack.io"))
+@MavenLibrary(groupId = "org.xerial", artifactId = "sqlite-jdbc", version = "3.7.2")
 public class LevellingTools extends JavaPlugin {
 
     private StorageHandler storageHandler;
@@ -51,10 +52,10 @@ public class LevellingTools extends JavaPlugin {
         saveDefaultConfig();
         getBanner();
 
-        Common.sendConsoleMessage("[LT] Loading libraries.");
+        Common.loading("libraries");
         LibraryLoader.loadAll(LevellingTools.class);
 
-        Common.sendConsoleMessage("[LT] Loading events.");
+        Common.loading("events");
         new JoinListener(this);
         new MineListener(this);
 
@@ -65,10 +66,10 @@ public class LevellingTools extends JavaPlugin {
         logger.addFilter(new ConsoleFilter());
         handleReload();
 
-        Common.sendConsoleMessage("[LT] Loading commands.");
+        Common.loading("commands");
         registerCommands();
 
-        Common.sendConsoleMessage("[LT] Loading hooks.");
+        Common.loading("hooks");
         hook("PlaceholderAPI");
         hook("WorldGuard");
 
@@ -99,7 +100,7 @@ public class LevellingTools extends JavaPlugin {
             storageType = "SQLITE";
         }
 
-        Common.sendConsoleMessage("[LT] Loading " + storageType.toLowerCase() + " storage.");
+        Common.loading(storageType.toLowerCase() + " storage");
 
         switch (storageType) {
             case "SQLITE":
@@ -142,7 +143,7 @@ public class LevellingTools extends JavaPlugin {
     public void handleReload() {
         reloadConfig();
 
-        Common.sendConsoleMessage("[LT] Loading config.");
+        Common.loading("config");
         Lang.init(this);
         new CachedConfig(this);
         CachedConfig.setup();
@@ -153,14 +154,8 @@ public class LevellingTools extends JavaPlugin {
     private void hook(final String plugin) {
         final boolean enabled = Bukkit.getPluginManager().isPluginEnabled(plugin);
         if (enabled) {
-
-            if (plugin.equalsIgnoreCase("PlaceholderAPI")) {
-                new PlaceholderAPIHook(this).register();
-            }
-
-            if (plugin.equalsIgnoreCase("WorldGuard")) {
-                new WorldGuardHook();
-            }
+            if (plugin.equalsIgnoreCase("PlaceholderAPI")) new PlaceholderAPIHook(this).register();
+            if (plugin.equalsIgnoreCase("WorldGuard")) new WorldGuardHook();
         }
     }
 }
