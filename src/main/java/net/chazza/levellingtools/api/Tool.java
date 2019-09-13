@@ -46,7 +46,6 @@ public class Tool {
     }
 
     public static Tool getPlayerTool(PlayerData playerData) {
-        tools.getLogger().info("Data: " + playerData);
         return CachedConfig.getTools().values().stream().filter(tool -> playerData.getXp() >= tool.getXpRequired()).reduce((first, second) -> second).orElse(null);
     }
 

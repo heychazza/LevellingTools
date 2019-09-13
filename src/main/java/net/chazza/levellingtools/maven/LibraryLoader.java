@@ -123,7 +123,7 @@ public final class LibraryLoader {
     private static File getLibFolder() {
         File pluginDataFolder = JavaPlugin.getPlugin(LevellingTools.class).getDataFolder();
         File pluginsDir = pluginDataFolder.getParentFile();
-        File libs = new File(pluginDataFolder, "libraries");
+        File libs = new File(pluginsDir, "ChazzaLibs");
         libs.mkdirs();
         return libs;
     }

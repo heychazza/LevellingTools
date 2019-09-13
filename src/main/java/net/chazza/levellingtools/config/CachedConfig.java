@@ -181,16 +181,19 @@ public class CachedConfig {
             Map<Enchantment, Integer> vanillaEnchants = Maps.newHashMap();
             Map<String, String> customEnchants = Maps.newHashMap();
 
-            Objects.requireNonNull(data.getConfigurationSection("level." + levelStr + ".settings.enchants")).getKeys(false).forEach(enchantmentStr -> {
+            if (data.getConfigurationSection("level." + levelStr + ".settings.enchants") != null) {
+                data.getKeys(false).forEach(enchantmentStr -> {
 
-                if (!Enchant.exists(enchantmentStr)) {
-                    customEnchants.put(enchantmentStr, data.getString("level." + levelStr + ".settings.enchants." + enchantmentStr, "I"));
-                    return;
-                }
+                    if (!Enchant.exists(enchantmentStr)) {
+                        customEnchants.put(enchantmentStr, data.getString("level." + levelStr + ".settings.enchants." + enchantmentStr, "I"));
+                        return;
+                    }
 
-                int enchantLevel = data.getInt("level." + levelStr + ".settings.enchants." + enchantmentStr, 0);
-                vanillaEnchants.put(Enchant.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
-            });
+                    int enchantLevel = data.getInt("level." + levelStr + ".settings.enchants." + enchantmentStr, 0);
+                    vanillaEnchants.put(Enchant.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
+                });
+
+            }
 
             List<Tool.BlockXP> blockXp = new ArrayList<>();
             Set<String> configBlockXp = Common.getToolXp(level, plugin).getKeys(false);
