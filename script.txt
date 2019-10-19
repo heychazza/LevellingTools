@@ -4,21 +4,21 @@ classpath     "%classpathLibs%"
 open          "%project.build.directory%%file.separator%%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
-              net.chazza.levellingtools.LevellingTools;
+              io.felux.levellingtools.LevellingTools;
 
 trimExclude   *.* @*.EventHandler *(*);
 
-exclude       net.chazza.levellingtools. and
-              net.chazza.levellingtools.LevellingTools and
+exclude       io.felux.levellingtools. and
+              io.felux.levellingtools.LevellingTools and
 
-              net.chazza.levellingtools.api. and
-              net.chazza.levellingtools.api.* and
-              net.chazza.levellingtools.api.* * and
-              net.chazza.levellingtools.api.* * (*) and
+              io.felux.levellingtools.api. and
+              io.felux.levellingtools.api.* and
+              io.felux.levellingtools.api.* * and
+              io.felux.levellingtools.api.* * (*) and
 
-              net.chazza.levellingtools.storage.*.*PlayerData and
-              net.chazza.levellingtools.storage.*.*PlayerData * and
-              net.chazza.levellingtools.storage.*.*PlayerData * (*)
+              io.felux.levellingtools.storage.*.*PlayerData and
+              io.felux.levellingtools.storage.*.*PlayerData * and
+              io.felux.levellingtools.storage.*.*PlayerData * (*)
               ;
 
 obfuscate   obfuscateFlow=extraAggressive

@@ -1,8 +1,8 @@
 name: ${plugin}
 version: ${project.version}
 main: ${package}
-author: Chazza
-website: https://plugins.gg/
+author: "Felux"
+website: https://felux.io/
 description: "The ultimate way to make your server stand out from the rest."
 softdepend: ["PlaceholderAPI", "WorldGuard"]
 
