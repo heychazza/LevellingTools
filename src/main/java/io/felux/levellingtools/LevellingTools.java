@@ -82,7 +82,7 @@ public class LevellingTools extends JavaPlugin {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for (Player player : Buskkit.getOnlinePlayers()) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
                         getStorageHandler().pushData(player.getUniqueId());
                     }
                 }
