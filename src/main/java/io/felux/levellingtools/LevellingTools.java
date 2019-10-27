@@ -87,6 +87,17 @@ public class LevellingTools extends JavaPlugin {
                     }
                 }
             }.runTaskTimerAsynchronously(this, (20L * 60) * 10, (20L * 60) * 10);
+
+        if (getConfig().getBoolean("actionstats.enabled", true))
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        PlayerData playerData = PlayerData.get(player.getUniqueId());
+                        Common.sendActionbar(player, Lang.ACTIONBAR_STATS.asString(Lang.PREFIX.asString(), playerData.getLevel(), Common.getProgressBar(playerData), Common.getProgress(playerData)));
+                    }
+                }
+            }.runTaskTimer(this, 20L, 20L);
     }
 
     private void getBanner() {
