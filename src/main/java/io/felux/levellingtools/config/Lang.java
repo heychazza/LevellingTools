@@ -34,7 +34,7 @@ public enum Lang {
     RESET_COMMAND_SELF("{0} &7You have reset your data."),
     RESET_COMMAND_OTHER("{0} &7You have reset &e{1}'s &7data."),
 
-    ACTIONBAR_STATS("&bLvl {1} &8❘ {2} &7(&7{3}%)")
+    ACTIONBAR_STATS("&bLvl {1} &8| &7{2} &7(&7{3}%)")
 
     ;
 

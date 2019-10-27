@@ -118,7 +118,8 @@ public class MineListener implements Listener {
         if (canLevelUp) {
             final double totalXp = user.getXp() + xpGained;
             if (xpGained > 0 && !Lang.EXP_GAINED.asString().isEmpty()) {
-                Common.sendActionbar(player, Lang.EXP_GAINED.asString(Common.format(xpGained)));
+                if (!plugin.getConfig().getBoolean("settings.stats.enabled", true))
+                    Common.sendActionbar(player, Lang.EXP_GAINED.asString(Common.format(xpGained)));
             }
             user.setXp(totalXp);
             user.setBlocksBroken(user.getBlocksBroken() + 1);

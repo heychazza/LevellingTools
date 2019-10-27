@@ -11,6 +11,7 @@ import io.felux.levellingtools.listener.MineListener;
 import io.felux.levellingtools.maven.LibraryLoader;
 import io.felux.levellingtools.maven.MavenLibrary;
 import io.felux.levellingtools.maven.Repository;
+import io.felux.levellingtools.nbt.NBT;
 import io.felux.levellingtools.storage.PlayerData;
 import io.felux.levellingtools.storage.StorageHandler;
 import io.felux.levellingtools.storage.mongodb.MongoDBHandler;
@@ -20,6 +21,7 @@ import io.felux.levellingtools.util.Common;
 import io.felux.levellingtools.util.ConsoleFilter;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -93,8 +95,10 @@ public class LevellingTools extends JavaPlugin {
                 @Override
                 public void run() {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        PlayerData playerData = PlayerData.get(player.getUniqueId());
-                        Common.sendActionbar(player, Lang.ACTIONBAR_STATS.asString(Lang.PREFIX.asString(), playerData.getLevel(), Common.getProgressBar(playerData), Common.getProgress(playerData)));
+                        if (player.getItemInHand().getType() != Material.AIR && (NBT.get(player.getItemInHand()) != null && NBT.get(player.getItemInHand()).hasKey("omnitool"))) {
+                            PlayerData playerData = PlayerData.get(player.getUniqueId());
+                            Common.sendActionbar(player, Lang.ACTIONBAR_STATS.asString(Lang.PREFIX.asString(), playerData.getLevel(), Common.getProgressBar(playerData), Common.getProgress(playerData)));
+                        }
                     }
                 }
             }.runTaskTimer(this, 20L, 20L);
