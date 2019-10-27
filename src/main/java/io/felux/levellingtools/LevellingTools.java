@@ -82,13 +82,13 @@ public class LevellingTools extends JavaPlugin {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
+                    for (Player player : Buskkit.getOnlinePlayers()) {
                         getStorageHandler().pushData(player.getUniqueId());
                     }
                 }
             }.runTaskTimerAsynchronously(this, (20L * 60) * 10, (20L * 60) * 10);
 
-        if (getConfig().getBoolean("actionstats.enabled", true))
+        if (getConfig().getBoolean("settings.stats.enabled", true))
             new BukkitRunnable() {
                 @Override
                 public void run() {

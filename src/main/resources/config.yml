@@ -34,6 +34,10 @@ settings:
     username: ""
     password: ""
 
+  # This shows the players stats from the action bar.
+  stats:
+    enabled: true
+
   blacklist:
     world:
       list:
