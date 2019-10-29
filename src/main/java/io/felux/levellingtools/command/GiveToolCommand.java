@@ -8,8 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class GiveCommand {
-    @Command(aliases = {"give"}, about = "Give yourself or another player a tool.", permission = "ltools.give", usage = "give [player]")
+public class GiveToolCommand {
+    @Command(aliases = {"givetool"}, about = "Give yourself or another player a tool.", permission = "ltools.givetool", usage = "givetool [player]")
     public static void execute(final CommandSender sender, final LevellingTools plugin, final String[] args) {
         if (args.length > 0) {
             final Player target = Bukkit.getPlayer(args[0]);

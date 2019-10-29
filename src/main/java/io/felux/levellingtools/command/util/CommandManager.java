@@ -31,7 +31,8 @@ public class CommandManager {
                 ReloadCommand.class,
                 XPCommand.class,
                 ResetCommand.class,
-                GiveCommand.class
+                GiveToolCommand.class,
+                GiveXPCommand.class
         );
 
         for (Class cmdClass : commandClasses) {
@@ -75,6 +76,11 @@ public class CommandManager {
 
                 if (commandMethod.getParameters()[0].getType() == Player.class && !(sender instanceof Player)) {
                     Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
+                    return true;
+                }
+
+                if (commandAnnotation.requiredArgs() > args.length) {
+                    Lang.COMMAND_USAGE.send(sender, Lang.PREFIX.asString(), commandAnnotation.usage());
                     return true;
                 }
 

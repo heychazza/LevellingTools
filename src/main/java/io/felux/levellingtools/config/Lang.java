@@ -21,6 +21,9 @@ public enum Lang {
     XP_COMMAND_OTHER("{0} &7{1} has a total of {2} xp."),
     GIVE_COMMAND_SELF("{0} &7You've given yourself a levelling tool&7."),
     GIVE_COMMAND_OTHER("{0} &7You've given &e{1} &7a levelling tool."),
+    GIVE_XP_COMMAND_SELF("{0} &7You've given yourself an extra &e{1} &7xp."),
+    GIVE_XP_COMMAND_OTHER("{0} &7You've given &6{1} &7an extra &e{1} &7xp."),
+    GIVE_XP_COMMAND_ALL("{0} &7You've given &6{1} &7online players an extra &e{2} &7xp."),
     PROGRESS_START("&8["),
     PROGRESS_CHARACTER(":"),
     PROGRESS_END("&8]"),
@@ -30,6 +33,7 @@ public enum Lang {
     COMMAND_PLAYER_ONLY("{0} &cThe command or args specified can only be used by a player."),
     COMMAND_INVALID("{0} &cThat command doesn't exist, use &f/lt help&c."),
     COMMAND_UNKNOWN("{0} &cThat player couldn't be found."),
+    COMMAND_USAGE("{0} &7Usage: &e/lt {1}"),
 
     RESET_COMMAND_SELF("{0} &7You have reset your data."),
     RESET_COMMAND_OTHER("{0} &7You have reset &e{1}'s &7data."),
