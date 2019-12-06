@@ -19,6 +19,7 @@ import io.felux.levellingtools.storage.mysql.MySQLHandler;
 import io.felux.levellingtools.storage.sqlite.SQLiteHandler;
 import io.felux.levellingtools.util.Common;
 import io.felux.levellingtools.util.ConsoleFilter;
+import io.felux.levellingtools.util.Metrics;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -76,6 +77,9 @@ public class LevellingTools extends JavaPlugin {
         Common.loading("hooks");
         hook("PlaceholderAPI");
         hook("WorldGuard");
+
+        Common.loading("metrics");
+        new Metrics(this);
 
         Common.sendConsoleMessage(" ");
         getLogger().info("Successfully enabled in " + (System.currentTimeMillis() - start) + "ms.");

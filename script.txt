@@ -16,6 +16,8 @@ exclude       io.felux.levellingtools. and
               io.felux.levellingtools.api.* * and
               io.felux.levellingtools.api.* * (*) and
 
+              io.felux.levellingtools.storage. and
+
               io.felux.levellingtools.storage.*.*PlayerData and
               io.felux.levellingtools.storage.*.*PlayerData * and
               io.felux.levellingtools.storage.*.*PlayerData * (*)

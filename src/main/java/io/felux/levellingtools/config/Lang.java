@@ -38,9 +38,7 @@ public enum Lang {
     RESET_COMMAND_SELF("{0} &7You have reset your data."),
     RESET_COMMAND_OTHER("{0} &7You have reset &e{1}'s &7data."),
 
-    ACTIONBAR_STATS("&bLvl {1} &8| &7{2} &7(&7{3}%)")
-
-    ;
+    ACTIONBAR_STATS("&bLvl {1} &8| &7{2} &7(&7{3}%)");
 
     private String message;
     private static FileConfiguration c;
@@ -51,6 +49,10 @@ public enum Lang {
 
     private String getMessage() {
         return this.message;
+    }
+
+    public String getPath() {
+        return "message." + this.name().toLowerCase().toLowerCase();
     }
 
     public static String format(String s, final Object... objects) {
@@ -74,18 +76,9 @@ public enum Lang {
         return true;
     }
 
-    public String getPath() {
-        return "message." + this.name().toLowerCase().toLowerCase();
-    }
-
     public void send(final Player player, final Object... args) {
         final String message = this.asString(args);
         Arrays.stream(message.split("\n")).forEach(player::sendMessage);
-    }
-
-    public void sendRaw(final Player player, final Object... args) {
-        final String message = this.asString(args);
-        Arrays.stream(message.split("\n")).forEach(player::sendRawMessage);
     }
 
     public void send(final CommandSender sender, final Object... args) {
@@ -108,3 +101,4 @@ public enum Lang {
         return this.format(opt.orElse(this.message), objects);
     }
 }
+
