@@ -76,6 +76,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     public String onRequest(final OfflinePlayer player, final String identifier) {
         final PlayerData playerData = PlayerData.get().get(player.getUniqueId());
+        if (playerData == null) return "Data Not Loaded";
 
         if (identifier.equals("level")) {
             return String.valueOf(playerData.getLevel());
