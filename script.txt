@@ -23,10 +23,12 @@ exclude       io.felux.levellingtools. and
               io.felux.levellingtools.storage.*.*PlayerData * (*)
               ;
 
-obfuscate   obfuscateFlow=normal
+obfuscate   obfuscateFlow=extraAggressive
             encryptStringLiterals=enhanced
             mixedCaseClassNames=true
             aggressiveMethodRenaming=true
+            hideFieldNames=true
+            uniqueClassNames=true
             randomize=true
             localVariables=delete
             lineNumbers=scramble
