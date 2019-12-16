@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -143,6 +144,40 @@ public class Tool {
         NBT item = NBT.get(toolItem);
         item.setString("omnitool", player.getUniqueId().toString());
         return item.apply(toolItem);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void updateTool(final Player player, final Block block) {
+        final PlayerData user = PlayerData.get().get(player.getUniqueId());
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Tool tool = CachedConfig.getTools().get(user.getLevel());
+
+                for (final Tool toolObj : CachedConfig.getTools().values()) {
+                    if (toolObj.getLevel() == 1) {
+                        continue;
+                    }
+                    if (toolObj.getLevel() <= user.getLevel()) {
+                        continue;
+                    }
+
+                    if (toolObj.getXpRequired() > user.getXp()) {
+                        break;
+                    }
+                    user.setLevel(user.getLevel() + 1);
+                    tool = toolObj;
+                    Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, player.getItemInHand(), null, user, toolObj));
+                }
+
+                if (tool.isRestricted() && user.getXp() > tool.getXpRequired()) {
+                    user.setXp(tool.getXpRequired());
+                }
+
+                player.setItemInHand(getItemStack(player, block));
+            }
+        }.runTaskAsynchronously(tools);
     }
 
     public static int getSlot(final Player player) {

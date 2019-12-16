@@ -1,7 +1,7 @@
 classpath     "%classpathLibs%"
               "%compileArtifactPath%"
               "%pluginArtifactPath%";
-open          "%project.build.directory%%file.separator%%project.build.finalName%.%project.packaging%";
+open          "server/plugins/%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
               io.felux.levellingtools.LevellingTools;
@@ -37,4 +37,4 @@ obfuscate   obfuscateFlow=extraAggressive
             obfuscateReferenceStructures=inSpecialClass
             lineNumbers=scramble;
 
-saveAll     "%project.build.directory%";
+saveAll     "server/plugins/%project.build.finalName%.%project.packaging%";

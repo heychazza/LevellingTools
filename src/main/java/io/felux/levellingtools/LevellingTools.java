@@ -174,8 +174,6 @@ public class LevellingTools extends JavaPlugin {
     }
 
     public void handleReload() {
-        reloadConfig();
-
         Common.loading("config");
         Lang.init(this);
         new CachedConfig(this);

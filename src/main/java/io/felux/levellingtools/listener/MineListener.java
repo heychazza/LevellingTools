@@ -27,6 +27,7 @@ public class MineListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, levellingTools);
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onBlockDamage(final BlockDamageEvent e) {
         if (e.isCancelled()) {
@@ -58,6 +59,7 @@ public class MineListener implements Listener {
         player.setItemInHand(Tool.getItemStack(player, block));
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(final BlockBreakEvent e) {
         if (e.isCancelled()) {
@@ -84,6 +86,7 @@ public class MineListener implements Listener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onMine(final ToolMineEvent e) {
         final Player player = e.getPlayer();
@@ -124,25 +127,7 @@ public class MineListener implements Listener {
             user.setXp(totalXp);
             user.setBlocksBroken(user.getBlocksBroken() + 1);
             user.setLevel(tool.getLevel());
-            for (final Tool toolObj : CachedConfig.getTools().values()) {
-                if (toolObj.getLevel() == 1) {
-                    continue;
-                }
-                if (toolObj.getLevel() <= user.getLevel()) {
-                    continue;
-                }
-                if (totalXp < toolObj.getXpRequired()) {
-                    continue;
-                }
-                user.setLevel(user.getLevel() + 1);
-                tool = toolObj;
-                Bukkit.getPluginManager().callEvent(new ToolLevelUpEvent(player, player.getItemInHand(), block, user, toolObj));
-                break;
-            }
-            if (tool.isRestricted() && user.getXp() > tool.getXpRequired()) {
-                user.setXp(tool.getXpRequired());
-            }
-            player.setItemInHand(Tool.getItemStack(player, e.getBlock()));
+            Tool.updateTool(player, e.getBlock());
         }
     }
 

@@ -32,7 +32,8 @@ public class CommandManager {
                 XPCommand.class,
                 ResetCommand.class,
                 GiveToolCommand.class,
-                GiveXPCommand.class
+                GiveXPCommand.class,
+                GiveLevelCommand.class
         );
 
         for (Class cmdClass : commandClasses) {

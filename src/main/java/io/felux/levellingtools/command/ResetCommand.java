@@ -1,6 +1,7 @@
 package io.felux.levellingtools.command;
 
 import io.felux.levellingtools.LevellingTools;
+import io.felux.levellingtools.api.Tool;
 import io.felux.levellingtools.command.util.Command;
 import io.felux.levellingtools.config.Lang;
 import io.felux.levellingtools.storage.PlayerData;
@@ -10,11 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ResetCommand {
+    @SuppressWarnings("deprecation")
     @Command(aliases = {"reset"}, about = "Reset yourself or another players data.", permission = "ltools.reset", usage = "reset [player]")
     public static void execute(final CommandSender sender, final LevellingTools plugin, final String[] args) {
         if (args.length > 0) {
             final OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-            if (target == null) {
+            if (!target.hasPlayedBefore()) {
                 Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
                 return;
             }
@@ -34,6 +36,7 @@ public class ResetCommand {
             playerEntity.setXp(0);
             playerEntity.setLevel(1);
             Lang.RESET_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), playerEntity.getUsername());
+            if (Bukkit.getPlayer(target.getUniqueId()) != null) Tool.updateTool(((Player) target), null);
         } else {
             if (!(sender instanceof Player)) {
                 Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
@@ -45,6 +48,7 @@ public class ResetCommand {
             playerEntity.setXp(0);
             playerEntity.setLevel(1);
             Lang.RESET_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), playerEntity.getXp());
+            Tool.updateTool(player2, null);
         }
     }
 }

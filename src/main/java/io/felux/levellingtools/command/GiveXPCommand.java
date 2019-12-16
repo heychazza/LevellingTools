@@ -1,6 +1,7 @@
 package io.felux.levellingtools.command;
 
 import io.felux.levellingtools.LevellingTools;
+import io.felux.levellingtools.api.Tool;
 import io.felux.levellingtools.command.util.Command;
 import io.felux.levellingtools.config.Lang;
 import io.felux.levellingtools.storage.PlayerData;
@@ -31,14 +32,16 @@ public class GiveXPCommand {
         playerData.setXp(playerData.getXp() + Double.parseDouble(args[1]));
 
         if (sender instanceof Player) {
-            Player senderPlayer = (Player) sender;
+            Player player = (Player) sender;
 
-            if (senderPlayer.getUniqueId() == target.getUniqueId()) {
-                Lang.GIVE_XP_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), args[1]);
+            if (player.getUniqueId() == target.getUniqueId()) {
+                Lang.GIVE_XP_COMMAND_SELF.send(player, Lang.PREFIX.asString(), args[1]);
+                Tool.updateTool(player, null);
                 return;
             }
         }
 
         Lang.GIVE_XP_COMMAND_OTHER.send(sender, Lang.PREFIX.asString(), args[1]);
+        Tool.updateTool(target, null);
     }
 }
