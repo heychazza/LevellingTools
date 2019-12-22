@@ -20,6 +20,7 @@ import io.felux.levellingtools.storage.sqlite.SQLiteHandler;
 import io.felux.levellingtools.util.Common;
 import io.felux.levellingtools.util.ConsoleFilter;
 import io.felux.levellingtools.util.Metrics;
+import io.felux.levellingtools.util.StorageType;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,8 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,7 +82,9 @@ public class LevellingTools extends JavaPlugin {
         new Metrics(this);
 
         Common.sendConsoleMessage(" ");
-        getLogger().info("Successfully enabled in " + (System.currentTimeMillis() - start) + "ms.");
+
+        if (getConfig().getBoolean("settings.make-console-talkative", true))
+            getLogger().info("Successfully enabled in " + (System.currentTimeMillis() - start) + "ms.");
 
         if (getConfig().getBoolean("settings.autosave", true))
             new BukkitRunnable() {
@@ -96,6 +98,7 @@ public class LevellingTools extends JavaPlugin {
 
         if (getConfig().getBoolean("settings.stats.enabled", true))
             new BukkitRunnable() {
+                @SuppressWarnings("deprecation")
                 @Override
                 public void run() {
                     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -121,42 +124,34 @@ public class LevellingTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        PlayerData.users.forEach(((uuid, playerData) -> {
-            getStorageHandler().pushData(uuid);
-        }));
+        for (UUID player : PlayerData.users.keySet()) {
+            getStorageHandler().pushData(player);
+        }
     }
 
     private void setupStorage() {
-        String storageType = Objects.requireNonNull(getConfig().getString("settings.storage.type", "SQLITE")).toUpperCase();
+        StorageType storageType = StorageType.valueOf(getConfig().getString("settings.storage.type", "SQLITE"));
 
-        if (!Arrays.asList("SQLITE", "MYSQL", "MONGODB").contains(storageType)) {
-            storageType = "SQLITE";
-        }
+        String prefix = getConfig().getString("settings.storage.prefix", "lt_");
+        String host = getConfig().getString("settings.storage.host", "localhost");
+        int port = getConfig().getInt("settings.storage.port");
+        String database = getConfig().getString("settings.storage.database", "levellingtools");
+        String username = getConfig().getString("settings.storage.username", "");
+        String password = getConfig().getString("settings.storage.password", "");
 
-        Common.loading(storageType.toLowerCase() + " storage");
+//        Common.loading(storageType.toLowerCase() + " storage");
 
         switch (storageType) {
-            case "SQLITE":
+            case SQLITE:
                 storageHandler = new SQLiteHandler(getDataFolder().getPath());
                 break;
-            case "MYSQL":
-                storageHandler = new MySQLHandler(
-                        getConfig().getString("settings.storage.prefix", ""),
-                        getConfig().getString("settings.storage.host", "localhost"),
-                        getConfig().getInt("settings.storage.port", 3306),
-                        getConfig().getString("settings.storage.database", "levellingtools"),
-                        getConfig().getString("settings.storage.username", "root"),
-                        getConfig().getString("settings.storage.password", "qwerty123"));
+            case MYSQL:
+                if (port == 0) port = 3306;
+                storageHandler = new MySQLHandler(prefix, host, port, database, username, password);
                 break;
-            case "MONGODB":
-                storageHandler = new MongoDBHandler(
-                        getConfig().getString("settings.storage.prefix", ""),
-                        getConfig().getString("settings.storage.host", "localhost"),
-                        getConfig().getInt("settings.storage.port", 27017),
-                        getConfig().getString("settings.storage.database", "levellingtools"),
-                        getConfig().getString("settings.storage.username", ""),
-                        getConfig().getString("settings.storage.password", "")
-                );
+            case MONGODB:
+                if (port == 0) port = 27017;
+                storageHandler = new MongoDBHandler(prefix, host, port, database, username, password);
                 break;
         }
     }
@@ -176,10 +171,14 @@ public class LevellingTools extends JavaPlugin {
     public void handleReload() {
         Common.loading("config");
         Lang.init(this);
-        new CachedConfig(this);
         CachedConfig.setup();
 
-        setupStorage();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                setupStorage();
+            }
+        }.runTaskAsynchronously(this);
     }
 
     private void hook(final String plugin) {

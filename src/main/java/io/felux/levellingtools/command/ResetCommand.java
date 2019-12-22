@@ -17,19 +17,17 @@ public class ResetCommand {
         if (args.length > 0) {
             final OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
             if (!target.hasPlayedBefore()) {
-                Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
+                Lang.COMMAND_UNKNOWN.send(sender, Lang.PREFIX.asString());
                 return;
             }
+
             final PlayerData playerEntity = PlayerData.get().get(target.getUniqueId());
-            if (sender instanceof Player) {
-                final Player player = (Player) sender;
-                if (player.getUniqueId() == target.getUniqueId()) {
-                    playerEntity.setBlocksBroken(0);
-                    playerEntity.setXp(0);
-                    playerEntity.setLevel(1);
-                    Lang.RESET_COMMAND_SELF.send(player, Lang.PREFIX.asString());
-                    return;
-                }
+            if ((sender instanceof Player && ((Player) sender).getUniqueId() == target.getUniqueId())) {
+                playerEntity.setBlocksBroken(0);
+                playerEntity.setXp(0);
+                playerEntity.setLevel(1);
+                Lang.RESET_COMMAND_SELF.send(sender, Lang.PREFIX.asString());
+                return;
             }
 
             playerEntity.setBlocksBroken(0);
@@ -42,13 +40,13 @@ public class ResetCommand {
                 Lang.COMMAND_PLAYER_ONLY.send(sender, Lang.PREFIX.asString());
                 return;
             }
-            final Player player2 = (Player) sender;
-            final PlayerData playerEntity = PlayerData.get().get(player2.getUniqueId());
+            final Player player = (Player) sender;
+            final PlayerData playerEntity = PlayerData.get().get(player.getUniqueId());
             playerEntity.setBlocksBroken(0);
             playerEntity.setXp(0);
             playerEntity.setLevel(1);
             Lang.RESET_COMMAND_SELF.send(sender, Lang.PREFIX.asString(), playerEntity.getXp());
-            Tool.updateTool(player2, null);
+            Tool.updateTool(player, null);
         }
     }
 }

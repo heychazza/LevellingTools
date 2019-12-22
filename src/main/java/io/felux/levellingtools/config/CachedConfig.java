@@ -12,13 +12,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.stream.Stream;
 
 public class CachedConfig {
 
-    private static LevellingTools plugin;
+    private static final LevellingTools plugin = (LevellingTools) JavaPlugin.getProvidingPlugin(LevellingTools.class);
     private static Map<Integer, Tool> tools;
     private static List<Booster> boosters;
 
@@ -42,11 +43,6 @@ public class CachedConfig {
     public static List<Material> pickaxeBlocks;
     public static List<Material> axeBlocks;
     public static List<Material> shovelBlocks;
-
-
-    public CachedConfig(LevellingTools plugin) {
-        CachedConfig.plugin = plugin;
-    }
 
     public static boolean debugMode() {
         return debug;
@@ -106,50 +102,63 @@ public class CachedConfig {
         plugin.log("Enchantment prefix set to '" + enchantPrefix + "'.");
         plugin.log("Give on join set to '" + giveOnJoin + "'.");
 
-        plugin.getConfig().getStringList("settings.blocks.pickaxe").forEach(pickaxeBlock -> {
+        for (String pickaxeBlock : plugin.getConfig().getStringList("settings.blocks.pickaxe")) {
             if (Material.getMaterial(pickaxeBlock) == null) {
                 plugin.log("Material '" + pickaxeBlock + "' for pickaxe blocks is invalid. Skipping!");
-                return;
+                continue;
             }
             pickaxeBlocks.add(Material.valueOf(pickaxeBlock));
-        });
+        }
 
-        plugin.getConfig().getStringList("settings.blocks.shovel").forEach(shovelBlock -> {
+        for (String shovelBlock : plugin.getConfig().getStringList("settings.blocks.shovel")) {
             if (Material.getMaterial(shovelBlock) == null) {
                 plugin.log("Material '" + shovelBlock + "' for shovel blocks is invalid. Skipping!");
-                return;
+                continue;
             }
             shovelBlocks.add(Material.valueOf(shovelBlock));
-        });
+        }
 
-        plugin.getConfig().getStringList("settings.blocks.axe").forEach(axeBlock -> {
+        for (String axeBlock : plugin.getConfig().getStringList("settings.blocks.axe")) {
             if (Material.getMaterial(axeBlock) == null) {
                 plugin.log("Material '" + axeBlock + "' for axe blocks is invalid. Skipping!");
-                return;
+                continue;
             }
             axeBlocks.add(Material.valueOf(axeBlock));
-        });
+        }
 
-        Objects.requireNonNull(data.getConfigurationSection("settings.boosters")).getKeys(false).forEach(multiId -> {
-            double multiplier = data.getDouble("settings.boosters." + multiId, 1.0);
+        ConfigurationSection boosterSection = data.getConfigurationSection("settings.boosters");
 
-            if (multiplier < 1.0) {
-                plugin.log("The booster '" + multiId + "' has a value lower than expected and has been set to 1.0.");
-                multiplier = 1.0;
-            }
+        if (boosterSection != null) {
+            for (String multiId : boosterSection.getKeys(false)) {
+                double multiplier = data.getDouble("settings.boosters." + multiId, 1.0);
 
-            boolean exists = false;
-            for (Booster multiObj : boosters) {
-                if (multiObj.getId().equalsIgnoreCase(multiId)) {
-                    plugin.log("The booster '" + multiId + "' already exists.");
-                    exists = true;
+                if (multiplier < 1.0) {
+                    plugin.log("The booster '" + multiId + "' has a value lower than expected and has been set to 1.0.");
+                    multiplier = 1.0;
                 }
+
+                boolean exists = false;
+                for (Booster multiObj : boosters) {
+                    if (multiObj.getId().equalsIgnoreCase(multiId)) {
+                        plugin.log("The booster '" + multiId + "' already exists.");
+                        exists = true;
+                    }
+                }
+
+                if (!exists) boosters.add(new Booster(multiId, multiplier));
+            }
+        }
+
+        ConfigurationSection levelSections = data.getConfigurationSection("level");
+        if (levelSections == null) return;
+        for (String levelStr : levelSections.getKeys(false)) {
+            ConfigurationSection levelSection = levelSections.getConfigurationSection(levelStr);
+
+            if (levelSection == null) {
+                plugin.getLogger().warning("Level " + levelStr + " has invalid properties! Skipping..");
+                continue;
             }
 
-            if (!exists) boosters.add(new Booster(multiId, multiplier));
-        });
-
-        data.getConfigurationSection("level").getKeys(false).forEach(levelStr -> {
             int level = Integer.parseInt(levelStr);
             plugin.log("Configuring level " + level + "..");
             double xpRequired = data.getDouble("level." + levelStr + ".settings.xp", -1);
@@ -188,17 +197,17 @@ public class CachedConfig {
             Map<Enchantment, Integer> vanillaEnchants = Maps.newHashMap();
             Map<String, String> customEnchants = Maps.newHashMap();
 
-            ConfigurationSection enchantSection = data.getConfigurationSection("level." + levelStr + ".settings.enchants");
+            ConfigurationSection enchantSection = levelSection.getConfigurationSection("settings.enchants");
             if (enchantSection != null) {
                 enchantSection.getKeys(false).forEach(enchantmentStr -> {
 
                     if (!Enchant.exists(enchantmentStr)) {
-                        customEnchants.put(enchantmentStr, data.getString("level." + levelStr + ".settings.enchants." + enchantmentStr, "I"));
+                        customEnchants.put(enchantmentStr, levelSection.getString("settings.enchants." + enchantmentStr, "I"));
                         plugin.log("Registering '" + enchantmentStr + "' as a custom enchant.");
                         return;
                     }
 
-                    int enchantLevel = data.getInt("level." + levelStr + ".settings.enchants." + enchantmentStr, 0);
+                    int enchantLevel = levelSection.getInt("settings.enchants." + enchantmentStr, 0);
                     plugin.log("Registering '" + enchantmentStr + "' as a vanilla enchant.");
                     vanillaEnchants.put(Enchant.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
                 });
@@ -221,7 +230,7 @@ public class CachedConfig {
                         return;
                     }
 
-                    int xp = data.getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
+                    int xp = levelSection.getInt("settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with data (" + blockData[1] + "), giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new Tool.BlockXP(matType, Integer.valueOf(blockData[1]), xp));
                 } else {
@@ -232,20 +241,20 @@ public class CachedConfig {
                         return;
                     }
 
-                    int xp = data.getInt("level." + levelStr + ".settings.experience." + blockStr, 0);
+                    int xp = levelSection.getInt("settings.experience." + blockStr, 0);
                     //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with no data, giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new Tool.BlockXP(matType, 0, xp));
                 }
             });
 
-            String configType = data.getString("level." + levelStr + ".settings.type", "WOOD").toUpperCase();
+            String configType = levelSection.getString("settings.type", "WOOD").toUpperCase();
             if (!Arrays.asList("WOOD", "STONE", "IRON", "GOLD", "DIAMOND").contains(configType)) {
                 plugin.log(String.format("Skipping invalid tool type (%s) for level %s.", configType, levelStr));
-                return;
+                continue;
             }
 
             List<ItemFlag> itemFlags = new ArrayList<>();
-            data.getStringList("level." + levelStr + ".settings.flags").forEach(itemFlag -> {
+            levelSection.getStringList("settings.flags").forEach(itemFlag -> {
                 boolean flagExists = Stream.of(ItemFlag.values()).anyMatch(e -> e.name().equalsIgnoreCase(itemFlag));
                 if (flagExists) {
                     itemFlags.add(ItemFlag.valueOf(itemFlag));
@@ -254,9 +263,9 @@ public class CachedConfig {
                 }
             });
 
-            List<String> actions = data.getStringList("level." + levelStr + ".actions");
+            List<String> actions = levelSection.getStringList("actions");
             Tool tool = new Tool(level, xpRequired);
-            tool.setRestriction(data.getBoolean("level." + levelStr + ".settings.restrict", false));
+            tool.setRestriction(levelSection.getBoolean("settings.restrict", false));
             tool.setVanillaEnchants(vanillaEnchants);
             tool.setCustomEnchants(customEnchants);
             tool.setBlockXp(blockXp);
@@ -272,7 +281,7 @@ public class CachedConfig {
             tool.createItem();
 
             getTools().put(level, tool);
-        });
+        }
 
         blacklistedWorlds = new ArrayList<>();
         blacklistedRegions = new ArrayList<>();
@@ -286,5 +295,4 @@ public class CachedConfig {
     public static LevellingTools getPlugin() {
         return plugin;
     }
-
 }

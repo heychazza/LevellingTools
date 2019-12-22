@@ -37,7 +37,8 @@ public class Common {
     }
 
     public static void sendConsoleMessage(String msg) {
-        Bukkit.getConsoleSender().sendMessage(translate(msg));
+        if (levellingTools.getConfig().getBoolean("settings.make-console-talkative", true))
+            Bukkit.getConsoleSender().sendMessage(translate(msg));
     }
 
     private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
