@@ -1,16 +1,16 @@
 name: ${plugin}
 version: ${project.version}
 main: ${package}
-author: "Felux"
-website: https://felux.io/
+author: "CodeItAll"
+website: https://codeitall.com/
 description: "The ultimate way to make your server stand out from the rest."
 softdepend: ["PlaceholderAPI", "WorldGuard"]
 
 commands:
   levellingtools:
-    description: LevellingTools commands
+    description: ${plugin} commands
     usage: ""
-    aliases: ["ltools", "tools", "tool", "lt"]
+    aliases: ["ltools", "tools", "tool", "lt", "leveltools"]
 
 permissions:
   ltools.give:

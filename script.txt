@@ -4,23 +4,23 @@ classpath     "%classpathLibs%"
 open          "server/plugins/%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
-              io.felux.levellingtools.LevellingTools;
+              com.codeitall.tools.Tools;
 
 trimExclude   *.* @*.EventHandler *(*);
 
-exclude       io.felux.levellingtools. and
-              io.felux.levellingtools.LevellingTools and
+exclude       com.codeitall.tools. and
+              com.codeitall.tools.Tools and
 
-              io.felux.levellingtools.api. and
-              io.felux.levellingtools.api.* and
-              io.felux.levellingtools.api.* * and
-              io.felux.levellingtools.api.* * (*) and
+              com.codeitall.tools.api. and
+              com.codeitall.tools.api.* and
+              com.codeitall.tools.api.* * and
+              com.codeitall.tools.api.* * (*) and
 
-              io.felux.levellingtools.storage. and
+              com.codeitall.tools.storage. and
 
-              io.felux.levellingtools.storage.*.*PlayerData and
-              io.felux.levellingtools.storage.*.*PlayerData * and
-              io.felux.levellingtools.storage.*.*PlayerData * (*)
+              com.codeitall.tools.storage.*.*PlayerData and
+              com.codeitall.tools.storage.*.*PlayerData * and
+              com.codeitall.tools.storage.*.*PlayerData * (*)
               ;
 
 obfuscate   obfuscateFlow=extraAggressive
@@ -30,11 +30,11 @@ obfuscate   obfuscateFlow=extraAggressive
             hideFieldNames=true
             uniqueClassNames=true
             randomize=true
-            localVariables=delete
+            localVariables=obfuscate
             lineNumbers=scramble
             autoReflectionHandling=normal
-            obfuscateReferences=none
-            obfuscateReferenceStructures=inSpecialClass
-            lineNumbers=scramble;
+            lineNumbers=scramble
+            collapsePackagesWithDefault="$$Skid$$"
+            newNamesPrefix="$$GL_HAVE_FUN_SKID$$";
 
 saveAll     "server/plugins/%project.build.finalName%.%project.packaging%";
