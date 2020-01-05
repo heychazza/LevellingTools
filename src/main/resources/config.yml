@@ -22,6 +22,11 @@ settings:
   # special tool on the store.
   give_on_join: false
 
+  # You may also specify if the levelling tool should only
+  # be given on first join only - this only applies if the
+  # above is enabled.
+  first_join_only: true
+
   # This is where all your player data will be saved.
   # It is not recommended to change this on a live
   # server, as players can lose data.

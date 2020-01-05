@@ -4,23 +4,23 @@ classpath     "%classpathLibs%"
 open          "server/plugins/%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
-              com.codeitall.tools.Tools;
+              com.codeitforyou.tools.Tools;
 
 trimExclude   *.* @*.EventHandler *(*);
 
-exclude       com.codeitall.tools. and
-              com.codeitall.tools.Tools and
+exclude       com.codeitforyou.tools. and
+              com.codeitforyou.tools.Tools and
 
-              com.codeitall.tools.api. and
-              com.codeitall.tools.api.* and
-              com.codeitall.tools.api.* * and
-              com.codeitall.tools.api.* * (*) and
+              com.codeitforyou.tools.api. and
+              com.codeitforyou.tools.api.* and
+              com.codeitforyou.tools.api.* * and
+              com.codeitforyou.tools.api.* * (*) and
 
-              com.codeitall.tools.storage. and
+              com.codeitforyou.tools.storage. and
 
-              com.codeitall.tools.storage.*.*PlayerData and
-              com.codeitall.tools.storage.*.*PlayerData * and
-              com.codeitall.tools.storage.*.*PlayerData * (*)
+              com.codeitforyou.tools.storage.*.*PlayerData and
+              com.codeitforyou.tools.storage.*.*PlayerData * and
+              com.codeitforyou.tools.storage.*.*PlayerData * (*)
               ;
 
 obfuscate   obfuscateFlow=extraAggressive
