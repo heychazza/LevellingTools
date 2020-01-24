@@ -26,21 +26,6 @@ public class Common {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    private static String prefix = "[LT]";
-
-    public static void loading(String object) {
-        sendConsoleMessage(prefix + " Loading " + object + "..");
-    }
-
-    public static void sendMessage(String object) {
-        sendConsoleMessage(prefix + " " + object);
-    }
-
-    public static void sendConsoleMessage(String msg) {
-        if (Tools.getConfig().getBoolean("settings.make-console-talkative", true))
-            Bukkit.getConsoleSender().sendMessage(translate(msg));
-    }
-
     private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
     public static String format(double doubleStr) {

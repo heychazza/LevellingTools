@@ -18,6 +18,6 @@ public class Booster {
     }
 
     public String getPermission() {
-        return "ltools.multi." + id;
+        return "cifytools.multi." + id;
     }
 }

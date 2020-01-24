@@ -1,4 +1,4 @@
-name: Levelling${plugin}
+name: ${plugin}
 version: ${project.version}
 main: ${package}
 author: "CodeItForYou"
@@ -7,21 +7,21 @@ description: "The ultimate way to make your server stand out from the rest."
 softdepend: ["PlaceholderAPI", "WorldGuard"]
 
 commands:
-  levellingtools:
+  cifytools:
     description: ${plugin} commands
     usage: ""
-    aliases: ["ltools", "tools", "tool", "lt", "leveltools"]
+    aliases: ["cifytool", "tools", "tool", "ct"]
 
 permissions:
-  ltools.give:
+  cifytools.give:
     description: Give yourself or a player a levelling tool
-  ltools.reload:
+  cifytools.reload:
     description: Reload the configuration file into memory
-  ltools.help:
+  cifytools.help:
     description: View commands you have access to within the plugin
-  ltools.info:
+  cifytools.info:
     description: View information about the plugin
     default: true
-  ltools.xp:
+  cifytools.xp:
     description: View yourself or another players xp amount
     default: true

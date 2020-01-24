@@ -6,7 +6,8 @@ open          "D:/Documents/Minecraft/TestServer/plugins/%project.build.finalNam
 stringEncryptionExclude
               com.codeitforyou.tools.Tools;
 
-trimExclude   *.* @*.EventHandler *(*);
+trimExclude   *.* @*.EventHandler *(*) and
+              *.* @*.Command *(*);
 
 exclude       com.codeitforyou.tools. and
               com.codeitforyou.tools.Tools and
@@ -17,6 +18,12 @@ exclude       com.codeitforyou.tools. and
               com.codeitforyou.tools.api.* * (*) and
 
               com.codeitforyou.tools.storage. and
+
+              com.codeitforyou.tools.command.* * and
+              com.codeitforyou.tools.command.* * (*) and
+
+              com.codeitforyou.tools.listener.* * and
+              com.codeitforyou.tools.listener.* * (*) and
 
               com.codeitforyou.tools.storage.*.*PlayerData and
               com.codeitforyou.tools.storage.*.*PlayerData * and

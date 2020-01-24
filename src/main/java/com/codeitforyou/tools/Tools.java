@@ -59,15 +59,11 @@ public class Tools extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        long start = System.currentTimeMillis();
         saveDefaultConfig();
-        getBanner();
 
-        Common.loading("libraries");
         LibraryLoader.loadAll(Tools.class);
         actionManager.addDefaults();
 
-        Common.loading("events");
         new JoinListener(this);
         new MineListener(this);
 
@@ -78,20 +74,12 @@ public class Tools extends JavaPlugin {
         logger.addFilter(new ConsoleFilter());
         handleReload();
 
-        Common.loading("commands");
         registerCommands();
 
-        Common.loading("hooks");
         hook("PlaceholderAPI");
         hook("WorldGuard");
 
-        Common.loading("metrics");
         new Metrics(this);
-
-        Common.sendConsoleMessage(" ");
-
-        if (getConfig().getBoolean("settings.make-console-talkative", true))
-            getLogger().info("Successfully enabled in " + (System.currentTimeMillis() - start) + "ms.");
 
         if (getConfig().getBoolean("settings.autosave", true))
             new BukkitRunnable() {
@@ -118,16 +106,6 @@ public class Tools extends JavaPlugin {
             }.runTaskTimer(this, 20L, 20L);
     }
 
-    private void getBanner() {
-        Common.sendConsoleMessage("&b ");
-        Common.sendConsoleMessage("&b    __ ______");
-        Common.sendConsoleMessage("&b   / //_  __/");
-        Common.sendConsoleMessage("&b  / /__/ /   " + "  &7" + getDescription().getName() + " v" + getDescription().getVersion());
-        Common.sendConsoleMessage("&b /____/_/    " + "  &7Running on Bukkit - " + getServer().getName());
-        Common.sendConsoleMessage("&b ");
-        Common.sendMessage("Created by CodeItForYou.com.");
-        Common.sendConsoleMessage("&b ");
-    }
 
     @Override
     public void onDisable() {
@@ -167,9 +145,9 @@ public class Tools extends JavaPlugin {
 
     private void registerCommands() {
         commandManager = new CommandManager(this);
-        getCommand("levellingtools").setExecutor(new CommandExecutor(this));
-        if (getCommand("levellingtools").getPlugin() != this) {
-            getLogger().warning("/levellingtools command is being handled by plugin other than " + getDescription().getName() + ". You must use /levellingtools:levellingtools instead.");
+        getCommand(getDescription().getName().toLowerCase()).setExecutor(new CommandExecutor(this));
+        if (getCommand(getDescription().getName().toLowerCase()).getPlugin() != this) {
+            getLogger().warning("/" + getDescription().getName().toLowerCase() + " command is being handled by plugin other than " + getDescription().getName() + ". You must use /" + getDescription().getName().toLowerCase() + ":" + getDescription().getName().toLowerCase() + " instead.");
         }
     }
 
