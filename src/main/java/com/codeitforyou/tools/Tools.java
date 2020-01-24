@@ -146,8 +146,6 @@ public class Tools extends JavaPlugin {
         String username = getConfig().getString("settings.storage.username", "");
         String password = getConfig().getString("settings.storage.password", "");
 
-//        Common.loading(storageType.toLowerCase() + " storage");
-
         switch (storageType) {
             case SQLITE:
                 storageHandler = new SQLiteHandler(getDataFolder().getPath());
@@ -176,9 +174,8 @@ public class Tools extends JavaPlugin {
     }
 
     public void handleReload() {
-        Common.loading("config");
-        Lang.init(this);
         CachedConfig.setup();
+        Lang.init(this);
 
         new BukkitRunnable() {
             @Override

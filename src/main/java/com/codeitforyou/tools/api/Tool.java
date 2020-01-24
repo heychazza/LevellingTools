@@ -177,7 +177,7 @@ public class Tool {
 
                 player.setItemInHand(getItemStack(player, block));
             }
-        }.runTaskAsynchronously(Tools);
+        }.runTask(Tools);
     }
 
     public static int getSlot(final Player player) {

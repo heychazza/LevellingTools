@@ -1,7 +1,7 @@
 classpath     "%classpathLibs%"
               "%compileArtifactPath%"
               "%pluginArtifactPath%";
-open          "server/plugins/%project.build.finalName%.%project.packaging%";
+open          "D:/Documents/Minecraft/TestServer/plugins/%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
               com.codeitforyou.tools.Tools;
@@ -23,18 +23,23 @@ exclude       com.codeitforyou.tools. and
               com.codeitforyou.tools.storage.*.*PlayerData * (*)
               ;
 
-obfuscate   obfuscateFlow=extraAggressive
-            encryptStringLiterals=enhanced
-            mixedCaseClassNames=true
+obfuscate
+            changeLogFileOut="ChangeLog.txt"
+            keepInnerClassInfo=ifNameNotObfuscated // should be true to allow use of OpenAPI inner classes
+            keepGenericsInfo=true
             aggressiveMethodRenaming=true
-            hideFieldNames=true
-            uniqueClassNames=true
+            obfuscateFlow=aggressive
+            exceptionObfuscation=heavy
+            encryptStringLiterals=enhanced
+            legalIdentifiers=true
+            lineNumbers=keep
+            hideFieldNames=false
+            hideStaticMethodNames=false
             randomize=true
-            localVariables=obfuscate
-            lineNumbers=scramble
-            autoReflectionHandling=normal
-            lineNumbers=scramble
-            collapsePackagesWithDefault="$$Skid$$"
-            newNamesPrefix="$$GL_HAVE_FUN_SKID$$";
+            methodParameters=keepVisibleIfNotObfuscated
+            localVariables=keepMethodParametersIfNotObfuscated
+            methodParameterChanges=flowObfuscate
+            obfuscateReferences=normal
+            ;
 
-saveAll     "server/plugins/%project.build.finalName%.%project.packaging%";
+saveAll     "D:/Documents/Minecraft/TestServer/plugins/%project.build.finalName%.%project.packaging%";
