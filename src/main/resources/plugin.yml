@@ -1,16 +1,11 @@
 name: ${plugin}
 version: ${project.version}
-main: ${package}
+main: ${package}.${project.name}
 author: "CodeItForYou"
 website: https://codeitforyou.com/
 description: "The ultimate way to make your server stand out from the rest."
 softdepend: ["PlaceholderAPI", "WorldGuard"]
-
-commands:
-  cifytools:
-    description: ${plugin} commands
-    usage: ""
-    aliases: ["cifytool", "tools", "tool", "ct"]
+api-version: 1.13
 
 permissions:
   cifytools.give:

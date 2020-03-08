@@ -5,11 +5,9 @@ import com.codeitforyou.tools.Tools;
 import com.codeitforyou.tools.config.Lang;
 import org.bukkit.command.CommandSender;
 
-public class ReloadCommand {
-    @Command(aliases = {"reload"}, about = "Reload the plugin.", permission = "ltools.reload", usage = "reload")
+public class MainCommand {
+    @Command(about = "Main command.")
     public static void execute(final CommandSender sender, final Tools plugin, final String[] args) {
-        plugin.reloadConfig();
-        plugin.handleReload();
-        Lang.RELOAD_COMMAND.send(sender, Lang.PREFIX.asString());
+        Lang.MAIN_COMMAND.send(sender, Lang.PREFIX.asString(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin.getDescription().getAuthors().get(0));
     }
 }

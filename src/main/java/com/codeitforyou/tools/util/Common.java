@@ -7,7 +7,6 @@ import com.codeitforyou.tools.storage.PlayerData;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -21,10 +20,6 @@ import java.util.List;
 public class Common {
 
     private static Tools Tools = JavaPlugin.getPlugin(Tools.class);
-
-    public static String translate(final String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
 
     private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
 

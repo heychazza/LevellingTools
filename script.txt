@@ -4,30 +4,30 @@ classpath     "%classpathLibs%"
 open          "D:/Documents/Minecraft/TestServer/plugins/%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
-              com.codeitforyou.tools.Tools;
+              %package%.%mainClass%;
 
 trimExclude   *.* @*.EventHandler *(*) and
               *.* @*.Command *(*);
 
-exclude       com.codeitforyou.tools. and
-              com.codeitforyou.tools.Tools and
+exclude       %package%. and
+              %package%.%mainClass% and
 
-              com.codeitforyou.tools.api. and
-              com.codeitforyou.tools.api.* and
-              com.codeitforyou.tools.api.* * and
-              com.codeitforyou.tools.api.* * (*) and
+              %package%.api. and
+              %package%.api.* and
+              %package%.api.* * and
+              %package%.api.* * (*) and
 
-              com.codeitforyou.tools.storage. and
+              %package%.storage. and
 
-              com.codeitforyou.tools.command.* * and
-              com.codeitforyou.tools.command.* * (*) and
+              %package%.command.* * and
+              %package%.command.* * (*) and
 
-              com.codeitforyou.tools.listener.* * and
-              com.codeitforyou.tools.listener.* * (*) and
+              %package%.listener.* * and
+              %package%.listener.* * (*) and
 
-              com.codeitforyou.tools.storage.*.*PlayerData and
-              com.codeitforyou.tools.storage.*.*PlayerData * and
-              com.codeitforyou.tools.storage.*.*PlayerData * (*)
+              %package%.storage.*.*PlayerData and
+              %package%.storage.*.*PlayerData * and
+              %package%.storage.*.*PlayerData * (*)
               ;
 
 obfuscate

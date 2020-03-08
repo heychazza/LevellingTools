@@ -1,5 +1,7 @@
 package com.codeitforyou.tools.api;
 
+import com.codeitforyou.lib.api.general.StringUtil;
+import com.codeitforyou.lib.api.xseries.XMaterial;
 import com.codeitforyou.tools.Tools;
 import com.codeitforyou.tools.config.CachedConfig;
 import com.codeitforyou.tools.nbt.NBT;
@@ -107,16 +109,16 @@ public class Tool {
         Tools.log(" ");
         Tools.log("Updating " + player.getName() + "..");
         Tools.log(" ");
-        Tools.log("Blocks: " + blocks);
-        Tools.log("Current XP: " + currentXp);
-        Tools.log("Required XP: " + requiredXp);
-        Tools.log("Level: " + level);
-        Tools.log("Progress: " + progress + "% (" + progressStr + "%)");
-        Tools.log("Progress Bar: " + progressBar);
+        Tools.log("=> Blocks: " + blocks);
+        Tools.log("=> Current XP: " + currentXp);
+        Tools.log("=> Required XP: " + requiredXp);
+        Tools.log("=> Level: " + level);
+        Tools.log("=> Progress: " + progress + "% (" + progressStr + "%)");
+        Tools.log("=> Progress Bar: " + progressBar);
         Tools.log(" ");
 
         if (toolMeta != null) {
-            toolMeta.setDisplayName(Common.translate(replaceVariables(
+            toolMeta.setDisplayName(StringUtil.translate(replaceVariables(
                     toolName,
                     username,
                     blocks,
@@ -127,7 +129,7 @@ public class Tool {
                     progressBar)
             ));
             List<String> updatedLore = new ArrayList<>();
-            Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(Common.translate(replaceVariables(
+            Objects.requireNonNull(toolLore).forEach(lore -> updatedLore.add(StringUtil.translate(replaceVariables(
                     lore,
                     username,
                     blocks,
@@ -201,9 +203,9 @@ public class Tool {
         Material axeType;
         Material shovelType;
 
-        pickaxeType = Material.valueOf(pickaxeTypeStr.toUpperCase());
-        axeType = Material.valueOf(axeTypeStr.toUpperCase());
-        shovelType = Material.valueOf(shovelTypeStr.toUpperCase());
+        pickaxeType = XMaterial.matchXMaterial(pickaxeTypeStr.toUpperCase()).get().parseMaterial();
+        axeType = XMaterial.matchXMaterial(axeTypeStr.toUpperCase()).get().parseMaterial();
+        shovelType = XMaterial.matchXMaterial(shovelTypeStr.toUpperCase()).get().parseMaterial();
 
         if (block != null && block != Material.AIR) {
             if (CachedConfig.axeBlocks.contains(block) && Tool.Tools.getConfig().getBoolean("settings.type.axe", true)) {
@@ -234,19 +236,17 @@ public class Tool {
 
         String toolName = getPickaxeName();
 
-        toolName = Common.translate(toolName);
+        toolName = StringUtil.translate(toolName);
 
-        Objects.requireNonNull(toolMeta).setDisplayName(Common.translate(toolName));
+        Objects.requireNonNull(toolMeta).setDisplayName(StringUtil.translate(toolName));
         List<String> toolLore = getPickaxeLore();
 
         final List<String> lore = new ArrayList<>();
 
-        getCustomEnchants().forEach((enchant, enchantLvl) -> {
-            lore.add(CachedConfig.getEnchantPrefix() + enchant + " " + enchantLvl);
-        });
+        getCustomEnchants().forEach((enchant, enchantLvl) -> lore.add(CachedConfig.getEnchantPrefix() + enchant + " " + enchantLvl));
 
         if (toolLore != null && toolLore.size() > 0) {
-            toolLore.forEach(localLore -> lore.add(Common.translate(localLore)));
+            toolLore.forEach(localLore -> lore.add(StringUtil.translate(localLore)));
             toolMeta.setLore(lore);
         }
 

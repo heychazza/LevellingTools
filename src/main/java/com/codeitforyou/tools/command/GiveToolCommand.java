@@ -1,8 +1,8 @@
 package com.codeitforyou.tools.command;
 
+import com.codeitforyou.lib.api.command.Command;
 import com.codeitforyou.tools.Tools;
 import com.codeitforyou.tools.api.Tool;
-import com.codeitforyou.tools.command.util.Command;
 import com.codeitforyou.tools.config.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

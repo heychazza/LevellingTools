@@ -1,4 +1,4 @@
-package com.codeitforyou.tools.util;
+package com.codeitforyou.tools.storage;
 
 public enum StorageType {
     SQLITE,

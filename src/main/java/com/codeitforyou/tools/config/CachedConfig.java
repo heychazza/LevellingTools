@@ -1,10 +1,12 @@
 package com.codeitforyou.tools.config;
 
+import com.codeitforyou.lib.api.general.StringUtil;
+import com.codeitforyou.lib.api.xseries.XEnchantment;
+import com.codeitforyou.lib.api.xseries.XMaterial;
 import com.codeitforyou.tools.Tools;
 import com.codeitforyou.tools.api.Booster;
 import com.codeitforyou.tools.api.Tool;
 import com.codeitforyou.tools.util.Common;
-import com.codeitforyou.tools.util.Enchant;
 import com.google.common.collect.Maps;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -97,7 +99,7 @@ public class CachedConfig {
 
         if (!plugin.isEnabled()) return;
 
-        enchantPrefix = Common.translate(data.getString("settings.enchants.prefix", "&7"));
+        enchantPrefix = StringUtil.translate(data.getString("settings.enchants.prefix", "&7"));
         giveOnJoin = data.getBoolean("settings.give_on_join", true);
         firstJoinOnly = data.getBoolean("settings.first_join_only", false);
         debug = data.getBoolean("settings.debug", false);
@@ -113,7 +115,7 @@ public class CachedConfig {
                 plugin.log("Material '" + pickaxeBlock + "' for pickaxe blocks is invalid. Skipping!");
                 continue;
             }
-            pickaxeBlocks.add(Material.valueOf(pickaxeBlock));
+            pickaxeBlocks.add(XMaterial.matchXMaterial(pickaxeBlock).get().parseMaterial());
         }
 
         for (String shovelBlock : plugin.getConfig().getStringList("settings.blocks.shovel")) {
@@ -121,7 +123,7 @@ public class CachedConfig {
                 plugin.log("Material '" + shovelBlock + "' for shovel blocks is invalid. Skipping!");
                 continue;
             }
-            shovelBlocks.add(Material.valueOf(shovelBlock));
+            shovelBlocks.add(XMaterial.matchXMaterial(shovelBlock).get().parseMaterial());
         }
 
         for (String axeBlock : plugin.getConfig().getStringList("settings.blocks.axe")) {
@@ -129,7 +131,7 @@ public class CachedConfig {
                 plugin.log("Material '" + axeBlock + "' for axe blocks is invalid. Skipping!");
                 continue;
             }
-            axeBlocks.add(Material.valueOf(axeBlock));
+            axeBlocks.add(XMaterial.matchXMaterial(axeBlock).get().parseMaterial());
         }
 
         ConfigurationSection boosterSection = data.getConfigurationSection("settings.boosters");
@@ -166,6 +168,8 @@ public class CachedConfig {
             }
 
             int level = Integer.parseInt(levelStr);
+
+            plugin.log(" ");
             plugin.log("Configuring level " + level + "..");
             double xpRequired = data.getDouble("level." + levelStr + ".settings.xp", -1);
 
@@ -207,7 +211,9 @@ public class CachedConfig {
             if (enchantSection != null) {
                 enchantSection.getKeys(false).forEach(enchantmentStr -> {
 
-                    if (!Enchant.exists(enchantmentStr)) {
+                    Optional<XEnchantment> enchantment = XEnchantment.matchXEnchantment(enchantmentStr);
+
+                    if (!enchantment.isPresent()) {
                         customEnchants.put(enchantmentStr, levelSection.getString("settings.enchants." + enchantmentStr, "I"));
                         plugin.log("Registering '" + enchantmentStr + "' as a custom enchant.");
                         return;
@@ -215,7 +221,7 @@ public class CachedConfig {
 
                     int enchantLevel = levelSection.getInt("settings.enchants." + enchantmentStr, 0);
                     plugin.log("Registering '" + enchantmentStr + "' as a vanilla enchant.");
-                    vanillaEnchants.put(Enchant.valueOf(enchantmentStr).getEnchantment(), enchantLevel);
+                    vanillaEnchants.put(enchantment.get().parseEnchantment(), enchantLevel);
                 });
 
             }
@@ -237,7 +243,7 @@ public class CachedConfig {
                     }
 
                     int xp = levelSection.getInt("settings.experience." + blockStr, 0);
-                    //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with data (" + blockData[1] + "), giving " + xp + " xp to level " + toolLevel + ".");
+//                    plugin.log("Added material '" + matType.name() + "' with data (" + blockData[1] + "), giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new Tool.BlockXP(matType, Integer.valueOf(blockData[1]), xp));
                 } else {
                     // No Data
@@ -248,7 +254,7 @@ public class CachedConfig {
                     }
 
                     int xp = levelSection.getInt("settings.experience." + blockStr, 0);
-                    //plugin.getLogger().info("[DEBUG] Added material '" + matType.name() + "' with no data, giving " + xp + " xp to level " + toolLevel + ".");
+//                    plugin.log("Added material '" + matType.name() + "' with no data, giving " + xp + " xp to level " + toolLevel + ".");
                     blockXp.add(new Tool.BlockXP(matType, 0, xp));
                 }
             });

@@ -1,8 +1,9 @@
 package com.codeitforyou.tools;
 
 import com.codeitforyou.lib.api.actions.ActionManager;
-import com.codeitforyou.tools.command.util.CommandExecutor;
-import com.codeitforyou.tools.command.util.CommandManager;
+import com.codeitforyou.lib.api.command.CommandManager;
+import com.codeitforyou.lib.api.general.Metrics;
+import com.codeitforyou.tools.command.*;
 import com.codeitforyou.tools.config.CachedConfig;
 import com.codeitforyou.tools.config.Lang;
 import com.codeitforyou.tools.hook.PlaceholderAPIHook;
@@ -15,13 +16,12 @@ import com.codeitforyou.tools.maven.Repository;
 import com.codeitforyou.tools.nbt.NBT;
 import com.codeitforyou.tools.storage.PlayerData;
 import com.codeitforyou.tools.storage.StorageHandler;
+import com.codeitforyou.tools.storage.StorageType;
 import com.codeitforyou.tools.storage.mongodb.MongoDBHandler;
 import com.codeitforyou.tools.storage.mysql.MySQLHandler;
 import com.codeitforyou.tools.storage.sqlite.SQLiteHandler;
 import com.codeitforyou.tools.util.Common;
 import com.codeitforyou.tools.util.ConsoleFilter;
-import com.codeitforyou.tools.util.Metrics;
-import com.codeitforyou.tools.util.StorageType;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +80,7 @@ public class Tools extends JavaPlugin {
         hook("PlaceholderAPI");
         hook("WorldGuard");
 
-        new Metrics(this);
+        new Metrics(this, 6443);
 
         if (getConfig().getBoolean("settings.autosave", true))
             new BukkitRunnable() {
@@ -144,11 +145,26 @@ public class Tools extends JavaPlugin {
     }
 
     private void registerCommands() {
-        commandManager = new CommandManager(this);
-        getCommand(getDescription().getName().toLowerCase()).setExecutor(new CommandExecutor(this));
-        if (getCommand(getDescription().getName().toLowerCase()).getPlugin() != this) {
-            getLogger().warning("/" + getDescription().getName().toLowerCase() + " command is being handled by plugin other than " + getDescription().getName() + ". You must use /" + getDescription().getName().toLowerCase() + ":" + getDescription().getName().toLowerCase() + " instead.");
-        }
+        commandManager = new CommandManager(Arrays.asList(
+                HelpCommand.class,
+                ReloadCommand.class,
+                XPCommand.class,
+                ResetCommand.class,
+                GiveToolCommand.class,
+                GiveXPCommand.class,
+                GiveLevelCommand.class
+        ), getDescription().getName().toLowerCase(), this);
+
+        commandManager.setMainCommand(MainCommand.class);
+
+        commandManager.getLocale().setNoPermission(Lang.COMMAND_NO_PERMISSION.asString(Lang.PREFIX.asString()));
+        commandManager.getLocale().setPlayerOnly(Lang.COMMAND_PLAYER_ONLY.asString(Lang.PREFIX.asString()));
+        commandManager.getLocale().setUsage(Lang.COMMAND_USAGE.asString(Lang.PREFIX.asString(), "{usage}"));
+        commandManager.getLocale().setUnknownCommand(Lang.COMMAND_INVALID.asString(Lang.PREFIX.asString()));
+
+        Arrays.asList("cifytool", "tools", "tool", "ct", "ctools", "ltools").forEach(commandManager::addAlias);
+
+        commandManager.register();
     }
 
     public void handleReload() {
