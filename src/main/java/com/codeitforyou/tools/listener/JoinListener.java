@@ -24,15 +24,15 @@ public class JoinListener implements Listener {
     public JoinListener(Tools plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
+
+        if (isUpdated.contains("%%") || !isUpdated.equalsIgnoreCase("true") || isUpdated.isEmpty()) {
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+        }
     }
 
     @EventHandler
     public void onPlayerJoin(final AsyncPlayerPreLoginEvent e) {
         plugin.getStorageHandler().pullData(e.getName(), e.getUniqueId());
-
-        if (isUpdated.equalsIgnoreCase("%%__SONGODA__%%") || isUpdated.equalsIgnoreCase("no") || isUpdated.isEmpty()) {
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-        }
     }
 
     @EventHandler
