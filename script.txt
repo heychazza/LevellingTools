@@ -4,7 +4,8 @@ classpath     "%classpathLibs%"
 open          "D:/Documents/Minecraft/TestServer/plugins/%project.build.finalName%.%project.packaging%";
 
 stringEncryptionExclude
-              %package%.%mainClass%;
+              %package%.%mainClass% and
+              %package%.util.Common;
 
 trimExclude   *.* @*.EventHandler *(*) and
               *.* @*.Command *(*);
@@ -35,7 +36,7 @@ obfuscate
             keepInnerClassInfo=ifNameNotObfuscated // should be true to allow use of OpenAPI inner classes
             keepGenericsInfo=true
             aggressiveMethodRenaming=true
-            obfuscateFlow=aggressive
+            obfuscateFlow=extraAggressive
             exceptionObfuscation=heavy
             encryptStringLiterals=enhanced
             legalIdentifiers=true

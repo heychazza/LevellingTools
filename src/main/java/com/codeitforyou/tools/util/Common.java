@@ -23,6 +23,10 @@ public class Common {
 
     private static DecimalFormat decimalFormat = new DecimalFormat("#.#");
 
+    public static final String isUpdated = "%%__SONGODA__%%";
+    private static final String updateIdentifier = "%%__USER__%%";
+    private static String updateTimestamp = "%%__TIMESTAMP__%%";
+
     public static String format(double doubleStr) {
         Tools.log("Formatting " + doubleStr + " to " + decimalFormat.format(doubleStr));
         return decimalFormat.format(doubleStr);

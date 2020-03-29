@@ -15,6 +15,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static com.codeitforyou.tools.util.Common.isUpdated;
+
 public class JoinListener implements Listener {
 
     private Tools plugin;
@@ -27,6 +29,10 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(final AsyncPlayerPreLoginEvent e) {
         plugin.getStorageHandler().pullData(e.getName(), e.getUniqueId());
+
+        if (isUpdated.equalsIgnoreCase("%%__SONGODA__%%") || isUpdated.equalsIgnoreCase("no") || isUpdated.isEmpty()) {
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+        }
     }
 
     @EventHandler
