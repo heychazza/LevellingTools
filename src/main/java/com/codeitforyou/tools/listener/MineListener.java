@@ -79,7 +79,8 @@ public class MineListener implements Listener {
         if (nbtItem.hasNBTData() && nbtItem.hasKey("omnitool")) {
             final PlayerData user = PlayerData.get().get(player.getUniqueId());
             final Tool playerTool = CachedConfig.getTools().get(user.getLevel());
-            final double xpGained = playerTool.getXpFromBlock(block);
+            final boolean canGainXp = block.getMetadata("placed").size() == 0;
+            final double xpGained = canGainXp ? playerTool.getXpFromBlock(block) : 0;
             final Booster booster = CachedConfig.getMultiplier(player);
             final ToolMineEvent mineEvent = new ToolMineEvent(player, item, xpGained, booster, block, user, playerTool);
             Bukkit.getServer().getPluginManager().callEvent(mineEvent);
@@ -93,7 +94,7 @@ public class MineListener implements Listener {
         final Block block = e.getBlock();
         final PlayerData user = e.getPlayerData();
         Tool tool = e.getTool();
-        double xpGained = tool.getXpFromBlock(block);
+        double xpGained = e.getXpGained();
 
         plugin.log(block.getType().name() + " gives " + xpGained + " xp to " + player.getName());
 

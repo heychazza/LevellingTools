@@ -15,8 +15,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static com.codeitforyou.tools.util.Common.isUpdated;
-
 public class JoinListener implements Listener {
 
     private Tools plugin;
@@ -24,10 +22,6 @@ public class JoinListener implements Listener {
     public JoinListener(Tools plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
-
-        if (isUpdated.contains("%%") || !isUpdated.equalsIgnoreCase("true") || isUpdated.isEmpty()) {
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-        }
     }
 
     @EventHandler

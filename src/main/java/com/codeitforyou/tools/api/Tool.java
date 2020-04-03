@@ -97,6 +97,10 @@ public class Tool {
         else if (toolType.name().contains("AXE")) toolLore = tool.getAxeLore();
         else toolLore = tool.getShovelLore();
 
+        if (playerData == null && Bukkit.getServer().getPluginManager().getPlugin("Plugman") != null) {
+            throw new RuntimeException("Plugman reloading isn't supported!");
+        }
+
         String username = playerData.getUsername();
         String blocks = String.valueOf(playerData.getBlocksBroken());
         String currentXp = String.valueOf(Common.format(playerData.getXp()));

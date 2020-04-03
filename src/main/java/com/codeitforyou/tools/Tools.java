@@ -10,6 +10,7 @@ import com.codeitforyou.tools.hook.PlaceholderAPIHook;
 import com.codeitforyou.tools.hook.WorldGuardHook;
 import com.codeitforyou.tools.listener.JoinListener;
 import com.codeitforyou.tools.listener.MineListener;
+import com.codeitforyou.tools.listener.PlaceListener;
 import com.codeitforyou.tools.maven.LibraryLoader;
 import com.codeitforyou.tools.maven.MavenLibrary;
 import com.codeitforyou.tools.maven.Repository;
@@ -67,6 +68,7 @@ public class Tools extends JavaPlugin {
 
         new JoinListener(this);
         new MineListener(this);
+        new PlaceListener(this);
 
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
