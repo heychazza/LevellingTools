@@ -24,6 +24,8 @@ public class ConsoleFilter extends AbstractFilter {
     }
 
     private static Result validateMessage(String message) {
+        if (message == null) return Result.NEUTRAL;
+        if (hiddenLogs == null || hiddenLogs.isEmpty()) return Result.NEUTRAL;
         return hiddenLogs.stream().anyMatch(msg -> message.toLowerCase().contains(msg)) ? Result.DENY : Result.NEUTRAL;
     }
 
