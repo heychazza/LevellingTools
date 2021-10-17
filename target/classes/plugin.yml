@@ -1,0 +1,22 @@
+name: CIFYTools
+version: 2.4.9
+main: com.codeitforyou.tools.Tools
+author: "CodeItForYou"
+website: https://codeitforyou.com/
+description: "The ultimate way to make your server stand out from the rest."
+softdepend: ["PlaceholderAPI", "WorldGuard"]
+api-version: 1.13
+
+permissions:
+  cifytools.give:
+    description: Give yourself or a player a levelling tool
+  cifytools.reload:
+    description: Reload the configuration file into memory
+  cifytools.help:
+    description: View commands you have access to within the plugin
+  cifytools.info:
+    description: View information about the plugin
+    default: true
+  cifytools.xp:
+    description: View yourself or another players xp amount
+    default: true

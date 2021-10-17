@@ -1,0 +1,325 @@
+## CIFYTools - v2.4.9 ##
+## Please use https://cify.link/discord for support!
+
+settings:
+
+  # Turn this on to get insightful information from
+  # the plugin as its running. This is useful if
+  # something isn't working the way it should.
+  debug: false
+
+  # You may customise how many bars are used for the
+  # progress bar placeholder.
+  progress-bar: 10
+
+  # If enabled, this option will only use the 'pickaxe'
+  # format for each level. This is useful if you only
+  # want to use the same format for all tool types.
+  use_one_format: false
+
+  # You may specify if you wish to give a levelling tool
+  # on join or not. By turning this off, you'll need to use
+  # the give command to give these - useful for selling as a
+  # special tool on the store.
+  give_on_join: false
+
+  # You may also specify if the levelling tool should only
+  # be given on first join only - this only applies if the
+  # above is enabled.
+  first_join_only: true
+
+  # This is where all your player data will be saved.
+  # It is not recommended to change this on a live
+  # server, as players can lose data.
+  storage:
+    # Options: SQLITE, MYSQL & MONGODB
+    type: SQLITE
+    database: "levellingtools"
+    host: "127.0.0.1"
+    port: 27017
+    username: ""
+    password: ""
+
+  # This shows the players stats from the action bar.
+  stats:
+    enabled: true
+
+  blacklist:
+    world:
+      list: []
+    region:
+      list: []
+
+  # You may optionally disable a particular type,
+  # the pickaxe type will always remain enabled.
+  type:
+    axe: true
+    shovel: true
+
+  # These are the settings related to enchants,
+  # the prefix is used if the specified enchant doesn't
+  # exist. This is useful for custom enchants, where
+  # you may define a prefix.
+  enchants:
+    prefix: "&7"
+
+  # You may give players xp boosts, which multipliers
+  # their total amount that they receive. The permission
+  # will be ltools.multi.<name>, where the name is in lowercase.
+  boosters:
+    donor: 1.05 # 5% boost
+
+  actions:
+    - 'tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}'
+    - 'msg {player} &6[&eTool&6] &7You''ve reached level &f%level% with &e%blocks% &7block(s) broken. Congrats!'
+
+  # These are the list of materials that determine which
+  # tool should be used for each block specified.
+  blocks:
+    pickaxe:
+      - STONE
+      - COBBLESTONE
+      - MOSSY_COBBLESTONE
+      - SANDSTONE
+      - OBSIDIAN
+      - COAL_ORE
+      - IRON_ORE
+      - IRON_BLOCK
+      - LAPIS_ORE
+      - LAPIS_BLOCK
+      - GOLD_ORE
+      - GOLD_BLOCK
+      - REDSTONE_ORE
+      - GLOWING_REDSTONE_ORE
+      - REDSTONE_BLOCK
+      - EMERALD_ORE
+      - EMERALD_BLOCK
+      - DIAMOND_ORE
+      - DIAMOND_BLOCK
+      - STEP
+      - DOUBLE_STEP
+      - COBBLESTONE_STAIRS
+      - COBBLE_WALL
+      - BRICK
+      - BRICK_STAIRS
+      - ICE
+      - PACKED_ICE
+      - NETHERRACK
+      - NETHER_BRICK
+      - NETHER_BRICK_STAIRS
+      - NETHER_FENCE
+      - ANVIL
+      - QUARTZ_ORE
+      - QUARTZ_BLOCK
+      - QUARTZ_STAIRS
+      - CLAY_BRICK
+      - STAINED_CLAY
+      - HARD_CLAY
+      - FURNACE
+      - DISPENSER
+      - BREWING_STAND
+      - CAULDRON
+      - HOPPER
+    axe:
+      - LOG
+      - LOG_2
+      - WOOD
+      - WOOD_STEP
+      - WOOD_DOUBLE_STEP
+      - WOOD_STAIRS
+      - BIRCH_WOOD_STAIRS
+      - JUNGLE_WOOD_STAIRS
+      - SPRUCE_WOOD_STAIRS
+      - ACACIA_STAIRS
+      - DARK_OAK_STAIRS
+      - WORKBENCH
+      - LADDER
+      - RAILS
+      - ACTIVATOR_RAIL
+      - DETECTOR_RAIL
+      - POWERED_RAIL
+      - SIGN
+      - SIGN_POST
+      - PUMPKIN
+      - JACK_O_LANTERN
+      - HUGE_MUSHROOM_1
+      - HUGE_MUSHROOM_2
+      - FENCE
+      - FENCE_GATE
+    shovel:
+      - GRASS
+      - DIRT
+      - SAND
+      - GRAVEL
+      - SNOW
+      - SNOW_BLOCK
+      - CLAY
+      - SOUL_SAND
+      - MYCEL
+
+
+format:
+  pickaxe:
+    name: "&e&lLEVELLING PICKAXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your pickaxe,"
+      - "&7rarer ores grant more experience."
+      - ""
+      - "&7Level: &6{level}"
+      - "&7Blocks Mined: &6{blocks}"
+      - "&8-------------------------------------"
+  axe:
+    name: "&e&lLEVELLING AXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your axe,"
+      - "&7mine wood to grant more experience."
+      - ""
+      - "&7Level: &6{level}"
+      - "&7Blocks Mined: &6{blocks}"
+      - "&8-------------------------------------"
+  shovel:
+    name: "&e&lLEVELLING SHOVEL &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+    lore:
+      - "&8-------------------------------------"
+      - "&7Mining helps level up your shovel,"
+      - "&7mine blocks to grant more experience."
+      - ""
+      - "&7Level: &6{level}"
+      - "&7Blocks Mined: &6{blocks}"
+      - "&8-------------------------------------"
+
+# This is the primary section, where you define
+# your tools levels, alongside its enchants.
+level:
+  1:
+    settings:
+      # This is the type of tool you wish to use.
+      # Types: WOOD, STONE, IRON, GOLD and DIAMOND.
+      type: IRON
+      # The experience required to level up.
+      # This only applies to level 2 and above.
+      xp: -1
+      # You may override the name and lore by specifying
+      # it below, or setting it to 'name: ""' and 'lore: []'
+      # to use the default (or previous level).
+      format:
+        pickaxe:
+          name: ""
+          lore: []
+        axe:
+          name: ""
+          lore: []
+        shovel:
+          name: ""
+          lore: []
+      # The enchantments you wish to set onto the tool.
+      # For example, 'EFFICIENCY', 'FORTUNE', 'UNBREAKING' etc.
+      enchants:
+        # Format is '<ENCHANT>:<LEVEL>'
+        EFFICIENCY: 1
+      # The xp a player will gain from mining the listed block.
+      experience:
+        # Format is '<BLOCK>:<XP>'
+        STONE: 25
+        COAL_ORE: 10
+    # These are the commands that are executed on level up.
+    # You may ignore the below, and configure it for level 2+.
+    actions: []
+  2:
+    settings:
+      type: GOLD
+      xp: 100
+      format:
+        pickaxe:
+          override: true
+          name: "&b&lLEVELLING PICKAXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+          lore: []
+        axe:
+          name: ""
+          lore: []
+        shovel:
+          name: ""
+          lore: []
+      enchants:
+        EFFICIENCY: 1
+      experience:
+        STONE: 25
+        COAL_ORE: 10
+    actions:
+      - "tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}"
+
+  3:
+    settings:
+      type: DIAMOND
+      xp: 300
+      format:
+        pickaxe:
+          override: true
+          name: "&c&lLEVELLING PICKAXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+          lore: []
+        axe:
+          name: ""
+          lore: []
+        shovel:
+          name: ""
+          lore: []
+      enchants:
+        EFFICIENCY: 1
+      experience:
+        STONE: 25
+        COAL_ORE: 10
+    actions:
+      - "tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}"
+
+  4:
+    settings:
+      type: DIAMOND
+      xp: 400
+      format:
+        pickaxe:
+          override: true
+          name: "&d&lLEVELLING PICKAXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+          lore: []
+        axe:
+          name: ""
+          lore: []
+        shovel:
+          name: ""
+          lore: []
+      enchants:
+        EFFICIENCY: 1
+        FORTUNE: 5
+      experience:
+        COAL_ORE: 10
+        STONE: 75
+        STONE;3: 100
+    actions:
+      - "tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}"
+
+  5:
+    settings:
+      type: DIAMOND
+      xp: 800
+      format:
+        pickaxe:
+          override: true
+          name: "&d&lLEVELLING PICKAXE &8| &7LVL {level} &8| &7{blocks} BLOCKS"
+          lore: []
+        axe:
+          name: ""
+          lore: []
+        shovel:
+          name: ""
+          lore: []
+      enchants:
+        EFFICIENCY: 1
+        FORTUNE: 5
+        "Blast": "IV"
+      experience:
+        COAL_ORE: 10
+        STONE: 75
+        STONE;3: 100
+    actions:
+      - "tm msg {player} &e&lLEVEL UP!<nl>&7Tool is now level &f{level}"
