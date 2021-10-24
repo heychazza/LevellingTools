@@ -7,7 +7,6 @@ All players must mine blocks (gaining exp from each block) to level up their too
 This has been tried and tested with players, who've expressed how much more they prefer this system over OP-based pickaxes like other servers. Don't miss out on the chance to make your server stand out from the rest!
 
 ## Installation
-If you're a [Patreon](https://patreon.com/mcplugins) member, just head to #levellingtools in the Discord Server to access the precompiled versions. If you aren't, you'll need to compile it yourself.
 1. If you already haven't, you'll need maven and git.
 2. Then `git clone` this repository to your local computer.
 3. Change into the directory and run `mvn clean install`.
@@ -73,8 +72,8 @@ If you have PlaceholderAPI installed, you may use the following variables in any
 
 ## License
 
-We take licensing seriously, and hope you will also do the same. Please read our license by clicking [here](https://github.com/mcplugins/LevellingTools/blob/master/LICENSE), before using **LevellingTools**.
+We take licensing seriously, and hope you will also do the same. Please read our license by clicking [here](https://github.com/heychazza/levelling-tools/blob/master/LICENSE), before using **LevellingTools**.
 
 ## Support
 
-Due to our resources being free, we only offer support to our Patreon members.
+This is a legacy project, and so, no support can be provided.
